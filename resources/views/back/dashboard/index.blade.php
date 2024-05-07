@@ -1,5 +1,5 @@
 @extends('back.layout.template')
-@section('tittle', 'dashboard')
+@section('title', 'dashboard')
 @section('content')
 <!DOCTYPE html>
 <html lang="en">

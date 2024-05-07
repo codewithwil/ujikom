@@ -19,16 +19,25 @@
 
       <li class="nav-item dropdown header-profile">
         <div class="dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @php
+            $roles = Auth::user()->getRoleNames();
+            $role = $roles->first();
+        @endphp
+        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="text-black mr-3">
+                Hello, <strong>{{ Auth::user()->name }}</strong><br>
+                <p class="fs-12 mb-0">{{ $role }}</p>
+            </span>
+            <span class="ml-auto">
                 @if(Auth::user()->foto_profile)
                     <img src="{{ asset('storage/back/foto-profile/' . Auth::user()->foto_profile) }}" class="img-thumbnail img-preview" alt="Foto Pengguna" width="20px">
                 @else
-                <img src="{{ asset('admin/img/profile.png') }}" alt="Foto Profil" class="rounded-circle" width="30px">
+                    <img src="{{ asset('admin/img/profile.png') }}" alt="Foto Profil" class="rounded-circle" width="30px">
                 @endif
-            </a>
-    
+            </span>
+        </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item ai-icon" href="#">
+                <a class="dropdown-item ai-icon" href="{{route('profile', ['id' => auth()->id()])}}">
                     <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                     <span class="ms-2">Profile</span>
                 </a>

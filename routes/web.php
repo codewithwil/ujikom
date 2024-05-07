@@ -1,6 +1,9 @@
 <?php
 
-use App\Http\Controllers\back\LoginController;
+use App\Http\Controllers\back\{
+    LoginController,
+    UserController
+};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +24,15 @@ Route::get('/', function () {
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.go');
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
 Route::get('/dashboard/kooperasi', function () {
     return view('back.dashboard.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    //logout
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+    //profile
+    Route::get('/myprofile{id}', [UserController::class,'index'])->name('profile');
+    Route::post('/myprofile{id}', [UserController::class,'update'])->name('profile.update');
+});
