@@ -32,8 +32,6 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -42,7 +40,44 @@
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
-     
+            <li class="nav-header">Saldo</li>
+            <li class="nav-item">
+              <a href="{{route('saldo.index')}}" class="nav-link">
+                <i class="nav-icon fas fa-dollar-sign"></i>
+                <p>Saldo Koperasi</p>
+              </a>
+            </li>
+            <li class="nav-header">Kelola Anggota</li>
+            <li class="nav-item">
+              <a href="{{route('anggota.index')}}" class="nav-link">
+                <i class="nav-icon fas fa-user"></i>
+                <p>Anggota</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-dollar-sign"></i>
+                <p>
+                  Simpanan
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="pages/charts/inline.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>debet</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{route('simpananKredit.index')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>kredit</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+  
           <li class="nav-header">Kelola pegawai</li>
           <li class="nav-item">
             <a href="{{route('users.index')}}" class="nav-link">

@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers\back;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\User\CreateUserRequest;
-use App\Http\Requests\User\UpdateUserRequest;
-use App\Models\User;
+use App\{
+    Http\Requests\User\UpdateUserRequest,
+    Http\Requests\User\CreateUserRequest,
+    Http\Controllers\Controller,
+    Models\User
+};
+use Illuminate\{
+    Support\Facades\Storage,
+    Support\Facades\DB,
+    Http\Request
+};
 use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller

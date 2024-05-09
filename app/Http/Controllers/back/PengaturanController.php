@@ -4,13 +4,15 @@ namespace App\Http\Controllers\back;
 
 use App\{
     Http\Controllers\Controller,
-    Models\Pengaturan
+    Models\Pengaturan,
+    Http\Requests\setting\UpdatePengaturanRequest
 };
 
-use App\Http\Requests\setting\UpdatePengaturanRequest;
+use Illuminate\{
+    Http\Request,
+    Support\Facades\DB
+};
 use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PengaturanController extends Controller
 {
