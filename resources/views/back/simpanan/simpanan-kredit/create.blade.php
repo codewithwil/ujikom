@@ -69,7 +69,6 @@
                     </div>
                   </div>
                   <div class="bs-stepper-content">
-                    <!-- your steps content here -->
                     <div id="divisi-part" class="content" role="tabpanel" aria-labelledby="divisi-part-trigger">
                       <div class="form-group">
                         <label for="tanggal">tanggal transaksi</label>
@@ -77,7 +76,7 @@
                       </div>
                       <div class="form-group">
                         <label for="jenisPembayaran">Jenis pembayaran</label>
-                        <select name="jenis_pembayaran" id="" class="form-control">
+                        <select name="jenis_pembayaran" id="jenis_pembayaran" class="form-control">
                         @foreach($jenisBayar as $item => $jenis)
                           <option value="hidden" disabled selected hidden>Pilih jenis pembayaran</option>
                           <option value="{{ $item }}">{{$jenis}}</option>
@@ -100,7 +99,7 @@
                         <select name="anggota_kode" id="anggota" class="form-control">
                           @foreach ($anggota as $item)
                           <option value="hidden" disabled selected hidden>Pilih Anggota</option>
-                          <option value="{{$item->kode_anggota}}">{{$item->nama}}</option>
+                          <option value="{{$item->kode_anggota}}">{{$item->anggota_kode}} {{$item->nama}}</option>
                       @endforeach
                         </select>
                       </div>
@@ -121,26 +120,26 @@
                     </div>
                     <div id="keterangan-part" class="content" role="tabpanel" aria-labelledby="keterangan-part-trigger">
                       <div class="form-group">
-                        <label for="keterangan">Keterangan</label>
-                        <select name="keterangan" id="keterangan" class="form-control">
-                          @foreach ($keterangan as $item => $getKeterangan)
-                          <option value="hidden" disabled selected hidden>Pilih keterangan</option>
-                          <option value="{{$item}}">{{$getKeterangan}}</option>
-                          @endforeach
-                        </select>
+                          <label for="keterangan">Keterangan</label>
+                          <select name="keterangan" id="keterangan" class="form-control">
+                              <option value="" disabled selected hidden>Pilih keterangan</option>
+                              @foreach ($keterangan as $item => $getKeterangan)
+                              <option value="{{$item}}">{{$getKeterangan}}</option>
+                              @endforeach
+                          </select>
                       </div>
                       <div class="form-group">
-                        <label for="status_buku">Status buku</label>
-                        <select name="status_buku" id="status_buku" class="form-control">
-                          @foreach ($statusBuku as $item => $getStatusBuku)
-                          <option value="hidden" disabled selected hidden>Pilih status buku</option>
-                          <option value="{{$item}}">{{$getStatusBuku}}</option>
-                          @endforeach
-                        </select>
+                          <label for="status_buku">Status buku</label>
+                          <select name="status_buku" id="status_buku" class="form-control">
+                              <option value="" disabled selected hidden>Pilih status buku</option>
+                              @foreach ($statusBuku as $item => $getStatusBuku)
+                              <option value="{{$item}}">{{$getStatusBuku}}</option>
+                              @endforeach
+                          </select>
                       </div>
                       <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                      <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
+                      <button type="button" id="submitForm" class="btn btn-primary">Submit</button>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -209,7 +208,49 @@
   });
 
 
+</script>
+<script>
+  document.getElementById('submitForm').addEventListener('click', function(event) {
+    event.preventDefault();
 
+    var tanggal = document.getElementById('tanggal').value;
+    var jenis_pembayaran = document.getElementById('jenis_pembayaran').value;
+    var divisi = document.getElementById('divisi').value;
+    var anggota = document.getElementById('anggota').value;
+    var nominal = document.getElementById('nominal').value;
+    var keterangan = document.getElementById('keterangan').value;
+    var status_buku = document.getElementById('status_buku').value;
+
+    var data = {
+      tanggal: tanggal,
+      jenis_pembayaran: jenis_pembayaran,
+      divisi: divisi,
+      anggota: anggota,
+      nominal: nominal,
+      keterangan: keterangan,
+      status_buku: status_buku,
+      _token: '{{ csrf_token() }}' // Menyertakan token CSRF
+    };
+
+    // Kirim data menggunakan AJAX
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '{{ route('simpananKredit.store') }}');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          // Berhasil, lakukan sesuatu jika diperlukan
+          console.log('Data berhasil dikirim ke database.');
+          // Redirect atau tindakan lain setelah berhasil
+          window.location.href = '{{ route('simpananKredit.index') }}';
+        } else {
+          // Gagal, lakukan sesuatu jika diperlukan
+          console.error('Gagal mengirim data ke database.');
+        }
+      }
+    };
+    xhr.send(JSON.stringify(data));
+  });
 </script>
 @endpush
 

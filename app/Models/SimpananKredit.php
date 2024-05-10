@@ -16,6 +16,7 @@ class SimpananKredit extends Model
     public $incrementing = false;
     protected $fillable = ['kode_simpanan_kredit', 'anggota_kode', 'tanggal','jenis_pembayaran', 'divisi', 'keterangan',
                            'nominal', 'keterangan','status_buku', 'status'];
+    
 
      // BOOTING SECTION
      public static function booted() {
@@ -38,7 +39,7 @@ class SimpananKredit extends Model
     public static function getJenisPembayaran()
     {
         return [
-            'tunai'    => 'Tunai',
+            'tunai'      => 'Tunai',
             'nontunai'   => 'Non Tunai'
         ];
     }

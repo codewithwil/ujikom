@@ -20,7 +20,6 @@ return new class extends Migration
             $table->enum('divisi',['simpan','pinjam'])->default('simpan');
             $table->enum('keterangan',['debet','kredit'])->default('debet');
             $table->integer('nominal');
-            $table->enum('keterangan',['debet','kredit'])->default('debet');
             $table->enum('status_buku',['aktif','nonaktif'])->default('aktif');
             $table->tinyInteger('status');
             $table->timestamps();
