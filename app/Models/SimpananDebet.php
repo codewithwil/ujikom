@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class SimpananKredit extends Model
+class SimpananDebet extends Model
 {
     use HasFactory;
     CONST ACTIVE          = 1;
     CONST DELETED         = 0;
-    protected $table = 'simpanan_kredit';
-    protected $primaryKey = 'kode_simpanan_kredit'; 
+    protected $table = 'simpanan_debet';
+    protected $primaryKey = 'kode_simpanan_debet'; 
     protected $keyType = 'string'; 
     public $incrementing = false;
-    protected $fillable = ['kode_simpanan_kredit', 'anggota_kode', 'tanggal','jenis_pembayaran', 'divisi', 'keterangan',
-                           'nominal', 'keterangan','status_buku', 'status'];
+    protected $fillable = ['kode_simpanan_debet', 'anggota_kode', 'transaksi','tanggal','jenis_pembayaran', 'divisi', 
+                           'keterangan','nominal', 'keterangan','status_buku', 'status'];
     
 
      // BOOTING SECTION
@@ -59,7 +59,13 @@ class SimpananKredit extends Model
             'nonaktif' => 'Nonaktif'
         ];
     }
-
+    public static function getTransaksi()
+    {
+        return [
+            'debet'    => 'Debet',
+            'kredit'   => 'Kredit'
+        ];
+    }
     public static function getKeterangan()
     {
         return [

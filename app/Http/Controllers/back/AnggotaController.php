@@ -97,6 +97,20 @@ class AnggotaController extends Controller
         return response()->json(['message' => 'Anggota not found'], 404);
     }
     
+    public function getInfo(Request $request, $kode_anggota)
+    {
+        $anggota = Anggota::where('kode_anggota', $kode_anggota)->first();
 
+        if ($anggota) {
+            return response()->json([
+                'nama' => $anggota->nama,
+                'alamat' => $anggota->alamat,
+                'email' => $anggota->email,
+                'telepon' => $anggota->telepon,
+            ]);
+        } else {
+            return response()->json(['error' => 'Anggota tidak ditemukan.'], 404);
+        }
+    }
 }
 

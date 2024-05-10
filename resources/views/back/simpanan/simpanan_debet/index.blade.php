@@ -1,5 +1,5 @@
 @extends('back.layout.template')
-@section('title', 'simpanan kredit')
+@section('title', 'simpanan debet')
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   <link rel="stylesheet" href="{{asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
@@ -11,12 +11,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Data Simpanan kredit</h1>
+            <h1>Data Simpanan debet</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Data Simpanan kredit</li>
+              <li class="breadcrumb-item active">Data Simpanan debet</li>
             </ol>
           </div>
         </div>
@@ -31,7 +31,7 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Kelola data Simpanan kredit</h3>
+                <h3 class="card-title">Kelola data Simpanan debet</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -195,7 +195,7 @@
                             text: response.message,
                             icon: 'success',
                         }).then((result) => {
-                            window.location.href = '/simpanan/kredit';
+                            window.location.href = '/simpanan/debet';
                         });
                     },
                     error: function (xhr, ajaxOptions, thrownError) {

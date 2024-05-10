@@ -1,5 +1,5 @@
 @extends('back.layout.template')
-@section('title', 'tambah simpanan kredit')
+@section('title', 'edit simpanan kredit')
 @section('content')
 @push('css')
       <!-- Bootstrap Color Picker -->
@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Tambah simpan kredit</h1>
+            <h1>Edit simpan kredit</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Tambah simpan kredit</li>
+              <li class="breadcrumb-item active">Edit simpan kredit</li>
             </ol>
           </div>
         </div>
@@ -41,7 +41,7 @@
           <div class="col-md-12">
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">bs-stepper</h3>
+                <h3 class="card-title">Edit Data Simpanan Kredit</h3>
               </div>
               <div class="card-body p-0">
                 <div class="bs-stepper">
@@ -73,11 +73,7 @@
                     <div id="pendataan-part" class="content" role="tabpanel" aria-labelledby="pendataan-part-trigger">
                       <div class="form-group">
                         <label for="kode_simpanan_kredit">Kode simpan edit</label>
-                        <?php
-                        $kodeSimpanKredit = autonumber('simpanan_kredit', 'kode_simpanan_kredit', 3, 'SPK');
-                    ?>
-                       <input class="input @error('kode_simpanan_kredit') is-invalid @enderror form-control" name="kode_simpanan_kredit" readonly id="kode_simpanan_kredit" type="text" value="<?= $kodeSimpanKredit ?>">
-    
+                       <input class="input form-control" name="kode_simpanan_kredit" readonly id="kode_simpanan_kredit" type="text" value="{{$simpanK->kode_simpanan_kredit}}">
                         @error('kode_simpanan_kredit')
                             <div class="invalid-feedback">
                                 {{$message}}
@@ -86,14 +82,13 @@
                       </div>
                   <div class="form-group">
                     <label for="tanggal">tanggal transaksi</label>
-                    <input type="date" class="form-control" id="tanggal" name="tanggal">
+                    <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{$simpanK->tanggal}}">
                   </div>
                   <div class="form-group">
                     <label for="jenisPembayaran">Jenis pembayaran</label>
                     <select name="jenis_pembayaran" id="jenis_pembayaran" class="form-control">
                     @foreach($jenisBayar as $item => $jenis)
-                      <option value="hidden" disabled selected hidden>Pilih jenis pembayaran</option>
-                      <option value="{{ $item }}">{{$jenis}}</option>
+                      <option value="{{ $item }}" {{ ($simpanK->jenis_pembayaran == $item) ? 'selected' : '' }}>{{$jenis}}</option>
                       @endforeach
                     </select>
                   </div>
@@ -102,35 +97,33 @@
                     <label for="divisi">Divisi</label>
                     <select name="jenis_pembayaran" id="divisi" class="form-control">
                       @foreach ($divisi as $item => $getdivisi)
-                      <option value="hidden" disabled selected hidden>Pilih divisi</option>
-                      <option value="{{$item}}">{{$getdivisi}}</option>
+                      <option value="{{$item}}" {{ ($simpanK->divisi == $item) ? 'selected' : '' }}>{{$getdivisi}}</option>
                       @endforeach
                       
                     </select>
                   </div>
                   <div class="form-group">
                     <label for="anggota">Anggota</label>
-                    <select name="anggota_kode" id="anggota_kode" class="form-control" onchange="showAnggotaInfo()">
-                      <option value="" disabled selected hidden>Pilih Anggota</option>
-                      @foreach ($anggota as $item)
-                          <option value="{{$item->kode_anggota}}">{{$item->nama}}</option>
-                      @endforeach
-                  </select>
-                  </div>
-                  <hr>
-                  <p>Nama anggota: <span id="namaAnggota"></span></p>
-                  <hr>
-                  <p>Alamat: <span id="alamatAnggota"></span></p>
-                  <hr>
-                  <p>Email: <span id="emailAnggota"></span></p>
-                  <hr>
-                  <p>Telepon: <span id="teleponAnggota"></span></p>
-                      <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                        <select name="anggota_kode" id="anggota_kode" class="form-control" onchange="showAnggotaInfo()">
+                            @foreach ($anggota as $item)
+                            <option value="{{$item->kode_anggota}}" @if($simpanK->anggota_kode == $item->kode_anggota) selected @endif>{{$item->nama}}</option>
+                        @endforeach
+                        </select>
                     </div>
+                    <hr>
+                    <p>Nama anggota: <span id="namaAnggota">{{$simpanK->Anggota->nama}}</span></p>
+                    <hr>
+                    <p>Alamat: <span id="alamatAnggota">{{$simpanK->Anggota->alamat}}</span></p>
+                    <hr>
+                    <p>Email: <span id="emailAnggota">{{$simpanK->Anggota->email}}</span></p>
+                    <hr>
+                    <p>Telepon: <span id="teleponAnggota">{{$simpanK->Anggota->telepon}}</span></p>
+                    <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                </div>
                     <div id="transaksi-part" class="content" role="tabpanel" aria-labelledby="transaksi-part-trigger">
                       <div class="form-group">
                         <label for="nominal">Nominal</label>
-                        <input type="number" name="nominal" id="nominal" class="form-control">
+                        <input type="number" name="nominal" id="nominal" class="form-control" value="{{$simpanK->nominal}}">
                       </div>
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>
@@ -139,18 +132,16 @@
                       <div class="form-group">
                         <label for="keterangan">Keterangan</label>
                         <select name="keterangan" id="keterangan" class="form-control">
-                            <option value="" disabled selected hidden>Pilih keterangan</option>
                             @foreach ($keterangan as $item => $getKeterangan)
-                            <option value="{{$item}}">{{$getKeterangan}}</option>
+                            <option value="{{$item}}" {{ ($simpanK->keterangan == $item) ? 'selected' : '' }}>{{$getKeterangan}}</option>
                             @endforeach
                         </select>
                      </div>
                     <div class="form-group">
                         <label for="status_buku">Status buku</label>
                         <select name="status_buku" id="status_buku" class="form-control">
-                            <option value="" disabled selected hidden>Pilih status buku</option>
                             @foreach ($statusBuku as $item => $getStatusBuku)
-                            <option value="{{$item}}">{{$getStatusBuku}}</option>
+                            <option value="{{$item}}" {{ ($simpanK->status_buku == $item) ? 'selected' : '' }}>{{$getStatusBuku}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -234,7 +225,7 @@
 
     // Kirim data menggunakan AJAX
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '{{ route('simpananKredit.store') }}');
+    xhr.open('POST', '{{ route('simpananKredit.update', $simpanK->kode_simpanan_kredit) }}');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onreadystatechange = function() {
       if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -280,6 +271,19 @@
           }
       };
       xhr.send();
+      axios.get('anggota' + kode_anggota)
+            .then(function(response) {
+                var data = response.data;
+
+                // Perbarui tampilan dengan data anggota yang diterima
+                document.getElementById('namaAnggota').innerText = data.nama;
+                document.getElementById('alamatAnggota').innerText = data.alamat;
+                document.getElementById('emailAnggota').innerText = data.email;
+                document.getElementById('teleponAnggota').innerText = data.telepon;
+            })
+            .catch(function(error) {
+                console.error('Error fetching anggota info:', error);
+            });
   }
 </script>
 @endpush
