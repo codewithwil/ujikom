@@ -75,11 +75,11 @@
                       <div class="form-group">
                         <label for="kode_simpanan_kredit">Kode pinjaman debet</label>
                         <?php
-                        $kodePinjamanDebet = autonumber('pinjaman_debet', 'kode_pinjaman_debet', 3, 'PJD');
+                        $kodePinjamanKredit = autonumber('pinjaman_kredit', 'kode_pinjaman_kredit', 3, 'PJK');
                     ?>
-                       <input class="input @error('kode_pinjaman_debet') is-invalid @enderror form-control" name="kode_pinjaman_debet" readonly id="kode_pinjaman_debet" type="text" value="<?= $kodePinjamanDebet ?>">
+                       <input class="input @error('kode_pinjaman_kredit') is-invalid @enderror form-control" name="kode_pinjaman_kredit" readonly id="kode_pinjaman_kredit" type="text" value="<?= $kodePinjamanKredit ?>">
     
-                        @error('kode_pinjaman_debet')
+                        @error('kode_pinjaman_kredit')
                             <div class="invalid-feedback">
                                 {{$message}}
                             </div>
@@ -275,13 +275,13 @@ periodes.forEach(function(periode) {
     };
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '{{ route('pinjamanDebet.store') }}');
+    xhr.open('POST', '{{ route('pinjamanKredit.store') }}');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onreadystatechange = function() {
       if (xhr.readyState === XMLHttpRequest.DONE) {
         if (xhr.status === 200) {
           console.log('Data berhasil dikirim ke database.');
-          window.location.href = '{{ route('pinjamanDebet.index') }}';
+          window.location.href = '{{ route('pinjamanKredit.index') }}';
         } else {
           console.error('Gagal mengirim data ke database.');
         }

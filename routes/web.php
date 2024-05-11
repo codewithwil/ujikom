@@ -4,12 +4,14 @@ use App\Http\Controllers\back\{
     LoginController,
     PengaturanController,
     PinjamanDebetController,
+    PinjamanKreditController,
     simpananKreditController,
     UserController
 };
 use App\Http\Controllers\back\AnggotaController;
 use App\Http\Controllers\back\SaldoController;
 use App\Http\Controllers\back\SimpananDebetController;
+use App\Models\PinjamanKredit;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -93,11 +95,18 @@ Route::middleware('auth')->group(function () {
     Route::post('/simpanan/debet/delete', [SimpananDebetController::class, 'delete'])->name('simpananDebet.delete')->middleware(['auth', 'verified', 'permission:hapus-simpananDebet']);
 
     //pinjaman debet
-    Route::get('/pinjaman/debet', [PinjamanDebetController::class, 'index'])->name('pinjamanDebet.index')->middleware(['auth', 'verified', 'permission:lihat-pinjamanDebet']);
-    Route::get('/pinjaman/debet/tambah', [PinjamanDebetController::class, 'create'])->name('pinjamanDebet.tambah')->middleware(['auth', 'verified', 'permission:tambah-pinjamanDebet']);
-    Route::get('/pinjaman/debet/edit{kode_simpanan_debet}', [PinjamanDebetController::class, 'edit'])->name('pinjamanDebet.edit')->middleware(['auth', 'verified', 'permission:edit-pinjamanDebet']);
-    Route::post('/pinjaman/debet/store', [PinjamanDebetController::class, 'store'])->name('pinjamanDebet.store')->middleware(['auth', 'verified', 'permission:tambah-pinjamanDebet']);
-    Route::post('/pinjaman/debet/update{kode_simpanan_debet}', [PinjamanDebetController::class, 'update'])->name('pinjamanDebet.update')->middleware(['auth', 'verified', 'permission:edit-pinjamanDebet']);
-    Route::post('/pinjaman/debet/delete', [PinjamanDebetController::class, 'delete'])->name('pinjamanDebet.delete')->middleware(['auth', 'verified', 'permission:hapus-pinjamanDebet']);
+    Route::get('/pinjaman/debet', [PinjamanKredit::class, 'index'])->name('pinjamanDebet.index')->middleware(['auth', 'verified', 'permission:lihat-pinjamanDebet']);
+    Route::get('/pinjaman/debet/tambah', [PinjamanKredit::class, 'create'])->name('pinjamanDebet.tambah')->middleware(['auth', 'verified', 'permission:tambah-pinjamanDebet']);
+    Route::get('/pinjaman/debet/edit{kode_simpanan_debet}', [PinjamanKredit::class, 'edit'])->name('pinjamanDebet.edit')->middleware(['auth', 'verified', 'permission:edit-pinjamanDebet']);
+    Route::post('/pinjaman/debet/store', [PinjamanKredit::class, 'store'])->name('pinjamanDebet.store')->middleware(['auth', 'verified', 'permission:tambah-pinjamanDebet']);
+    Route::post('/pinjaman/debet/update{kode_simpanan_debet}', [PinjamanKredit::class, 'update'])->name('pinjamanDebet.update')->middleware(['auth', 'verified', 'permission:edit-pinjamanDebet']);
+    Route::post('/pinjaman/debet/delete', [PinjamanKredit::class, 'delete'])->name('pinjamanDebet.delete')->middleware(['auth', 'verified', 'permission:hapus-pinjamanDebet']);
+    //pinjaman kredit
+    Route::get('/pinjaman/kredit', [PinjamanKreditController::class, 'index'])->name('pinjamanKredit.index')->middleware(['auth', 'verified', 'permission:lihat-pinjamanKredit']);
+    Route::get('/pinjaman/kredit/tambah', [PinjamanKreditController::class, 'create'])->name('pinjamanKredit.tambah')->middleware(['auth', 'verified', 'permission:tambah-pinjamanKredit']);
+    Route::get('/pinjaman/kredit/edit{kode_pinjaman_kredit}', [PinjamanKreditController::class, 'edit'])->name('pinjamanKredit.edit')->middleware(['auth', 'verified', 'permission:edit-pinjamanKredit']);
+    Route::post('/pinjaman/kredit/store', [PinjamanKreditController::class, 'store'])->name('pinjamanKredit.store')->middleware(['auth', 'verified', 'permission:tambah-pinjamanKredit']);
+    Route::post('/pinjaman/kredit/update{kode_pinjaman_kredit}', [PinjamanKreditController::class, 'update'])->name('pinjamanKredit.update')->middleware(['auth', 'verified', 'permission:edit-pinjamanKredit']);
+    Route::post('/pinjaman/kredit/delete', [PinjamanKreditController::class, 'delete'])->name('pinjamanKredit.delete')->middleware(['auth', 'verified', 'permission:hapus-pinjamanKredit']);
 
 });

@@ -277,7 +277,7 @@
 
     // Kirim data menggunakan AJAX
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '{{ route('pinjamanDebet.update', $pinjamD->kode_pinjaman_debet) }}');
+    xhr.open('POST', '{{ route('pinjamanKredit.update', $pinjamD->kode_pinjaman_kredit) }}');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onreadystatechange = function() {
       if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -285,7 +285,7 @@
           // Berhasil, lakukan sesuatu jika diperlukan
           console.log('Data berhasil dikirim ke database.');
           // Redirect atau tindakan lain setelah berhasil
-          window.location.href = '{{ route('pinjamanDebet.index') }}';
+          window.location.href = '{{ route('pinjamanKredit.index') }}';
         } else {
           // Gagal, lakukan sesuatu jika diperlukan
           console.error('Gagal mengirim data ke database.');
