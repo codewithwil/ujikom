@@ -1,5 +1,5 @@
 @extends('back.layout.template')
-@section('title', 'tambah pinjaman debet')
+@section('title', 'tambah pinjaman kredit')
 @section('content')
 @push('css')
       <!-- Bootstrap Color Picker -->
@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Tambah pinjaman debet</h1>
+            <h1>Tambah pinjaman kredit</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Tambah pinjaman debet</li>
+              <li class="breadcrumb-item active">Tambah pinjaman kredit</li>
             </ol>
           </div>
         </div>
@@ -41,7 +41,7 @@
           <div class="col-md-12">
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">tambah data pinjaman debet</h3>
+                <h3 class="card-title">tambah data pinjaman kredit</h3>
               </div>
               <div class="card-body p-0">
                 <div class="bs-stepper">
@@ -73,7 +73,7 @@
                     <div id="pendataan-part" class="content" role="tabpanel" aria-labelledby="pendataan-part-trigger">
                       <div class="card-body">
                       <div class="form-group">
-                        <label for="kode_simpanan_kredit">Kode pinjaman debet</label>
+                        <label for="kode_simpanan_kredit">Kode pinjaman kredit</label>
                         <?php
                         $kodePinjamanKredit = autonumber('pinjaman_kredit', 'kode_pinjaman_kredit', 3, 'PJK');
                     ?>

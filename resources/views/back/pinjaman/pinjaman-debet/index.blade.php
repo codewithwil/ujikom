@@ -1,5 +1,5 @@
 @extends('back.layout.template')
-@section('title', 'pinjaman kredit')
+@section('title', 'pinjaman debet')
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   <link rel="stylesheet" href="{{asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
@@ -11,12 +11,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Data Pinjaman kredit</h1>
+            <h1>Data Pinjaman debet</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Data Pinjaman kredit</li>
+              <li class="breadcrumb-item active">Data Pinjaman debet</li>
             </ol>
           </div>
         </div>
@@ -31,11 +31,11 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Kelola data Pinjaman kredit</h3>
+                <h3 class="card-title">Kelola data Pinjaman debet</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <a href="{{route('pinjamanKredit.tambah')}}" class="btn btn-warning mb-2">Tambah Pinjaman</a>
+                <a href="{{route('pinjamanDebet.tambah')}}" class="btn btn-warning mb-2">Tambah Pinjaman</a>
                 @if ($errors->any())
                 <div class="my-3">
                     <div class="alert alert-danger">
@@ -60,29 +60,27 @@
                     <th>divisi</th>
                     <th>keterangan</th>
                     <th>Nominal</th>
-                    <th>Bunga</th>
                     <th>status buku</th>
                     <th>Aksi</th>
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach ($pinjamK as $item)
+                  @foreach ($pinjamD as $item)
                   <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$item->kode_pinjaman_kredit}}</td>
+                    <td>{{$item->kode_pinjaman_debet}}</td>
                     <td>{{$item->Anggota->nama}}</td>
                     <td>{{$item->tanggal}}</td>
                     <td>{{$item->jenis_pembayaran}}</td>
                     <td>{{$item->transaksi}}</td>
                     <td>{{$item->divisi}}</td>
                     <td>{{$item->nominal}}</td>
-                    <td>{{$item->bunga}}</td>
                     <td>{{$item->keterangan}}</td>
                     <td>{{$item->status_buku}}</td>
                     <td>
-                      <a href="{{route('pinjamanKredit.edit', $item->kode_pinjaman_kredit)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fas fa-pencil-alt"></i></a>
+                      <a href="{{route('pinjamanDebet.edit', $item->kode_pinjaman_debet)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fas fa-pencil-alt"></i></a>
 
-                        <a href="#" onclick="deletePinjamD(this)" data-id="{{$item->kode_pinjaman_kredit}}" 
+                        <a href="#" onclick="deletePinjamD(this)" data-id="{{$item->kode_pinjaman_debet}}" 
                             class="btn btn-danger shadow btn-xs sharp"><i class="fas fa-trash"></i></a>
                     </td>
                   </tr>
@@ -99,7 +97,6 @@
                     <th>divisi</th>
                     <th>keterangan</th>
                     <th>Nominal</th>
-                    <th>Bunga</th>
                     <th>status buku</th>
                     <th>Aksi</th>
                   </tr>
@@ -173,11 +170,11 @@
 
 <script>
     function deletePinjamD(e) {
-        let kode_pinjaman_kredit = e.getAttribute('data-id');
-        console.log("ID Saldo yang Dihapus:", kode_pinjaman_kredit);
+        let kode_pinjaman_debet = e.getAttribute('data-id');
+        console.log("ID Saldo yang Dihapus:", kode_pinjaman_debet);
     
         Swal.fire({
-            title: 'Delete Saldo ' + kode_pinjaman_kredit,
+            title: 'Delete Saldo ' + kode_pinjaman_debet,
             text: "Are you sure?",
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -188,11 +185,11 @@
             if (result.isConfirmed) {
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route("pinjamanKredit.delete") }}',
+                    url: '{{ route("pinjamanDebet.delete") }}',
                     data: {
                         _token: '{{ csrf_token() }}',
                         _method: 'POST', 
-                        kode_pinjaman_kredit: kode_pinjaman_kredit 
+                        kode_pinjaman_debet: kode_pinjaman_debet 
                     },
                     dataType: "json",
                     success: function (response) {
@@ -201,7 +198,7 @@
                             text: response.message,
                             icon: 'success',
                         }).then((result) => {
-                            window.location.href = '/pinjaman/kredit';
+                            window.location.href = '/pinjaman/debet';
                         });
                     },
                     error: function (xhr, ajaxOptions, thrownError) {

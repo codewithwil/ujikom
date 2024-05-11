@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\DB;
 class PinjamanKreditController extends Controller
 {
     public function index(){
-        $pinjamD = PinjamanKredit::with('Anggota')->where('status', 1)->get();
+        $pinjamK = PinjamanKredit::with('Anggota')->where('status', 1)->get();
         return view('back.pinjaman.pinjaman-kredit.index',[
-            'pinjamD' => $pinjamD
+            'pinjamK' => $pinjamK
         ]);
     }
 
@@ -70,7 +70,7 @@ class PinjamanKreditController extends Controller
         $statusBuku = PinjamanKredit::getStatusBuku();
         $keterangan = PinjamanKredit::getKeterangan();
         return view('back.pinjaman.pinjaman-kredit.update',[
-            'pinjamD'        => PinjamanKredit::find($kode_pinjaman_kredit),
+            'pinjamK'        => PinjamanKredit::find($kode_pinjaman_kredit),
             'jenisBayar'     => $jenisBayar,
             'divisi'         => $divisi,
             'transaksi'      => $transaksi,

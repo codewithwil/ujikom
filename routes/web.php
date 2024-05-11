@@ -80,6 +80,8 @@ Route::middleware('auth')->group(function () {
 
     //simpenan kredit
     Route::get('/simpanan/kredit', [simpananKreditController::class, 'index'])->name('simpananKredit.index')->middleware(['auth', 'verified', 'permission:lihat-simpananKredit']);
+    Route::get('/cek-simpan-debet/{kode_anggota}', [simpananKreditController::class, 'cekSimpanDebet'])->name('simpananKredit.cek')->middleware(['auth', 'verified', 'permission:lihat-simpananKredit']);
+    Route::get('/cek-saldo/{kode_anggota}', [simpananKreditController::class, 'cekSaldoDebet'])->name('simpananKredit.ceksaldo')->middleware(['auth', 'verified', 'permission:lihat-simpananKredit']);
     Route::get('/simpanan/kredit/tambah', [simpananKreditController::class, 'create'])->name('simpananKredit.tambah')->middleware(['auth', 'verified', 'permission:tambah-simpananKredit']);
     Route::get('/simpanan/kredit/edit{kode_simpanan_kredit}', [simpananKreditController::class, 'edit'])->name('simpananKredit.edit')->middleware(['auth', 'verified', 'permission:edit-simpananKredit']);
     Route::post('/simpanan/kredit/store', [simpananKreditController::class, 'store'])->name('simpananKredit.store')->middleware(['auth', 'verified', 'permission:tambah-simpananKredit']);
@@ -88,19 +90,19 @@ Route::middleware('auth')->group(function () {
 
     //simpanan debet
     Route::get('/simpanan/debet', [SimpananDebetController::class, 'index'])->name('simpananDebet.index')->middleware(['auth', 'verified', 'permission:lihat-simpananDebet']);
-    Route::get('/simpanan/debet/tambah', [SimpananDebetController::class, 'create'])->name('simpananDebet.tambah')->middleware(['auth', 'verified', 'permission:tambah-simpananDebet']);
+    Route::get('simpanan/tambah', [SimpananDebetController::class, 'create'])->name('simpananDebet.tambah')->middleware(['auth', 'verified', 'permission:tambah-simpananDebet']);
     Route::get('/simpanan/debet/edit{kode_simpanan_debet}', [SimpananDebetController::class, 'edit'])->name('simpananDebet.edit')->middleware(['auth', 'verified', 'permission:edit-simpananDebet']);
     Route::post('/simpanan/debet/store', [SimpananDebetController::class, 'store'])->name('simpananDebet.store')->middleware(['auth', 'verified', 'permission:tambah-simpananDebet']);
     Route::post('/simpanan/debet/update{kode_simpanan_debet}', [SimpananDebetController::class, 'update'])->name('simpananDebet.update')->middleware(['auth', 'verified', 'permission:edit-simpananDebet']);
     Route::post('/simpanan/debet/delete', [SimpananDebetController::class, 'delete'])->name('simpananDebet.delete')->middleware(['auth', 'verified', 'permission:hapus-simpananDebet']);
 
     //pinjaman debet
-    Route::get('/pinjaman/debet', [PinjamanKredit::class, 'index'])->name('pinjamanDebet.index')->middleware(['auth', 'verified', 'permission:lihat-pinjamanDebet']);
-    Route::get('/pinjaman/debet/tambah', [PinjamanKredit::class, 'create'])->name('pinjamanDebet.tambah')->middleware(['auth', 'verified', 'permission:tambah-pinjamanDebet']);
-    Route::get('/pinjaman/debet/edit{kode_simpanan_debet}', [PinjamanKredit::class, 'edit'])->name('pinjamanDebet.edit')->middleware(['auth', 'verified', 'permission:edit-pinjamanDebet']);
-    Route::post('/pinjaman/debet/store', [PinjamanKredit::class, 'store'])->name('pinjamanDebet.store')->middleware(['auth', 'verified', 'permission:tambah-pinjamanDebet']);
-    Route::post('/pinjaman/debet/update{kode_simpanan_debet}', [PinjamanKredit::class, 'update'])->name('pinjamanDebet.update')->middleware(['auth', 'verified', 'permission:edit-pinjamanDebet']);
-    Route::post('/pinjaman/debet/delete', [PinjamanKredit::class, 'delete'])->name('pinjamanDebet.delete')->middleware(['auth', 'verified', 'permission:hapus-pinjamanDebet']);
+    Route::get('/pinjaman/debet', [PinjamanDebetController::class, 'index'])->name('pinjamanDebet.index')->middleware(['auth', 'verified', 'permission:lihat-pinjamanDebet']);
+    Route::get('/pinjaman/debet/tambah', [PinjamanDebetController::class, 'create'])->name('pinjamanDebet.tambah')->middleware(['auth', 'verified', 'permission:tambah-pinjamanDebet']);
+    Route::get('/pinjaman/debet/edit{kode_pinjaman_debet}', [PinjamanDebetController::class, 'edit'])->name('pinjamanDebet.edit')->middleware(['auth', 'verified', 'permission:edit-pinjamanDebet']);
+    Route::post('/pinjaman/debet/store', [PinjamanDebetController::class, 'store'])->name('pinjamanDebet.store')->middleware(['auth', 'verified', 'permission:tambah-pinjamanDebet']);
+    Route::post('/pinjaman/debet/update{kode_pinjaman_debet}', [PinjamanDebetController::class, 'update'])->name('pinjamanDebet.update')->middleware(['auth', 'verified', 'permission:edit-pinjamanDebet']);
+    Route::post('/pinjaman/debet/delete', [PinjamanDebetController::class, 'delete'])->name('pinjamanDebet.delete')->middleware(['auth', 'verified', 'permission:hapus-pinjamanDebet']);
     //pinjaman kredit
     Route::get('/pinjaman/kredit', [PinjamanKreditController::class, 'index'])->name('pinjamanKredit.index')->middleware(['auth', 'verified', 'permission:lihat-pinjamanKredit']);
     Route::get('/pinjaman/kredit/tambah', [PinjamanKreditController::class, 'create'])->name('pinjamanKredit.tambah')->middleware(['auth', 'verified', 'permission:tambah-pinjamanKredit']);

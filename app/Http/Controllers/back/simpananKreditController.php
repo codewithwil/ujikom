@@ -7,6 +7,7 @@ use App\{
     Models\SimpananKredit,
     Models\Anggota
 };
+use App\Models\SimpananDebet;
 use Illuminate\{
     Http\Request,
     Support\Facades\DB
@@ -121,6 +122,28 @@ class simpananKreditController extends Controller
             return response()->json(['message' => 'simpanan kredit status updated successfully'], 200);
         }
         return response()->json(['message' => 'simpanan kredit not found'], 404);
+    }
+
+
+    public function cekSimpanDebet($kode_anggota) {
+        $anggota = Anggota::where('kode_anggota', $kode_anggota)->first();
+        if ($anggota) {
+            $belumDebet = !SimpananDebet::where('anggota_kode', $anggota->kode_anggota)->exists();
+            return response()->json(['belumDebet' => $belumDebet]);
+        } else {
+            return response()->json(['error' => 'Anggota tidak ditemukan.'], 404); 
+        }
+    }
+    public function cekSaldoDebet($kodeAnggota)
+    {
+        $anggota = Anggota::find($kodeAnggota);
+    
+        if ($anggota) {
+            $totalDebet = $anggota->totalSimpananDebet();
+            return response()->json(['saldoDebet' => $totalDebet]);
+        } else {
+            return response()->json(['error' => 'Anggota tidak ditemukan'], 404);
+        }
     }
     
 }

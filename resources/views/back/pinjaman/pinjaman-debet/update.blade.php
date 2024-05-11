@@ -74,7 +74,7 @@
                         <div class="card-body">
                         <div class="form-group">
                           <label for="kode_pinjaman_debet">Kode pinjaman debet</label>
-                         <input class="input form-control" name="kode_pinjaman_debet" readonly id="kode_pinjaman_debet" type="text" value="{{$pinjamK->kode_pinjaman_debet}}">
+                         <input class="input form-control" name="kode_pinjaman_debet" readonly id="kode_pinjaman_debet" type="text" value="{{$pinjamD->kode_pinjaman_debet}}">
       
                           @error('kode_pinjaman_debet')
                               <div class="invalid-feedback">
@@ -84,13 +84,13 @@
                         </div>
                     <div class="form-group">
                       <label for="tanggal">tanggal transaksi</label>
-                      <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{$pinjamK->tanggal}}">
+                      <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{$pinjamD->tanggal}}">
                     </div>
                     <div class="form-group">
                         <label for="jenisPembayaran">Jenis pembayaran</label>
                         <select name="jenis_pembayaran" id="jenis_pembayaran" class="form-control">
                         @foreach($jenisBayar as $item => $jenis)
-                          <option value="{{ $item }}" {{ ($pinjamK->jenis_pembayaran == $item) ? 'selected' : '' }}>{{$jenis}}</option>
+                          <option value="{{ $item }}" {{ ($pinjamD->jenis_pembayaran == $item) ? 'selected' : '' }}>{{$jenis}}</option>
                           @endforeach
                         </select>
                       </div>    
@@ -98,7 +98,7 @@
                         <label for="divisi">Divisi</label>
                         <select name="jenis_pembayaran" id="divisi" class="form-control">
                           @foreach ($divisi as $item => $getdivisi)
-                          <option value="{{$item}}" {{ ($pinjamK->divisi == $item) ? 'selected' : '' }}>{{$getdivisi}}</option>
+                          <option value="{{$item}}" {{ ($pinjamD->divisi == $item) ? 'selected' : '' }}>{{$getdivisi}}</option>
                           @endforeach
                           
                         </select>
@@ -107,18 +107,18 @@
                         <label for="anggota">Anggota</label>
                             <select name="anggota_kode" id="anggota_kode" class="form-control" onchange="showAnggotaInfo()">
                                 @foreach ($anggota as $item)
-                                <option value="{{$item->kode_anggota}}" @if($pinjamK->anggota_kode == $item->kode_anggota) selected @endif>{{$item->nama}}</option>
+                                <option value="{{$item->kode_anggota}}" @if($pinjamD->anggota_kode == $item->kode_anggota) selected @endif>{{$item->nama}}</option>
                             @endforeach
                             </select>
                         </div>
                         <hr>
-                        <p>Nama anggota: <span id="namaAnggota">{{$pinjamK->Anggota->nama}}</span></p>
+                        <p>Nama anggota: <span id="namaAnggota">{{$pinjamD->Anggota->nama}}</span></p>
                         <hr>
-                        <p>Alamat: <span id="alamatAnggota">{{$pinjamK->Anggota->alamat}}</span></p>
+                        <p>Alamat: <span id="alamatAnggota">{{$pinjamD->Anggota->alamat}}</span></p>
                         <hr>
-                        <p>Email: <span id="emailAnggota">{{$pinjamK->Anggota->email}}</span></p>
+                        <p>Email: <span id="emailAnggota">{{$pinjamD->Anggota->email}}</span></p>
                         <hr>
-                        <p>Telepon: <span id="teleponAnggota">{{$pinjamK->Anggota->telepon}}</span></p>
+                        <p>Telepon: <span id="teleponAnggota">{{$pinjamD->Anggota->telepon}}</span></p>
                         <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                       </div>
                     </div>
@@ -128,22 +128,18 @@
                           <label for="transaksi">Transaksi</label>
                           <select name="transaksi" id="transaksi" class="form-control">
                             @foreach ($transaksi as $item => $get_transaksi)
-                            <option value="{{$item}}" {{ ($pinjamK->transaksi == $item) ? 'selected' : '' }}>{{$get_transaksi}}</option>
+                            <option value="{{$item}}" {{ ($pinjamD->transaksi == $item) ? 'selected' : '' }}>{{$get_transaksi}}</option>
                             @endforeach
                           </select>
                         </div>
                         <div class="form-group">
                           <label for="periode">Periode</label>
-                          <select name="periode" id="periode" class="form-control" value="{{$pinjamK->nominal}}">
+                          <select name="periode" id="periode" class="form-control" value="{{$pinjamD->nominal}}">
                           </select>
                         </div>
                         <div class="form-group">
                           <label for="nominal">Nominal</label>
-                          <input type="number" name="nominal" id="nominal" class="form-control" value="{{$pinjamK->nominal}}">
-                        </div>
-                        <div class="form-group">
-                          <label for="bunga">bunga Pinjaman</label>
-                          <input type="number" name="bunga" id="bunga" class="form-control" value="{{$pinjamK->bunga}}">
+                          <input type="number" name="nominal" id="nominal" class="form-control" value="{{$pinjamD->nominal}}">
                         </div>
                       <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                       <button class="btn btn-primary" onclick="stepper.next()">Next</button>
@@ -156,7 +152,7 @@
                           <select name="keterangan" id="keterangan" class="form-control">
                               <option value="" disabled selected hidden>Pilih keterangan</option>
                               @foreach ($keterangan as $item => $getKeterangan)
-                              <option value="{{$item}}" {{ ($pinjamK->keterangan == $item) ? 'selected' : '' }}>{{$getKeterangan}}</option>
+                              <option value="{{$item}}" {{ ($pinjamD->keterangan == $item) ? 'selected' : '' }}>{{$getKeterangan}}</option>
                               @endforeach
                           </select>
                        </div>
@@ -165,7 +161,7 @@
                           <select name="status_buku" id="status_buku" class="form-control">
                               <option value="" disabled selected hidden>Pilih status buku</option>
                               @foreach ($statusBuku as $item => $getStatusBuku)
-                              <option value="{{$item}}" {{ ($pinjamK->status_buku == $item) ? 'selected' : '' }}>{{$getStatusBuku}}</option>
+                              <option value="{{$item}}" {{ ($pinjamD->status_buku == $item) ? 'selected' : '' }}>{{$getStatusBuku}}</option>
                               @endforeach
                           </select>
                       </div>
@@ -230,7 +226,7 @@
 
     var selectPeriode = document.getElementById('periode');
 
-    var selectedValue = {!! json_encode($pinjamK->periode) !!};
+    var selectedValue = {!! json_encode($pinjamD->periode) !!};
 
     periodes.forEach(function (periode) {
         var option = document.createElement('option');
@@ -258,7 +254,6 @@
     var transaksi        = document.getElementById('transaksi').value;
     var periode          = document.getElementById('periode').value;
     var nominal          = document.getElementById('nominal').value;
-    var bunga            = document.getElementById('bunga').value;
     var keterangan       = document.getElementById('keterangan').value;
     var status_buku      = document.getElementById('status_buku').value;
 
@@ -269,7 +264,6 @@
       anggota_kode: anggota_kode,
       periode: periode,
       nominal: nominal,
-      bunga: bunga,
       keterangan: keterangan,
       status_buku: status_buku,
       _token: '{{ csrf_token() }}' 
@@ -277,7 +271,7 @@
 
     // Kirim data menggunakan AJAX
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '{{ route('pinjamanKredit.update', $pinjamK->kode_pinjaman_kredit) }}');
+    xhr.open('POST', '{{ route('pinjamanDebet.update', $pinjamD->kode_pinjaman_debet) }}');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onreadystatechange = function() {
       if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -285,7 +279,7 @@
           // Berhasil, lakukan sesuatu jika diperlukan
           console.log('Data berhasil dikirim ke database.');
           // Redirect atau tindakan lain setelah berhasil
-          window.location.href = '{{ route('pinjamanKredit.index') }}';
+          window.location.href = '{{ route('pinjamanDebet.index') }}';
         } else {
           // Gagal, lakukan sesuatu jika diperlukan
           console.error('Gagal mengirim data ke database.');

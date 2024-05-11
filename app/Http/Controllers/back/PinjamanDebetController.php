@@ -93,7 +93,7 @@ class PinjamanDebetController extends Controller
             $simpanK = PinjamanDebet::find($kode_pinjaman_debet);
             $simpanK->update($data);
             DB::commit();
-            return redirect(route('pinjamanDebet.index'))->with('success', ' Simpanan Kredit has been created');
+            return redirect(route('pinjamanDebet.index'))->with('success', ' Simpanan debet has been created');
         } catch (Exception $e) {
             \Illuminate\Support\Facades\Log::error('Error while storing pinjamanDebet: ' . $e->getMessage());
     

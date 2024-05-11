@@ -36,6 +36,7 @@ class Anggota extends Model
         $this->save();
     }
 
+
     public function SimpananKredit(): HasMany{
         return $this->hasMany(SimpananKredit::class, 'anggota_kode', 'kode_anggota');
      }
@@ -47,4 +48,21 @@ class Anggota extends Model
      public function PinjamanDebet(): HasMany{
         return $this->hasMany(PinjamanDebet::class, 'anggota_kode', 'kode_anggota');
      }
+     public function totalSimpananDebet()
+     {
+         // Dapatkan semua kode anggota dari SimpananDebet
+         $kodeAnggota = SimpananDebet::pluck('anggota_kode')->toArray();
+     
+         // Temukan semua anggota yang memiliki kode anggota dalam daftar kode anggota dari SimpananDebet
+         $totalDebet = Anggota::whereIn('kode_anggota', $kodeAnggota)
+         ->get()
+         ->sum(function ($query) {
+             return $query->simpananDebet()->sum('pokok')
+                    + $query->simpananDebet()->sum('sukarela')
+                    + $query->simpananDebet()->sum('wajib');
+         });
+     
+         return $totalDebet;
+     }
+     
 }

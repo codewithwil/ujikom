@@ -1,5 +1,5 @@
 @extends('back.layout.template')
-@section('title', 'tambah simpanan kredit')
+@section('title', 'tambah pinjaman debet')
 @section('content')
 @push('css')
       <!-- Bootstrap Color Picker -->
@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Tambah simpan kredit</h1>
+            <h1>Tambah pinjaman debet</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Tambah simpan kredit</li>
+              <li class="breadcrumb-item active">Tambah pinjaman debet</li>
             </ol>
           </div>
         </div>
@@ -41,7 +41,7 @@
           <div class="col-md-12">
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">bs-stepper</h3>
+                <h3 class="card-title">tambah data pinjaman debet</h3>
               </div>
               <div class="card-body p-0">
                 <div class="bs-stepper">
@@ -71,14 +71,15 @@
                   <div class="bs-stepper-content">
                     <!-- your steps content here -->
                     <div id="pendataan-part" class="content" role="tabpanel" aria-labelledby="pendataan-part-trigger">
+                      <div class="card-body">
                       <div class="form-group">
-                        <label for="kode_simpanan_kredit">Kode simpan edit</label>
+                        <label for="kode_simpanan_kredit">Kode pinjaman debet</label>
                         <?php
-                        $kodeSimpanKredit = autonumber('simpanan_kredit', 'kode_simpanan_kredit', 3, 'SPK');
-                        ?>
-                       <input class="input @error('kode_simpanan_kredit') is-invalid @enderror form-control" name="kode_simpanan_kredit" readonly id="kode_simpanan_kredit" type="text" value="<?= $kodeSimpanKredit ?>">
+                        $kodePeminjamanDebet = autonumber('pinjaman_debet', 'kode_pinjaman_debet', 3, 'PJD');
+                    ?>
+                       <input class="input @error('kode_pinjaman_debet') is-invalid @enderror form-control" name="kode_pinjaman_debet" readonly id="kode_pinjaman_debet" type="text" value="<?= $kodePeminjamanDebet ?>">
     
-                        @error('kode_simpanan_kredit')
+                        @error('kode_pinjaman_debet')
                             <div class="invalid-feedback">
                                 {{$message}}
                             </div>
@@ -127,26 +128,34 @@
                   <p>Telepon: <span id="teleponAnggota"></span></p>
                       <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                     </div>
+                  </div>
                     <div id="transaksi-part" class="content" role="tabpanel" aria-labelledby="transaksi-part-trigger">
+                      <div class="card-body">
                       <div class="form-group">
                         <label for="transaksi">Transaksi</label>
                         <select name="transaksi" id="transaksi" class="form-control">
-                        @foreach($transaksi as $item => $getTransaksi)
+                          @foreach ($transaksi as $item => $get_transaksi)
                           <option value="hidden" disabled selected hidden>Pilih Transaksi</option>
-                          <option value="{{ $item }}">{{$getTransaksi}}</option>
+                          <option value="{{$item}}">{{$get_transaksi}}</option>
                           @endforeach
                         </select>
-                        <span id="pesanDebet" style="display: none; color: red;">Anda belum melakukan simpanan debet.</span>
+                      </div>
+                      <div class="form-group">
+                        <label for="periode">Periode</label>
+                        <select name="periode" id="periode" class="form-control">
+                          <option value="hidden" disabled selected hidden>Pilih Periode</option>                      
+                        </select>
                       </div>
                       <div class="form-group">
                         <label for="nominal">Nominal</label>
-                        <input type="number" name="nominal" id="nominal" class="form-control">
-                        <p id="maxSaldoText" class="text-muted">Maksimum saldo: Rp</p>
+                        <input type="number" name="nominal" id="nominal" class="form-control" >
                       </div>
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                     </div>
+                  </div>
                     <div id="keterangan-part" class="content" role="tabpanel" aria-labelledby="keterangan-part-trigger">
+                     <div class="card-body">
                       <div class="form-group">
                         <label for="keterangan">Keterangan</label>
                         <select name="keterangan" id="keterangan" class="form-control">
@@ -168,6 +177,7 @@
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                     <button type="button" id="submitForm" class="btn btn-primary">Submit</button>
                     </div>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -216,48 +226,57 @@
   document.addEventListener('DOMContentLoaded', function () {
     window.stepper = new Stepper(document.querySelector('.bs-stepper'))
   })
+</script>
+<script>
+  var periodes = [6, 12, 24, 36, 48, 60];
 
+// Mengambil elemen select
+var selectPeriode = document.getElementById('periode');
 
+// Menambahkan opsi periode ke dalam elemen select
+periodes.forEach(function(periode) {
+    var option = document.createElement('option');
+    option.value = periode;
+    option.textContent = periode + ' bulan';
+    selectPeriode.appendChild(option);
+});
 
 </script>
 <script>
   document.getElementById('submitForm').addEventListener('click', function(event) {
     event.preventDefault();
 
-    var tanggal = document.getElementById('tanggal').value;
+    var tanggal          = document.getElementById('tanggal').value;
     var jenis_pembayaran = document.getElementById('jenis_pembayaran').value;
-    var transaksi = document.getElementById('transaksi').value;
-    var divisi = document.getElementById('divisi').value;
-    var anggota_kode = document.getElementById('anggota_kode').value;
-    var nominal = document.getElementById('nominal').value;
-    var keterangan = document.getElementById('keterangan').value;
-    var status_buku = document.getElementById('status_buku').value;
+    var divisi           = document.getElementById('divisi').value;
+    var anggota_kode     = document.getElementById('anggota_kode').value;
+    var transaksi        = document.getElementById('transaksi').value;
+    var periode          = document.getElementById('periode').value;
+    var nominal          = document.getElementById('nominal').value;
+    var keterangan       = document.getElementById('keterangan').value;
+    var status_buku      = document.getElementById('status_buku').value;
 
     var data = {
       tanggal: tanggal,
       jenis_pembayaran: jenis_pembayaran,
       divisi: divisi,
-      transaksi: transaksi,
       anggota_kode: anggota_kode,
+      periode: periode,
       nominal: nominal,
       keterangan: keterangan,
       status_buku: status_buku,
-      _token: '{{ csrf_token() }}' // Menyertakan token CSRF
+      _token: '{{ csrf_token() }}' 
     };
 
-    // Kirim data menggunakan AJAX
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '{{ route('simpananKredit.store') }}');
+    xhr.open('POST', '{{ route('pinjamanDebet.store') }}');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onreadystatechange = function() {
       if (xhr.readyState === XMLHttpRequest.DONE) {
         if (xhr.status === 200) {
-          // Berhasil, lakukan sesuatu jika diperlukan
           console.log('Data berhasil dikirim ke database.');
-          // Redirect atau tindakan lain setelah berhasil
-          window.location.href = '{{ route('simpananKredit.index') }}';
+          window.location.href = '{{ route('pinjamanDebet.index') }}';
         } else {
-          // Gagal, lakukan sesuatu jika diperlukan
           console.error('Gagal mengirim data ke database.');
         }
       }
@@ -265,43 +284,23 @@
     xhr.send(JSON.stringify(data));
   });
 </script>
-
 <script>
   function showAnggotaInfo() {
       var anggotaSelect = document.getElementById('anggota_kode');
       var selectedAnggota = anggotaSelect.options[anggotaSelect.selectedIndex];
-      var kodeAnggota = selectedAnggota.value;
-  
-      // Deklarasikan variabel transaksiInput di luar blok if
-      var transaksiInput = document.getElementById('nominal');
-      var batasKredit; // Deklarasikan variabel batasKredit di luar blok if
-  
-      // Buat fungsi untuk menetapkan batas maksimum dan menambahkan event listener
-      function setBatasMaksDanEventListener(batasKredit) {
-          // Setel atribut max input nominal sesuai dengan total saldo
-          transaksiInput.setAttribute('max', batasKredit);
+      var namaAnggota = selectedAnggota.text; 
+      var kode_anggota = selectedAnggota.value; 
 
-          // Tampilkan maksimum saldo di bawah input
-          maxSaldoText.textContent = 'Maksimum saldo: Rp ' + batasKredit;
+      document.getElementById('namaAnggota').textContent = namaAnggota;
 
-          // Tambahkan event listener untuk memeriksa nilai input saat berubah
-          transaksiInput.addEventListener('input', function() {
-              var inputNilai = parseFloat(this.value);
-              if (inputNilai > batasKredit) {
-                  alert('Nilai tidak boleh melebihi batas maksimum.');
-                  this.value = batasKredit; // Set nilai input kembali ke batas maksimum
-              }
-          });
-      }
-      // Request untuk mengambil informasi anggota
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/anggota/' + kodeAnggota); 
+      xhr.open('GET', '/anggota/' + kode_anggota); 
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onreadystatechange = function() {
           if (xhr.readyState === XMLHttpRequest.DONE) {
               if (xhr.status === 200) {
                   var response = JSON.parse(xhr.responseText);
-                  document.getElementById('namaAnggota').textContent = response.nama;
+                  // Atur nilai alamat, email, dan telepon berdasarkan respons dari server
                   document.getElementById('alamatAnggota').textContent = response.alamat;
                   document.getElementById('emailAnggota').textContent = response.email;
                   document.getElementById('teleponAnggota').textContent = response.telepon;
@@ -311,50 +310,8 @@
           }
       };
       xhr.send();
-  
-      // Request untuk memeriksa total simpanan debet anggota
-      var xhr2 = new XMLHttpRequest();
-      xhr2.open('GET', '/cek-simpan-debet/' + kodeAnggota); 
-      xhr2.setRequestHeader('Content-Type', 'application/json');
-      xhr2.onreadystatechange = function() {
-          if (xhr2.readyState === XMLHttpRequest.DONE) {
-              if (xhr2.status === 200) {
-                  var response = JSON.parse(xhr2.responseText);
-                  batasKredit = response.totalDebet; // Atur batas kredit berdasarkan total simpanan debet
-  
-                  // Set nilai batas kredit pada input nominal
-                  transaksiInput.setAttribute('max', batasKredit);
-              } else {
-                  console.error('Gagal memeriksa simpanan debet.');
-              }
-          }
-      };
-      xhr2.send();
-  
-      // Request untuk memeriksa saldo debet anggota
-      var xhr3 = new XMLHttpRequest();
-      xhr3.open('GET', '/cek-saldo-debet/' + kodeAnggota); 
-      xhr3.setRequestHeader('Content-Type', 'application/json');
-      xhr3.onreadystatechange = function() {
-          if (xhr3.readyState === XMLHttpRequest.DONE) {
-              if (xhr3.status === 200) {
-                  var response = JSON.parse(xhr3.responseText);
-                  if (response && response.saldoDebet) {
-                      var saldoDebet = response.saldoDebet; // Ambil saldo debet anggota
-
-                      // Panggil fungsi untuk menetapkan batas maksimum dan menambahkan event listener
-                      setBatasMaksDanEventListener(saldoDebet);
-                  } else {
-                      console.error('Saldo debet tidak tersedia atau tidak valid.');
-                  }
-              } else {
-                  console.error('Gagal memeriksa saldo debet.');
-              }
-          }
-      };
-      xhr3.send();
   }
-  </script>
+</script>
 @endpush
 
 @endsection
