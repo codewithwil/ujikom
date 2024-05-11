@@ -5,7 +5,8 @@ namespace App\Http\Controllers\back;
 use App\{
     Http\Controllers\Controller,
     Models\Anggota,
-    Models\SimpananDebet
+    Models\PinjamanDebet
+
 };
 use Illuminate\{
     Http\Request,
@@ -13,29 +14,29 @@ use Illuminate\{
 };
 use Exception;
 
-class SimpananDebetController extends Controller
+class PinjamanDebetController extends Controller
 {
     public function index(){
-        $simpanD = SimpananDebet::with('Anggota')->where('status', 1)->get();
-        return view('back.simpanan.simpanan-debet.index',[
-            'simpanD' => $simpanD
+        $pinjamD = PinjamanDebet::with('Anggota')->where('status', 1)->get();
+        return view('back.pinjaman.pinjaman-debet.index',[
+            'pinjamD' => $pinjamD
         ]);
     }
 
     public function create(){
-        $jenisBayar = SimpananDebet::getJenisPembayaran();
-        $divisi     = SimpananDebet::getDivisi();
-        $transaksi     = SimpananDebet::getTransaksi();
+        $jenisBayar = PinjamanDebet::getJenisPembayaran();
+        $divisi     = PinjamanDebet::getDivisi();
+        $transaksi  = PinjamanDebet::getTransaksi();
         $anggota    = Anggota::get();
-        $statusBuku = SimpananDebet::getStatusBuku();
-        $keterangan = SimpananDebet::getKeterangan();
-        return view('back.simpanan.simpanan-debet.create', [
+        $statusBuku = PinjamanDebet::getStatusBuku();
+        $keterangan = PinjamanDebet::getKeterangan();
+        return view('back.pinjaman.pinjaman-debet.create', [
             'jenisBayar'  => $jenisBayar,
             'divisi'      => $divisi,
-            'transaksi'      => $transaksi,
+            'transaksi'   => $transaksi,
             'anggota'     => $anggota,  
-            'statusBuku'     => $statusBuku,  
-            'keterangan'     => $keterangan
+            'statusBuku'  => $statusBuku,  
+            'keterangan'  => $keterangan
         ]);
     }
 
@@ -49,11 +50,11 @@ class SimpananDebetController extends Controller
         try {
             $kode_simpanan_debet = autonumber('simpanan_debet', 'kode_simpanan_debet', 3, 'SPD');
             $data['kode_simpanan_debet'] = $kode_simpanan_debet;
-            SimpananDebet::create($data);
+            PinjamanDebet::create($data);
             DB::commit();
-            return redirect(route('simpananDebet.index'))->with('success', ' Simpanan Debet has been created');
+            return redirect(route('PinjamanDebet.index'))->with('success', ' Simpanan Debet has been created');
         } catch (Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Error while storing simpanan Debet: ' . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Error while storing pinjaman Debet: ' . $e->getMessage());
     
             info($e->getMessage());
             DB::rollBack();
@@ -67,14 +68,14 @@ class SimpananDebetController extends Controller
     }
     
     public function edit($kode_simpanan_debet){
-        $jenisBayar = SimpananDebet::getJenisPembayaran();
-        $divisi     = SimpananDebet::getDivisi();
-        $transaksi  = SimpananDebet::getTransaksi();
+        $jenisBayar = PinjamanDebet::getJenisPembayaran();
+        $divisi     = PinjamanDebet::getDivisi();
+        $transaksi  = PinjamanDebet::getTransaksi();
         $anggota    = Anggota::get();
-        $statusBuku = SimpananDebet::getStatusBuku();
-        $keterangan = SimpananDebet::getKeterangan();
-        return view('back.simpanan.simpanan-debet.update',[
-            'simpanD'        => SimpananDebet::find($kode_simpanan_debet),
+        $statusBuku = PinjamanDebet::getStatusBuku();
+        $keterangan = PinjamanDebet::getKeterangan();
+        return view('back.pinjaman.pinjaman-debet.update',[
+            'pinjamD'        => PinjamanDebet::find($kode_simpanan_debet),
             'jenisBayar'     => $jenisBayar,
             'divisi'         => $divisi,
             'transaksi'      => $transaksi,
@@ -89,12 +90,12 @@ class SimpananDebetController extends Controller
         
         DB::beginTransaction();
         try {
-            $simpanK = SimpananDebet::find($kode_simpanan_debet);
+            $simpanK = PinjamanDebet::find($kode_simpanan_debet);
             $simpanK->update($data);
             DB::commit();
-            return redirect(route('simpananDebet.index'))->with('success', ' Simpanan Kredit has been created');
+            return redirect(route('PinjamanDebet.index'))->with('success', ' Simpanan Kredit has been created');
         } catch (Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Error while storing SimpananDebet: ' . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Error while storing PinjamanDebet: ' . $e->getMessage());
     
             info($e->getMessage());
             DB::rollBack();
@@ -112,13 +113,13 @@ class SimpananDebetController extends Controller
             'kode_simpanan_debet' => 'required',
         ]);
     
-        $name = SimpananDebet::where('kode_simpanan_debet', $validated['kode_simpanan_debet'])->first();
+        $name = PinjamanDebet::where('kode_simpanan_debet', $validated['kode_simpanan_debet'])->first();
         if ($name) {
-            $name->status = SimpananDebet::DELETED;
+            $name->status = PinjamanDebet::DELETED;
             $name->save();
-            return response()->json(['message' => 'simpanan debet status updated successfully'], 200);
+            return response()->json(['message' => 'pinjaman debet status updated successfully'], 200);
         }
-        return response()->json(['message' => 'simpanan debet not found'], 404);
+        return response()->json(['message' => 'pinjaman debet not found'], 404);
     }
 
 }

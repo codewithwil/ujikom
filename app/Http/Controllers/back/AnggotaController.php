@@ -17,7 +17,7 @@ use Exception;
 class AnggotaController extends Controller
 {
     public function index(){
-        $anggota = Anggota::get();
+        $anggota = Anggota::where('status', 1)->get();
         return view('back.anggota.index', [
             'anggota' => $anggota
         ]);

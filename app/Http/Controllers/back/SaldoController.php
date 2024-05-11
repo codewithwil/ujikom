@@ -18,7 +18,7 @@ use Exception;
 class SaldoController extends Controller
 {
     public function index(){
-        $saldo = Saldo::get();
+        $saldo = Saldo::where('status', 1)->get();
         return view('back.saldo.index', [
             'saldo'     => $saldo
         ]);

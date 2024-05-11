@@ -7,15 +7,16 @@ use App\{
     Models\SimpananKredit,
     Models\Anggota
 };
-use App\Http\Requests\SimpananK\CreateSimpananKRequest;
+use Illuminate\{
+    Http\Request,
+    Support\Facades\DB
+};
 use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class simpananKreditController extends Controller
 {
     public function index(){
-        $simpanK = SimpananKredit::with('Anggota')->get();
+        $simpanK = SimpananKredit::with('Anggota')->where('status', 1)->get();
         return view('back.simpanan.simpanan-kredit.index', [
             'simpananK' => $simpanK
         ]);

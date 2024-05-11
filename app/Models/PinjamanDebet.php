@@ -2,21 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\{
+    Eloquent\Factories\HasFactory,
+    Eloquent\Model,
+    Eloquent\Relations\BelongsTo
+};
 
-class SimpananDebet extends Model
+
+class PinjamanDebet extends Model
 {
     use HasFactory;
     CONST ACTIVE          = 1;
     CONST DELETED         = 0;
-    protected $table = 'simpanan_debet';
-    protected $primaryKey = 'kode_simpanan_debet'; 
+    protected $table = 'pinjaman_debet';
+    protected $primaryKey = 'kode_pinjaman_debet'; 
     protected $keyType = 'string'; 
     public $incrementing = false;
-    protected $fillable = ['kode_simpanan_debet', 'anggota_kode', 'transaksi','tanggal','jenis_pembayaran', 'divisi', 
-                           'keterangan','pokok', 'wajib', 'sukarela', 'keterangan','status_buku', 'status'];
+    protected $fillable = ['kode_pinjaman_debet', 'anggota_kode', 'transaksi','tanggal', 'periode','jenis_pembayaran',
+    'divisi','keterangan', 'nominal', 'bunga', 'keterangan','status_buku', 'status'];
     
 
      // BOOTING SECTION

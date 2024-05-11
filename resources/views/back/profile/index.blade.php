@@ -34,7 +34,7 @@
             <!-- form start -->
 
           
-            <form action="{{route('profile.update', $users->id)}}" method="post" enctype="multipart/form-data">
+            <form action="{{route('users.profile.update', $users->id)}}" method="post" enctype="multipart/form-data">
                 @csrf
               <div class="card-body">
                 <div class="form-group">

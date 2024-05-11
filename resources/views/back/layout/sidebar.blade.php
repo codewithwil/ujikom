@@ -56,7 +56,7 @@
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-dollar-sign"></i>
+                <i class="nav-icon fas fa-sign-in-alt"></i>
                 <p>
                   Simpanan
                   <i class="right fas fa-angle-left"></i>
@@ -64,7 +64,31 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="pages/charts/inline.html" class="nav-link">
+                  <a href="{{route('simpananDebet.index')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>debet</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{route('simpananKredit.index')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>kredit</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-sign-out-alt"></i>
+                <p>
+                  Pinjaman
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('pinjamanDebet.index')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>debet</p>
                   </a>

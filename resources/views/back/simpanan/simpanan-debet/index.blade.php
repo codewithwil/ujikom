@@ -35,7 +35,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <a href="{{route('simpananKredit.tambah')}}" class="btn btn-warning mb-2"  >Tambah Simpanan</a>
+                <a href="{{route('simpananDebet.tambah')}}" class="btn btn-warning mb-2"  >Tambah Simpanan</a>
                 @if ($errors->any())
                 <div class="my-3">
                     <div class="alert alert-danger">
@@ -56,29 +56,35 @@
                     <th>anggota</th>
                     <th>tanggal</th>
                     <th>Jenis</th>
+                    <th>Transaksi</th>
                     <th>divisi</th>
                     <th>keterangan</th>
-                    <th>nominal</th>
+                    <th>pokok</th>
+                    <th>wajib</th>
+                    <th>sukarela</th>
                     <th>status buku</th>
                     <th>Aksi</th>
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach ($simpananK as $item)
+                  @foreach ($simpanD as $item)
                   <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$item->kode_simpanan_kredit}}</td>
+                    <td>{{$item->kode_simpanan_debet}}</td>
                     <td>{{$item->Anggota->nama}}</td>
                     <td>{{$item->tanggal}}</td>
                     <td>{{$item->jenis_pembayaran}}</td>
+                    <td>{{$item->transaksi}}</td>
                     <td>{{$item->divisi}}</td>
                     <td>{{$item->keterangan}}</td>
-                    <td>{{$item->nominal}}</td>
+                    <td>{{$item->pokok}}</td>
+                    <td>{{$item->wajib}}</td>
+                    <td>{{$item->sukarela}}</td>
                     <td>{{$item->status_buku}}</td>
                     <td>
-                      <a href="{{route('simpananKredit.edit', $item->kode_simpanan_kredit)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fas fa-pencil-alt"></i></a>
+                      <a href="{{route('simpananDebet.edit', $item->kode_simpanan_debet)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fas fa-pencil-alt"></i></a>
 
-                        <a href="#" onclick="deleteSimpananK(this)" data-id="{{$item->kode_simpanan_kredit}}" 
+                        <a href="#" onclick="deletesimpanD(this)" data-id="{{$item->kode_simpanan_debet}}" 
                             class="btn btn-danger shadow btn-xs sharp"><i class="fas fa-trash"></i></a>
                     </td>
                   </tr>
@@ -91,9 +97,12 @@
                     <th>anggota</th>
                     <th>tanggal</th>
                     <th>Jenis</th>
+                    <th>Transaksi</th>
                     <th>divisi</th>
                     <th>keterangan</th>
-                    <th>nominal</th>
+                    <th>pokok</th>
+                    <th>sukarela</th>
+                    <th>wajib</th>
                     <th>status buku</th>
                     <th>Aksi</th>
                   </tr>
@@ -166,12 +175,12 @@
 
 
 <script>
-    function deleteSimpananK(e) {
-        let kode_simpanan_kredit = e.getAttribute('data-id');
-        console.log("ID Saldo yang Dihapus:", kode_simpanan_kredit);
+    function deletesimpanD(e) {
+        let kode_simpanan_debet = e.getAttribute('data-id');
+        console.log("ID Saldo yang Dihapus:", kode_simpanan_debet);
     
         Swal.fire({
-            title: 'Delete Saldo ' + kode_simpanan_kredit,
+            title: 'Delete Saldo ' + kode_simpanan_debet,
             text: "Are you sure?",
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -182,11 +191,11 @@
             if (result.isConfirmed) {
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route("simpananKredit.delete") }}',
+                    url: '{{ route("simpananDebet.delete") }}',
                     data: {
                         _token: '{{ csrf_token() }}',
                         _method: 'POST', 
-                        kode_simpanan_kredit: kode_simpanan_kredit 
+                        kode_simpanan_debet: kode_simpanan_debet 
                     },
                     dataType: "json",
                     success: function (response) {

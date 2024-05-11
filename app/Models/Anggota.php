@@ -39,4 +39,11 @@ class Anggota extends Model
     public function SimpananKredit(): HasMany{
         return $this->hasMany(SimpananKredit::class, 'kode_anggota', 'anggota_kode');
      }
+
+     public function SimpananDebet(): HasMany{
+        return $this->hasMany(SimpananDebet::class, 'kode_anggota', 'anggota_kode');
+     }
+     public function PinjamanDebet(): HasMany{
+        return $this->hasMany(PinjamanDebet::class, 'kode_anggota', 'anggota_kode');
+     }
 }
