@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\{
+    Eloquent\Factories\HasFactory,
+    Eloquent\Model,
+    Eloquent\Relations\BelongsTo
+};
 
 class SimpananKredit extends Model
 {
@@ -15,8 +17,8 @@ class SimpananKredit extends Model
     protected $primaryKey = 'kode_simpanan_kredit'; 
     protected $keyType = 'string'; 
     public $incrementing = false;
-    protected $fillable = ['kode_simpanan_kredit', 'anggota_kode', 'tanggal','jenis_pembayaran', 'divisi', 'keterangan',
-                           'nominal', 'keterangan','status_buku', 'status'];
+    protected $fillable = ['kode_simpanan_kredit', 'anggota_kode', 'tanggal','jenis_pembayaran', 'transaksi', 'divisi', 
+    'keterangan','nominal', 'keterangan','status_buku', 'status'];
     
 
      // BOOTING SECTION
@@ -61,6 +63,14 @@ class SimpananKredit extends Model
     }
 
     public static function getKeterangan()
+    {
+        return [
+            'debet'    => 'Debet',
+            'kredit'   => 'Kredit'
+        ];
+    }
+
+    public static function gettransaksi()
     {
         return [
             'debet'    => 'Debet',

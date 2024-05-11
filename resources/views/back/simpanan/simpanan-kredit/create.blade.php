@@ -129,6 +129,15 @@
                     </div>
                     <div id="transaksi-part" class="content" role="tabpanel" aria-labelledby="transaksi-part-trigger">
                       <div class="form-group">
+                        <label for="transaksi">Transaksi</label>
+                        <select name="transaksi" id="transaksi" class="form-control">
+                        @foreach($transaksi as $item => $getTransaksi)
+                          <option value="hidden" disabled selected hidden>Pilih Transaksi</option>
+                          <option value="{{ $item }}">{{$getTransaksi}}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                      <div class="form-group">
                         <label for="nominal">Nominal</label>
                         <input type="number" name="nominal" id="nominal" class="form-control">
                       </div>
@@ -215,6 +224,7 @@
 
     var tanggal = document.getElementById('tanggal').value;
     var jenis_pembayaran = document.getElementById('jenis_pembayaran').value;
+    var transaksi = document.getElementById('transaksi').value;
     var divisi = document.getElementById('divisi').value;
     var anggota_kode = document.getElementById('anggota_kode').value;
     var nominal = document.getElementById('nominal').value;
@@ -225,6 +235,7 @@
       tanggal: tanggal,
       jenis_pembayaran: jenis_pembayaran,
       divisi: divisi,
+      transaksi: transaksi,
       anggota_kode: anggota_kode,
       nominal: nominal,
       keterangan: keterangan,

@@ -56,6 +56,7 @@
                     <th>anggota</th>
                     <th>tanggal</th>
                     <th>Jenis</th>
+                    <th>transaksi</th>
                     <th>divisi</th>
                     <th>keterangan</th>
                     <th>nominal</th>
@@ -71,6 +72,7 @@
                     <td>{{$item->Anggota->nama}}</td>
                     <td>{{$item->tanggal}}</td>
                     <td>{{$item->jenis_pembayaran}}</td>
+                    <td>{{$item->transaksi}}</td>
                     <td>{{$item->divisi}}</td>
                     <td>{{$item->keterangan}}</td>
                     <td>{{$item->nominal}}</td>

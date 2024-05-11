@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('anggota_kode')->references('kode_anggota')->on('anggota');
             $table->date('tanggal');
             $table->enum('jenis_pembayaran',['tunai','nontunai'])->default('tunai');
+            $table->enum('transaksi',['debet','kredit'])->default('debet');
             $table->enum('divisi',['simpan','pinjam'])->default('simpan');
             $table->enum('keterangan',['debet','kredit'])->default('debet');
             $table->integer('nominal');

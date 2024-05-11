@@ -148,11 +148,11 @@
                       </div>
                       <div class="form-group">
                         <label for="nominal">Nominal</label>
-                        <input type="number" name="nominal" id="nominal" class="form-control">
+                        <input type="number" name="nominal" id="nominal" class="form-control" >
                       </div>
                       <div class="form-group">
                         <label for="bunga">bunga Pinjaman</label>
-                        <input type="number" name="bunga" id="bunga" class="form-control">
+                        <input type="number" name="bunga" id="bunga" class="form-control" >
                       </div>
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>
@@ -255,9 +255,9 @@ periodes.forEach(function(periode) {
     var divisi           = document.getElementById('divisi').value;
     var anggota_kode     = document.getElementById('anggota_kode').value;
     var transaksi        = document.getElementById('transaksi').value;
-    var pokok            = document.getElementById('pokok').value;
-    var wajib            = document.getElementById('wajib').value;
-    var sukarela         = document.getElementById('sukarela').value;
+    var periode          = document.getElementById('periode').value;
+    var nominal          = document.getElementById('nominal').value;
+    var bunga            = document.getElementById('bunga').value;
     var keterangan       = document.getElementById('keterangan').value;
     var status_buku      = document.getElementById('status_buku').value;
 
@@ -266,22 +266,22 @@ periodes.forEach(function(periode) {
       jenis_pembayaran: jenis_pembayaran,
       divisi: divisi,
       anggota_kode: anggota_kode,
-      pokok: pokok,
-      wajib: wajib,
-      sukarela: sukarela,
+      periode: periode,
+      nominal: nominal,
+      bunga: bunga,
       keterangan: keterangan,
       status_buku: status_buku,
       _token: '{{ csrf_token() }}' 
     };
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '{{ route('simpananDebet.store') }}');
+    xhr.open('POST', '{{ route('pinjamanDebet.store') }}');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onreadystatechange = function() {
       if (xhr.readyState === XMLHttpRequest.DONE) {
         if (xhr.status === 200) {
           console.log('Data berhasil dikirim ke database.');
-          window.location.href = '{{ route('simpananDebet.index') }}';
+          window.location.href = '{{ route('pinjamanDebet.index') }}';
         } else {
           console.error('Gagal mengirim data ke database.');
         }

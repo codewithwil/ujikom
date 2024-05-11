@@ -1,5 +1,5 @@
 @extends('back.layout.template')
-@section('title', 'profile')
+@section('title', 'user')
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   <link rel="stylesheet" href="{{asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
@@ -11,12 +11,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Data user</h1>
+            <h1>Data Pegawai</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Data user</li>
+              <li class="breadcrumb-item active">Data Pegawai</li>
             </ol>
           </div>
         </div>
@@ -35,7 +35,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <a href="{{route('users.tambah')}}" class="btn btn-warning">Tambah User</a>
+                <a href="{{route('users.tambah')}}" class="btn btn-warning mb-3">Tambah pegawai</a>
                 @if ($errors->any())
                 <div class="my-3">
                     <div class="alert alert-danger">

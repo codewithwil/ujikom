@@ -25,12 +25,14 @@ class simpananKreditController extends Controller
     public function create(){
         $jenisBayar = SimpananKredit::getJenisPembayaran();
         $divisi     = SimpananKredit::getDivisi();
+        $transaksi     = SimpananKredit::gettransaksi();
         $anggota    = Anggota::get();
         $statusBuku = SimpananKredit::getStatusBuku();
         $keterangan = SimpananKredit::getKeterangan();
         return view('back.simpanan.simpanan-kredit.create', [
             'jenisBayar'  => $jenisBayar,
             'divisi'      => $divisi,
+            'transaksi'      => $transaksi,
             'anggota'     => $anggota,  
             'statusBuku'     => $statusBuku,  
             'keterangan'     => $keterangan
