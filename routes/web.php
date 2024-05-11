@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
 
     //saldo koperasi
     Route::get('/saldo', [SaldoController::class, 'index'])->name('saldo.index')->middleware(['auth', 'verified', 'permission:lihat-saldo']);
+    Route::get('/saldo/tambah', [SaldoController::class, 'create'])->name('saldo.tambah')->middleware(['auth', 'verified', 'permission:tambah-saldo']);
     Route::get('/saldo/edit/{id_saldo}', [SaldoController::class, 'edit'])->name('saldo.edit')->middleware(['auth', 'verified', 'permission:edit-saldo']);
     Route::post('/saldo/store', [SaldoController::class, 'store'])->name('saldo.store')->middleware(['auth', 'verified', 'permission:tambah-saldo']);
     Route::post('/saldo/update{id_saldo}', [SaldoController::class, 'update'])->name('saldo.update')->middleware(['auth', 'verified', 'permission:edit-saldo']);

@@ -35,7 +35,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <a href="" class="btn btn-warning mb-2" data-toggle="modal" data-target="#tambahSaldoModal">Tambah Saldo</a>
+                <a href="{{route('saldo.tambah')}}" class="btn btn-warning mb-2" >Tambah Saldo</a>
                 @if ($errors->any())
                 <div class="my-3">
                     <div class="alert alert-danger">
@@ -109,48 +109,6 @@
 <!-- ./wrapper -->
 
  {{-- modal tambah saldo  --}}
- <div class="modal fade" id="tambahSaldoModal" tabindex="-1" role="dialog" aria-labelledby="tambahSaldoModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="tambahSaldoModalLabel">Tambah Saldo</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Form untuk menambah saldo -->
-        <form action="{{route('saldo.store')}}" method="post" enctype="multipart/form-data">
-          @csrf
-        <div class="card-body">
-          <div class="form-group">
-              <label for="saldo">Nominal saldo</label>
-              <input type="number" class="form-control" id="saldo" name="saldo" placeholder="isi saldo..." >
-              @error('saldo')
-              <div class="invalid-feedback">
-                  {{$message}}
-              </div>
-          @enderror
-          <div class="form-group">
-              <label for="keterangan">Keterangan</label>
-              <textarea name="keterangan" id="" cols="10" rows="3" class="form-control"></textarea>
-              @error('keterangan')
-              <div class="invalid-feedback">
-                  {{$message}}
-              </div>
-          @enderror
-          </div>
-            </div>
-        <!-- /.card-body -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-        <button type="submit" class="btn btn-primary">Tambah</button>
-      </div>
-    </form>
-    </div>
-  </div>
-</div>
 
 
 

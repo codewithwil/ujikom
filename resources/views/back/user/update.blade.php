@@ -102,12 +102,18 @@
                 </div>
                 <div class="form-group">
                     <label for="role">Role</label>
-                    <select class="form-control br-style" id="role" name="role">
+                    <select class="form-control br-style" id="role" name="role"  @if(Auth::user()->hasRole(['supervisor', 'petugas'])) disabled @endif>
                         <option value="">Pilih Peran</option>
                         @foreach($roles as $role)
                         <option value="{{ $role->name }}" @if($role->name == old('role', $users->roles->pluck('name')->first())) selected @endif>{{ $role->name }}</option>
                         @endforeach
                     </select>
+                    @if(Auth::user()->hasRole(['supervisor', 'petugas']))
+                    <input type="hidden" name="role" value="{{ Auth::user()->roles->pluck('name')->first() }}">
+                    <div class="alert alert-info mt-2" role="alert">
+                        Anda adalah {{ Auth::user()->roles->pluck('name')->first() }}
+                    </div>
+                @endif
                     @error('role')
                     <div class="invalid-feedback">
                         {{$message}}

@@ -60,7 +60,7 @@
                     @else
                     <small>Foto lama:</small>
                         <div class="mt-2" >
-                            <img src="{{asset('storage/back/foto-profile/'.$pengaturan->foto_profile) }}" class="img-thumbnail img-preview" alt="Foto Pengguna" width="120px">                              
+                            <img src="{{asset('storage/back/pengaturan/'.$pengaturan->foto_perusahaan) }}" class="img-thumbnail img-preview" alt="Foto perusahaan" width="120px">                              
                         </div>
                     @endempty
                       </div>

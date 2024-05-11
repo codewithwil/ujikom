@@ -38,7 +38,9 @@ class UserController extends Controller
         try {
             if ($request->hasFile('foto_profile')) {
                 $checkingFile = $request->file('foto_profile');
-                $this->managementFile($checkingFile);
+                $filename = $checkingFile->getClientOriginalName();
+                $path = $checkingFile->storeAs('public/back/foto-profile',$filename);
+                $data['foto_profile'] = $filename;
             }
     
             $data['password'] = bcrypt($data['password']);
@@ -79,7 +81,14 @@ class UserController extends Controller
         try {
             if ($request->hasFile('foto_profile')) {
                 $checkingFile = $request->file('foto_profile');
-                $this->managementFile($checkingFile);
+                $filename = $checkingFile->getClientOriginalName();
+                $path = $checkingFile->storeAs('public/back/foto-profile',$filename);
+                $data['foto_profile'] = $filename;
+        
+                $user = User::find($id);
+                if ($user->foto_profile) {
+                    Storage::delete('public/back/foto-profile/' . $user->foto_profile);
+                }
             }
     
         if($request->filled('password')) {
