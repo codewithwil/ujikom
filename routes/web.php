@@ -15,6 +15,7 @@ use App\Http\Controllers\back\{
 };
 
 use App\Http\Controllers\back\DashboardController;
+use App\Models\Saldo;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,7 +33,7 @@ Route::get('/', function () {
     return view('front.home.index');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('guest')->group(function () {
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.go');
 });
@@ -124,4 +125,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/angsuran/kredit/detail/{kode_pinjaman_kredit}', [angsuranController::class, 'kreditDetail'])->name('angsuran.kredit.detail')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
     Route::post('/angsuran/kredit/delete', [angsuranController::class, 'delete'])->name('angsuran.delete')->middleware(['auth', 'verified', 'permission:hapus-angsuran']);
 
+
 });
+
+Route::get('/get-saldo-koperasi', [SaldoController::class, 'getSaldoKoperasi']);

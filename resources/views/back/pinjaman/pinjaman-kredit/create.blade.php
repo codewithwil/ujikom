@@ -149,6 +149,7 @@
                       <div class="form-group">
                         <label for="nominal">Nominal</label>
                         <input type="number" name="nominal" id="nominal" class="form-control" >
+                        <div id="max-saldo" data-saldo="{{ $saldoKoperasi }}"></div>
                       </div>
                       <div class="form-group">
                         <label for="bunga">bunga Pinjaman</label>
@@ -298,6 +299,26 @@ periodes.forEach(function(periode) {
       var kode_anggota = selectedAnggota.value; 
 
       document.getElementById('namaAnggota').textContent = namaAnggota;
+      var transaksiInput = document.getElementById('nominal');
+      var batasKredit; // Deklarasikan variabel batasKredit di luar blok if
+  
+      // Buat fungsi untuk menetapkan batas maksimum dan menambahkan event listener
+      function setBatasMaksDanEventListener(batasKredit) {
+          // Setel atribut max input nominal sesuai dengan total saldo
+          transaksiInput.setAttribute('max', batasKredit);
+
+          // Tampilkan maksimum saldo di bawah input
+          maxSaldoText.textContent = 'Maksimum saldo: Rp ' + batasKredit;
+
+          // Tambahkan event listener untuk memeriksa nilai input saat berubah
+          transaksiInput.addEventListener('input', function() {
+              var inputNilai = parseFloat(this.value);
+              if (inputNilai > batasKredit) {
+                  alert('Nilai tidak boleh melebihi batas maksimum.');
+                  this.value = batasKredit; // Set nilai input kembali ke batas maksimum
+              }
+          });
+      }
 
       var xhr = new XMLHttpRequest();
       xhr.open('GET', '/anggota/' + kode_anggota); 
@@ -316,8 +337,27 @@ periodes.forEach(function(periode) {
           }
       };
       xhr.send();
+
   }
 </script>
+
+<script>
+$(document).ready(function() {
+    var saldo = parseFloat($('#max-saldo').data('saldo'));
+    $('#nominal').on('input', function() {
+        var nominal = parseFloat($(this).val());
+
+        if (nominal > saldo) {
+            $('#max-saldo').addClass('text-danger').text('Nominal tidak boleh melebihi saldo koperasi.');
+            $(this).val(saldo); // Set nilai input menjadi saldo maksimum
+        } else {
+            $('#max-saldo').removeClass('text-danger').text('Saldo koperasi sebesar ' + saldo);
+        }
+    });
+});
+  </script>
+  
+
 @endpush
 
 @endsection

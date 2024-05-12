@@ -95,4 +95,13 @@ class SaldoController extends Controller
         }
         return response()->json(['message' => 'Saldo not found'], 404);
     }
+
+    public function getSaldoKoperasi()
+    {
+        $saldoKoperasi = Saldo::sum('saldo');
+
+        return response()->json(['saldoKoperasi' => $saldoKoperasi])
+            ->header('Access-Control-Allow-Origin', '*');
+    }
+
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\back;
 use App\Http\Controllers\Controller;
 use App\Models\Anggota;
 use App\Models\PinjamanKredit;
+use App\Models\Saldo;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,7 @@ class PinjamanKreditController extends Controller
     public function index(){
         $pinjamK = PinjamanKredit::with('Anggota')->where('status', 1)->get();
         return view('back.pinjaman.pinjaman-kredit.index',[
-            'pinjamK' => $pinjamK
+            'pinjamK' => $pinjamK,
         ]);
     }
 
@@ -25,13 +26,15 @@ class PinjamanKreditController extends Controller
         $anggota    = Anggota::get();
         $statusBuku = PinjamanKredit::getStatusBuku();
         $keterangan = PinjamanKredit::getKeterangan();
+        $saldoKoperasi = Saldo::sum('saldo');
         return view('back.pinjaman.pinjaman-kredit.create', [
             'jenisBayar'  => $jenisBayar,
             'divisi'      => $divisi,
             'transaksi'   => $transaksi,
             'anggota'     => $anggota,  
             'statusBuku'  => $statusBuku,  
-            'keterangan'  => $keterangan
+            'keterangan'  => $keterangan,
+            'saldoKoperasi'   => $saldoKoperasi
         ]);
     }
 
