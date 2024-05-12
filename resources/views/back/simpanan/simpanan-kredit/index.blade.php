@@ -93,6 +93,7 @@
                     <th>anggota</th>
                     <th>tanggal</th>
                     <th>Jenis</th>
+                    <th>transaksi</th>
                     <th>divisi</th>
                     <th>keterangan</th>
                     <th>nominal</th>

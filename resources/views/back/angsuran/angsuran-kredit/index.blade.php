@@ -1,5 +1,5 @@
 @extends('back.layout.template')
-@section('title', 'saldo')
+@section('title', 'angsuran kredit')
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   <link rel="stylesheet" href="{{asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
@@ -11,12 +11,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Data user</h1>
+            <h1>Data angsuran Pinjaman kredit</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Data Saldo</li>
+              <li class="breadcrumb-item active">Data angsuran Pinjaman kredit</li>
             </ol>
           </div>
         </div>
@@ -31,11 +31,10 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Kelola data Saldo</h3>
+                <h3 class="card-title">Kelola data angsuran Pinjaman kredit</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <a href="{{route('saldo.tambah')}}" class="btn btn-warning mb-2" >Tambah Saldo</a>
                 @if ($errors->any())
                 <div class="my-3">
                     <div class="alert alert-danger">
@@ -47,49 +46,68 @@
                     </div> 
                 </div> 
                 @endif
+               <div class="table-responsive">
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>No</th>
-                    <th>saldo</th>
+                    <th>Kode</th>
+                    <th>anggota</th>
+                    <th>tanggal</th>
+                    <th>Jenis</th>
+                    <th>Transaksi</th>
+                    <th>divisi</th>
                     <th>keterangan</th>
-                    <th>saldo masuk pada tanggal</th>
-                    <th>aksi</th>
+                    <th>periode</th>
+                    <th>bunga</th>
+                    <th>cicilan</th>
+                    <th>status buku</th>
+                    <th>Aksi</th>
                   </tr>
                   </thead>
                   <tbody>
-                    @php
-                        $totalSaldo = 0;
-                    @endphp
-                  @foreach ($saldo as $item)
+                  @foreach ($angsuranKredit as $item)
                   <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$item->saldo}}</td>
+                    <td>{{$item->kode_pinjaman_kredit}}</td>
+                    <td>{{$item->Anggota->nama}}</td>
+                    <td>{{$item->tanggal}}</td>
+                    <td>{{$item->jenis_pembayaran}}</td>
+                    <td>{{$item->transaksi}}</td>
+                    <td>{{$item->divisi}}</td>
                     <td>{{$item->keterangan}}</td>
-                    <td>{{$item->created_at}}</td>
-                    <td>
-                      <a href="{{route('saldo.edit', $item->id_saldo)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fas fa-pencil-alt"></i></a>
+                    <td>{{$item->periode}} bulan</td>
+                    <td>{{$item->bunga}}%</td>
 
-                        <a href="#" onclick="deleteSaldo(this)" data-id="{{$item->id_saldo}}" 
-                            class="btn btn-danger shadow btn-xs sharp"><i class="fas fa-trash"></i></a>
+                <td>Rp.{{ number_format(hitungCicilan($item->nominal, $item->bunga, $item->periode), 2, ',', '.') }}</td>
+
+                    <td>{{$item->status_buku}}</td>
+                    <td>
+                      <a href="{{route('angsuran.kredit.detail', $item->kode_pinjaman_kredit)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fa fa-eye"></i></a>
                     </td>
                   </tr>
-                  @php
-                      $totalSaldo += $item->saldo;
-                  @endphp
                   @endforeach
                   </tbody>
                   <tfoot>
                   <tr>
-                  <th>No</th>
-                    <th>saldo</th>
+                    <th>No</th>
+                    <th>Kode</th>
+                    <th>anggota</th>
+                    <th>tanggal</th>
+                    <th>Jenis</th>
+                    <th>Transaksi</th>
+                    <th>divisi</th>
                     <th>keterangan</th>
-                    <th>saldo masuk pada tanggal</th>
-                    <th>aksi</th>
+                    <th>periode</th>
+                    <th>bunga</th>
+                    <th>cicilan</th>
+                    <th>status buku</th>
+                    <th>Aksi</th>
                   </tr>
                   </tfoot>
                 </table>
-                <h3 class="mt-3">Total Saldo koperasi: Rp{{ number_format($totalSaldo, 0, ',', '.') }}</h3>
+               </div>
+                
               </div>
               <!-- /.card-body -->
             </div>
@@ -113,8 +131,6 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-
- {{-- modal tambah saldo  --}}
 
 
 
@@ -157,12 +173,12 @@
 
 
 <script>
-    function deleteSaldo(e) {
-        let id_saldo = e.getAttribute('data-id');
-        console.log("ID Saldo yang Dihapus:", id_saldo);
+    function deletePinjamD(e) {
+        let kode_pinjaman_kredit = e.getAttribute('data-id');
+        console.log("ID Saldo yang Dihapus:", kode_pinjaman_kredit);
     
         Swal.fire({
-            title: 'Delete Saldo ' + id_saldo,
+            title: 'Delete Saldo ' + kode_pinjaman_kredit,
             text: "Are you sure?",
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -173,11 +189,11 @@
             if (result.isConfirmed) {
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route("saldo.delete") }}',
+                    url: '{{ route("pinjamanDebet.delete") }}',
                     data: {
                         _token: '{{ csrf_token() }}',
                         _method: 'POST', 
-                        id_saldo: id_saldo 
+                        kode_pinjaman_kredit: kode_pinjaman_kredit 
                     },
                     dataType: "json",
                     success: function (response) {
@@ -186,7 +202,7 @@
                             text: response.message,
                             icon: 'success',
                         }).then((result) => {
-                            window.location.href = '/saldo';
+                            window.location.href = '/angsuran/kredit';
                         });
                     },
                     error: function (xhr, ajaxOptions, thrownError) {

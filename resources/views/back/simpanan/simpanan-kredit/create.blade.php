@@ -313,27 +313,31 @@
       xhr.send();
   
       // Request untuk memeriksa total simpanan debet anggota
-      var xhr2 = new XMLHttpRequest();
+
+      var xhr2 = new XMLHttpRequest(); // Definisikan xhr2 di dalam fungsi showAnggotaInfo
       xhr2.open('GET', '/cek-simpan-debet/' + kodeAnggota); 
       xhr2.setRequestHeader('Content-Type', 'application/json');
       xhr2.onreadystatechange = function() {
           if (xhr2.readyState === XMLHttpRequest.DONE) {
               if (xhr2.status === 200) {
                   var response = JSON.parse(xhr2.responseText);
-                  batasKredit = response.totalDebet; // Atur batas kredit berdasarkan total simpanan debet
-  
-                  // Set nilai batas kredit pada input nominal
-                  transaksiInput.setAttribute('max', batasKredit);
+                  var belumDebet = response.belumDebet;
+
+                  if (belumDebet) {
+                      var transaksiSelect = document.getElementById('transaksi');
+                      transaksiSelect.disabled = true;
+                      document.getElementById('pesanDebet').style.display = 'block';
+                  }
               } else {
                   console.error('Gagal memeriksa simpanan debet.');
               }
           }
       };
       xhr2.send();
-  
+    
       // Request untuk memeriksa saldo debet anggota
       var xhr3 = new XMLHttpRequest();
-      xhr3.open('GET', '/cek-saldo-debet/' + kodeAnggota); 
+      xhr3.open('GET', '/cek-saldo-debet/' + kodeAnggota);
       xhr3.setRequestHeader('Content-Type', 'application/json');
       xhr3.onreadystatechange = function() {
           if (xhr3.readyState === XMLHttpRequest.DONE) {

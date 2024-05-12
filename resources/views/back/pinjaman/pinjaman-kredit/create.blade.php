@@ -152,7 +152,7 @@
                       </div>
                       <div class="form-group">
                         <label for="bunga">bunga Pinjaman</label>
-                        <input type="number" name="bunga" id="bunga" class="form-control" >
+                        <input type="number" name="bunga" id="bunga" class="form-control" min="0" max="50">
                       </div>
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>

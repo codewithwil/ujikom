@@ -46,11 +46,10 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="{{route('dashboard')}}" class="nav-link active">
+              <i class="nav-icon fas fa-home"></i>
               <p>
                 Dashboard
-                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <li class="nav-header">Saldo</li>
@@ -114,6 +113,31 @@
                 </li>
               </ul>
             </li>
+
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-exchange-alt"></i>
+                <p>
+                  Angsuran
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('angsuran.debet')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>debet</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{route('angsuran.kredit')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>kredit</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+  
   
           <li class="nav-header">Kelola pegawai</li>
           <li class="nav-item">

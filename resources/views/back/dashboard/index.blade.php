@@ -34,43 +34,28 @@
   <div class="container-fluid">
     <!-- Small boxes (Stat box) -->
     <div class="row">
-      <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-info">
-          <div class="inner">
-            <h3>150</h3>
-
-            <p>New Orders</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-bag"></i>
-          </div>
-          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
       <!-- ./col -->
-      <div class="col-lg-3 col-6">
+      <div class="col-lg-4 col-6">
         <!-- small box -->
         <div class="small-box bg-success">
           <div class="inner">
-            <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-            <p>Bounce Rate</p>
+            <h3>Rp{{ number_format($saldo, 2, ',', '.') }}<sup style="font-size: 20px"></sup></h3>
+            <p>Sakdo koperasi saat ini</p>
           </div>
           <div class="icon">
             <i class="ion ion-stats-bars"></i>
           </div>
-          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="{{route('saldo.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
-      <div class="col-lg-3 col-6">
+      <div class="col-lg-4 col-6">
         <!-- small box -->
         <div class="small-box bg-warning">
           <div class="inner">
-            <h3>44</h3>
+            <h3>{{$pegawai}}</h3>
 
-            <p>User Registrations</p>
+            <p>Pegawai koperasi</p>
           </div>
           <div class="icon">
             <i class="ion ion-person-add"></i>
@@ -79,13 +64,13 @@
         </div>
       </div>
       <!-- ./col -->
-      <div class="col-lg-3 col-6">
+      <div class="col-lg-4 col-6">
         <!-- small box -->
         <div class="small-box bg-danger">
           <div class="inner">
-            <h3>65</h3>
+            <h3>{{$anggota}}</h3>
 
-            <p>Unique Visitors</p>
+            <p>Anggota koperasi saat ini</p>
           </div>
           <div class="icon">
             <i class="ion ion-pie-graph"></i>
@@ -103,34 +88,35 @@
         <!-- Custom tabs (Charts with tabs)-->
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">
-              <i class="fas fa-chart-pie mr-1"></i>
-              Sales
-            </h3>
-            <div class="card-tools">
-              <ul class="nav nav-pills ml-auto">
-                <li class="nav-item">
-                  <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Area</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
-                </li>
-              </ul>
-            </div>
+              <h3 class="card-title">
+                  <i class="fas fa-chart-pie mr-1"></i>
+                  Sales
+              </h3>
+              <div class="card-tools">
+                  <ul class="nav nav-pills ml-auto">
+                      <li class="nav-item">
+                          <a class="nav-link active" href="#revenue-chart" data-toggle="tab">simpanan</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="#sales-chart" data-toggle="tab">pinjaman</a>
+                      </li>
+                  </ul>
+              </div>
           </div><!-- /.card-header -->
           <div class="card-body">
-            <div class="tab-content p-0">
-              <!-- Morris chart - Sales -->
-              <div class="chart tab-pane active" id="revenue-chart"
-                   style="position: relative; height: 300px;">
-                  <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
-               </div>
-              <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-                <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
+              <div class="tab-content p-0">
+                  <!-- Revenue Chart -->
+                  <div class="chart tab-pane active"  style="position: relative; height: 300px;">
+                      <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
+                  </div>
+                  <!-- Sales Chart -->
+                  <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
+                      <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
+                  </div>
               </div>
-            </div>
           </div><!-- /.card-body -->
-        </div>
+      </div>
+      
         <!-- /.card -->
 
         <!-- DIRECT CHAT -->
@@ -611,6 +597,95 @@
     <!-- /.row (main row) -->
   </div><!-- /.container-fluid -->
 </section>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Function to update chart with data fetched from server
+    function updateChart(chart, canvasId, endpoint) {
+        fetch(endpoint)
+            .then(response => response.json())
+            .then(data => {
+                const labels = data.map(item => item.label);
+                const values = data.map(item => item.value);
+                
+                chart.data.labels = labels;
+                chart.data.datasets[0].data = values;
+                chart.update();
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Initialize revenue chart
+    const revenueChartCanvas = document.getElementById('revenue-chart-canvas');
+    const revenueChartCtx = revenueChartCanvas.getContext('2d');
+    const revenueChart = new Chart(revenueChartCtx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Revenue',
+                data: [],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Initialize sales chart
+    const salesChartCanvas = document.getElementById('sales-chart-canvas');
+    const salesChartCtx = salesChartCanvas.getContext('2d');
+    const salesChart = new Chart(salesChartCtx, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Sales',
+                data: [],
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    function initializeSimpananChart() {
+    updateChart(revenueChart, 'revenue-chart-canvas', '{{ route('daily.simpanan.transactions') }}');
+    setInterval(() => {
+        updateChart(revenueChart, 'revenue-chart-canvas', '{{ route('daily.simpanan.transactions') }}');
+    }, 5000); // Update chart every 5 seconds
+    }
+
+    // Initial data retrieval and periodic updates for pinjaman chart
+    function initializePinjamanChart() {
+        updateChart(salesChart, 'sales-chart-canvas', '{{ route('daily.pinjaman.transactions') }}');
+        setInterval(() => {
+            updateChart(salesChart, 'sales-chart-canvas', '{{ route('daily.pinjaman.transactions') }}');
+        }, 5000); // Update chart every 5 seconds
+    }
+
+    // Initialize both charts
+    function initializeCharts() {
+        initializeSimpananChart();
+        initializePinjamanChart();
+    }
+
+    initializeCharts();
+</script>
 </body>
 </html>
+
 @endsection

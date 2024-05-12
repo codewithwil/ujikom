@@ -139,6 +139,7 @@
                           <option value="{{$item}}">{{$get_transaksi}}</option>
                           @endforeach
                         </select>
+                        <span id="pesanDebet" style="display: none; color: red;">Anda belum melakukan simpanan debet.</span>
                       </div>
                       <div class="form-group">
                         <label for="periode">Periode</label>
@@ -288,19 +289,17 @@ periodes.forEach(function(periode) {
   function showAnggotaInfo() {
       var anggotaSelect = document.getElementById('anggota_kode');
       var selectedAnggota = anggotaSelect.options[anggotaSelect.selectedIndex];
-      var namaAnggota = selectedAnggota.text; 
-      var kode_anggota = selectedAnggota.value; 
-
-      document.getElementById('namaAnggota').textContent = namaAnggota;
-
+      var kodeAnggota = selectedAnggota.value;
+  
+      // Request untuk mengambil informasi anggota
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/anggota/' + kode_anggota); 
+      xhr.open('GET', '/anggota/' + kodeAnggota); 
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onreadystatechange = function() {
           if (xhr.readyState === XMLHttpRequest.DONE) {
               if (xhr.status === 200) {
                   var response = JSON.parse(xhr.responseText);
-                  // Atur nilai alamat, email, dan telepon berdasarkan respons dari server
+                  document.getElementById('namaAnggota').textContent = response.nama;
                   document.getElementById('alamatAnggota').textContent = response.alamat;
                   document.getElementById('emailAnggota').textContent = response.email;
                   document.getElementById('teleponAnggota').textContent = response.telepon;
@@ -310,8 +309,32 @@ periodes.forEach(function(periode) {
           }
       };
       xhr.send();
+  
+      // Request untuk memeriksa total simpanan debet anggota
+
+      var xhr2 = new XMLHttpRequest(); // Definisikan xhr2 di dalam fungsi showAnggotaInfo
+      xhr2.open('GET', '/cek-simpan-debet/' + kodeAnggota); 
+      xhr2.setRequestHeader('Content-Type', 'application/json');
+      xhr2.onreadystatechange = function() {
+          if (xhr2.readyState === XMLHttpRequest.DONE) {
+              if (xhr2.status === 200) {
+                  var response = JSON.parse(xhr2.responseText);
+                  var belumDebet = response.belumDebet;
+
+                  if (belumDebet) {
+                      var transaksiSelect = document.getElementById('transaksi');
+                      transaksiSelect.disabled = true;
+                      document.getElementById('pesanDebet').style.display = 'block';
+                  }
+              } else {
+                  console.error('Gagal memeriksa simpanan debet.');
+              }
+          }
+      };
+      xhr2.send();
+    
   }
-</script>
+  </script>
 @endpush
 
 @endsection

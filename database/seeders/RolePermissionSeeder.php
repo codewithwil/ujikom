@@ -21,6 +21,10 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name'=>'edit-user']);
         Permission::create(['name'=>'hapus-user']);
 
+        Permission::create(['name'=>'lihat-setting']);
+        Permission::create(['name'=>'tambah-setting']);
+        Permission::create(['name'=>'edit-setting']);
+
         Permission::create(['name'=>'lihat-anggota']);
         Permission::create(['name'=>'tambah-anggota']);
         Permission::create(['name'=>'edit-anggota']);
@@ -52,6 +56,15 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name'=>'edit-pinjamanKredit']);
         Permission::create(['name'=>'hapus-pinjamanKredit']);
 
+        Permission::create(['name'=>'lihat-angsuranDebet']);
+        Permission::create(['name'=>'tambah-angsuranDebet']);
+        Permission::create(['name'=>'edit-angsuranDebet']);
+        Permission::create(['name'=>'hapus-angsuranDebet']);
+
+        Permission::create(['name'=>'lihat-angsuranKredit']);
+        Permission::create(['name'=>'tambah-angsuranKredit']);
+        Permission::create(['name'=>'edit-angsuranKredit']);
+        Permission::create(['name'=>'hapus-angsuranKredit']);
 
         Role::create(['name'=>'admin']);
         Role::create(['name'=>'manager']);
@@ -63,6 +76,9 @@ class RolePermissionSeeder extends Seeder
         $roleAdmin->givePermissionTo('tambah-user');
         $roleAdmin->givePermissionTo('edit-user');
         $roleAdmin->givePermissionTo('hapus-user');
+        $roleAdmin->givePermissionTo('lihat-setting');
+        $roleAdmin->givePermissionTo('tambah-setting');
+        $roleAdmin->givePermissionTo('edit-setting');
         $roleAdmin->givePermissionTo('lihat-anggota');
         $roleAdmin->givePermissionTo('tambah-anggota');
         $roleAdmin->givePermissionTo('edit-anggota');
@@ -87,6 +103,18 @@ class RolePermissionSeeder extends Seeder
         $roleAdmin->givePermissionTo('tambah-pinjamanKredit');
         $roleAdmin->givePermissionTo('edit-pinjamanKredit');
         $roleAdmin->givePermissionTo('hapus-pinjamanKredit');
+        $roleAdmin->givePermissionTo('lihat-pinjamanKredit');
+        $roleAdmin->givePermissionTo('tambah-pinjamanKredit');
+        $roleAdmin->givePermissionTo('edit-pinjamanKredit');
+        $roleAdmin->givePermissionTo('hapus-pinjamanKredit');
+        $roleAdmin->givePermissionTo('lihat-angsuranDebet');
+        $roleAdmin->givePermissionTo('tambah-angsuranDebet');
+        $roleAdmin->givePermissionTo('edit-angsuranDebet');
+        $roleAdmin->givePermissionTo('hapus-angsuranDebet');
+        $roleAdmin->givePermissionTo('lihat-angsuranKredit');
+        $roleAdmin->givePermissionTo('tambah-angsuranKredit');
+        $roleAdmin->givePermissionTo('edit-angsuranKredit');
+        $roleAdmin->givePermissionTo('hapus-angsuranKredit');
 
         $roleManager = Role::findByName('manager');
         $roleManager->givePermissionTo('lihat-user');
@@ -117,6 +145,14 @@ class RolePermissionSeeder extends Seeder
         $roleManager->givePermissionTo('tambah-pinjamanKredit');
         $roleManager->givePermissionTo('edit-pinjamanKredit');
         $roleManager->givePermissionTo('hapus-pinjamanKredit');
+        $roleManager->givePermissionTo('lihat-angsuranDebet');
+        $roleManager->givePermissionTo('tambah-angsuranDebet');
+        $roleManager->givePermissionTo('edit-angsuranDebet');
+        $roleManager->givePermissionTo('hapus-angsuranDebet');
+        $roleManager->givePermissionTo('lihat-angsuranKredit');
+        $roleManager->givePermissionTo('tambah-angsuranKredit');
+        $roleManager->givePermissionTo('edit-angsuranKredit');
+        $roleManager->givePermissionTo('hapus-angsuranKredit');
 
         $roleSupervisor = Role::findByName('supervisor');
         $roleSupervisor->givePermissionTo('lihat-user');
@@ -143,6 +179,14 @@ class RolePermissionSeeder extends Seeder
         $roleSupervisor->givePermissionTo('tambah-pinjamanKredit');
         $roleSupervisor->givePermissionTo('edit-pinjamanKredit');
         $roleSupervisor->givePermissionTo('hapus-pinjamanKredit');
+        $roleSupervisor->givePermissionTo('lihat-angsuranDebet');
+        $roleSupervisor->givePermissionTo('tambah-angsuranDebet');
+        $roleSupervisor->givePermissionTo('edit-angsuranDebet');
+        $roleSupervisor->givePermissionTo('hapus-angsuranDebet');
+        $roleSupervisor->givePermissionTo('lihat-angsuranKredit');
+        $roleSupervisor->givePermissionTo('tambah-angsuranKredit');
+        $roleSupervisor->givePermissionTo('edit-angsuranKredit');
+        $roleSupervisor->givePermissionTo('hapus-angsuranKredit');
 
         $rolePetugas = Role::findByName('petugas');
         $rolePetugas->givePermissionTo('lihat-user');
@@ -169,5 +213,13 @@ class RolePermissionSeeder extends Seeder
         $rolePetugas->givePermissionTo('tambah-pinjamanKredit');
         $rolePetugas->givePermissionTo('edit-pinjamanKredit');
         $rolePetugas->givePermissionTo('hapus-pinjamanKredit');
+        $rolePetugas->givePermissionTo('lihat-angsuranDebet');
+        $rolePetugas->givePermissionTo('tambah-angsuranDebet');
+        $rolePetugas->givePermissionTo('edit-angsuranDebet');
+        $rolePetugas->givePermissionTo('hapus-angsuranDebet');
+        $rolePetugas->givePermissionTo('lihat-angsuranKredit');
+        $rolePetugas->givePermissionTo('tambah-angsuranKredit');
+        $rolePetugas->givePermissionTo('edit-angsuranKredit');
+        $rolePetugas->givePermissionTo('hapus-angsuranKredit');
     }
 }

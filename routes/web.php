@@ -6,12 +6,15 @@ use App\Http\Controllers\back\{
     PinjamanDebetController,
     PinjamanKreditController,
     simpananKreditController,
-    UserController
+    UserController,
+    AnggotaController,
+    angsuranController,
+    SaldoController,
+    SimpananDebetController,
+    PinjamanKredit
 };
-use App\Http\Controllers\back\AnggotaController;
-use App\Http\Controllers\back\SaldoController;
-use App\Http\Controllers\back\SimpananDebetController;
-use App\Models\PinjamanKredit;
+
+use App\Http\Controllers\back\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,16 +32,17 @@ Route::get('/', function () {
     return view('front.home.index');
 });
 
-
+Route::middleware('auth')->group(function () {
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.go');
-
-Route::get('/dashboard/kooperasi', function () {
-    return view('back.dashboard.index');
-})->middleware(['auth', 'verified'])->name('dashboard');
+});
+Route::get('/dashboard/kooperasi', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
 	
+
+    Route::get('daily-simpanan-transactions', [DashboardController::class, 'dailySimpananTransactions'])->name('daily.simpanan.transactions');
+    Route::get('daily-pinjaman-transactions', [DashboardController::class, 'dailyPinjamanTransactions'])->name('daily.pinjaman.transactions');
     //logout
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -81,7 +85,7 @@ Route::middleware('auth')->group(function () {
     //simpenan kredit
     Route::get('/simpanan/kredit', [simpananKreditController::class, 'index'])->name('simpananKredit.index')->middleware(['auth', 'verified', 'permission:lihat-simpananKredit']);
     Route::get('/cek-simpan-debet/{kode_anggota}', [simpananKreditController::class, 'cekSimpanDebet'])->name('simpananKredit.cek')->middleware(['auth', 'verified', 'permission:lihat-simpananKredit']);
-    Route::get('/cek-saldo/{kode_anggota}', [simpananKreditController::class, 'cekSaldoDebet'])->name('simpananKredit.ceksaldo')->middleware(['auth', 'verified', 'permission:lihat-simpananKredit']);
+    Route::get('/cek-saldo-debet/{kode_anggota}', [simpananKreditController::class, 'cekSaldoDebet'])->name('simpananKredit.ceksaldo')->middleware(['auth', 'verified', 'permission:lihat-simpananKredit']);
     Route::get('/simpanan/kredit/tambah', [simpananKreditController::class, 'create'])->name('simpananKredit.tambah')->middleware(['auth', 'verified', 'permission:tambah-simpananKredit']);
     Route::get('/simpanan/kredit/edit{kode_simpanan_kredit}', [simpananKreditController::class, 'edit'])->name('simpananKredit.edit')->middleware(['auth', 'verified', 'permission:edit-simpananKredit']);
     Route::post('/simpanan/kredit/store', [simpananKreditController::class, 'store'])->name('simpananKredit.store')->middleware(['auth', 'verified', 'permission:tambah-simpananKredit']);
@@ -110,5 +114,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/pinjaman/kredit/store', [PinjamanKreditController::class, 'store'])->name('pinjamanKredit.store')->middleware(['auth', 'verified', 'permission:tambah-pinjamanKredit']);
     Route::post('/pinjaman/kredit/update{kode_pinjaman_kredit}', [PinjamanKreditController::class, 'update'])->name('pinjamanKredit.update')->middleware(['auth', 'verified', 'permission:edit-pinjamanKredit']);
     Route::post('/pinjaman/kredit/delete', [PinjamanKreditController::class, 'delete'])->name('pinjamanKredit.delete')->middleware(['auth', 'verified', 'permission:hapus-pinjamanKredit']);
+
+    //angsuran debet
+    Route::get('/angsuran/debet', [angsuranController::class, 'debet'])->name('angsuran.debet')->middleware(['auth', 'verified', 'permission:lihat-angsuranDebet']);
+    Route::get('/angsuran/debet/detail/{kode_pinjaman_debet}', [angsuranController::class, 'debetDetail'])->name('angsuran.debet.detail')->middleware(['auth', 'verified', 'permission:lihat-angsuranDebet']);
+
+    //angsuran kredit
+    Route::get('/angsuran/kredit', [angsuranController::class, 'kredit'])->name('angsuran.kredit')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+    Route::get('/angsuran/kredit/detail/{kode_pinjaman_kredit}', [angsuranController::class, 'kreditDetail'])->name('angsuran.kredit.detail')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+    Route::post('/angsuran/kredit/delete', [angsuranController::class, 'delete'])->name('angsuran.delete')->middleware(['auth', 'verified', 'permission:hapus-angsuran']);
 
 });
