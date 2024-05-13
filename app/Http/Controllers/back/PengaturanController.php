@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\back;
 
 use App\{
-    Http\Controllers\Controller,
+    Http\Controllers\globalC,
     Models\Pengaturan,
     Http\Requests\setting\UpdatePengaturanRequest
 };
@@ -14,19 +14,13 @@ use Illuminate\{
 };
 use Exception;
 
-class PengaturanController extends Controller
+class PengaturanController extends globalC
 {
     public function index(){
         $pengaturan = Pengaturan::get()->first();
-        if($pengaturan){
-            return view('back.pengaturan.index', [
-                'pengaturan' => $pengaturan
-            ]);
-        }else{
-            return view('back.pengaturan.index', [
-                'pengaturan' => null
-            ]);
-        }
+        return view('back.pengaturan.index', [
+            'pengaturan' => $pengaturan ?? null
+        ]);
     }
 
     public function store(UpdatePengaturanRequest $request){
@@ -35,9 +29,9 @@ class PengaturanController extends Controller
         DB::beginTransaction();
         try {
             if ($request->hasFile('foto_perusahaan')) {
-                $checkingFile = $request->file('foto_perusahaan');
-                $filename = $checkingFile->getClientOriginalName();
-                $path = $checkingFile->storeAs('public/back/pengaturan',$filename);
+                $checkingFile            = $request->file('foto_perusahaan');
+                $filename                = $checkingFile->getClientOriginalName();
+                $path                    = $checkingFile->storeAs('public/back/pengaturan',$filename);
                 $data['foto_perusahaan'] = $filename;
             }
 
@@ -64,9 +58,9 @@ class PengaturanController extends Controller
         DB::beginTransaction();
         try {
             if ($request->hasFile('foto_perusahaan')) {
-                $checkingFile = $request->file('foto_perusahaan');
-                $filename = $checkingFile->getClientOriginalName();
-                $path = $checkingFile->storeAs('public/back/pengaturan',$filename);
+                $checkingFile            = $request->file('foto_perusahaan');
+                $filename                = $checkingFile->getClientOriginalName();
+                $path                    = $checkingFile->storeAs('public/back/pengaturan',$filename);
                 $data['foto_perusahaan'] = $filename;
             }
 

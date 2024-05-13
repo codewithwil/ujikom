@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\back;
 
 use App\{
-    Http\Controllers\Controller,
+    Http\Controllers\globalC,
     Models\Anggota,
     Models\PinjamanDebet
 
@@ -14,30 +14,17 @@ use Illuminate\{
 };
 use Exception;
 
-class PinjamanDebetController extends Controller
+class PinjamanDebetController extends globalC
 {
     public function index(){
         $pinjamD = PinjamanDebet::with('Anggota')->where('status', 1)->get();
-        return view('back.pinjaman.pinjaman-debet.index',[
-            'pinjamD' => $pinjamD
-        ]);
+        return view('back.pinjaman.pinjaman-debet.index',compact('pinjamD'));
     }
 
     public function create(){
-        $jenisBayar = PinjamanDebet::getJenisPembayaran();
-        $divisi     = PinjamanDebet::getDivisi();
-        $transaksi  = PinjamanDebet::getTransaksi();
-        $anggota    = Anggota::get();
-        $statusBuku = PinjamanDebet::getStatusBuku();
-        $keterangan = PinjamanDebet::getKeterangan();
-        return view('back.pinjaman.pinjaman-debet.create', [
-            'jenisBayar'  => $jenisBayar,
-            'divisi'      => $divisi,
-            'transaksi'   => $transaksi,
-            'anggota'     => $anggota,  
-            'statusBuku'  => $statusBuku,  
-            'keterangan'  => $keterangan
-        ]);
+        list($jenisBayar,$divisi,$transaksi,$anggota,$statusBuku,$keterangan) = self::getAttr();
+        
+        return view('back.pinjaman.pinjaman-debet.create',compact('jenisayar','divisi','transaksi','anggota','statusBuku','keterangan'));
     }
 
     public function store(Request $request)
@@ -48,9 +35,11 @@ class PinjamanDebetController extends Controller
     
         DB::beginTransaction();
         try {
-            $kode_pinjaman_debet = autonumber('pinjaman_debet', 'kode_pinjaman_debet', 3, 'PJD');
-            $data['kode_pinjaman_debet'] = $kode_pinjaman_debet;
+            $kode_pinjaman_debet            = autonumber('pinjaman_debet', 'kode_pinjaman_debet', 3, 'PJD');
+            $data['kode_pinjaman_debet']    = $kode_pinjaman_debet;
+
             PinjamanDebet::create($data);
+
             DB::commit();
             return redirect(route('pinjamanDebet.index'))->with('success', ' Simpanan Debet has been created');
         } catch (Exception $e) {
@@ -68,21 +57,10 @@ class PinjamanDebetController extends Controller
     }
     
     public function edit($kode_pinjaman_debet){
-        $jenisBayar = PinjamanDebet::getJenisPembayaran();
-        $divisi     = PinjamanDebet::getDivisi();
-        $transaksi  = PinjamanDebet::getTransaksi();
-        $anggota    = Anggota::get();
-        $statusBuku = PinjamanDebet::getStatusBuku();
-        $keterangan = PinjamanDebet::getKeterangan();
-        return view('back.pinjaman.pinjaman-debet.update',[
-            'pinjamD'        => PinjamanDebet::find($kode_pinjaman_debet),
-            'jenisBayar'     => $jenisBayar,
-            'divisi'         => $divisi,
-            'transaksi'      => $transaksi,
-            'anggota'        => $anggota,  
-            'statusBuku'     => $statusBuku,  
-            'keterangan'     => $keterangan
-        ]);
+        $pinjamanD = PinjamanDebet::find($kode_pinjaman_debet);
+        list($jenisBayar,$divisi,$transaksi,$anggota,$statusBuku,$keterangan) = self::getAttr();
+        
+        return view('back.pinjaman.pinjaman-debet.update',compact('pinjamD','jenisBayar','divisi','transaksi','anggota','statusBuku','keterangan'));
     }
 
     public function update(Request $request, $kode_pinjaman_debet){
@@ -117,9 +95,9 @@ class PinjamanDebetController extends Controller
         if ($name) {
             $name->status = PinjamanDebet::DELETED;
             $name->save();
-            return response()->json(['message' => 'Pinjaman debet status updated successfully'], 200);
+            return $this->sendResponse("Process Successfully");
         }
-        return response()->json(['message' => 'Pinjaman debet not found'], 404);
+        return $this->sendError("Data Not Found", 404);
     }
 
 }

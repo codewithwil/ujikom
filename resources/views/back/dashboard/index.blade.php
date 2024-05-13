@@ -39,7 +39,7 @@
         <!-- small box -->
         <div class="small-box bg-success">
           <div class="inner">
-            <h3>Rp{{ number_format($saldo, 2, ',', '.') }}<sup style="font-size: 20px"></sup></h3>
+            <h3>Rp{{ number_format($saldo->value, 2, ',', '.') }}<sup style="font-size: 20px"></sup></h3>
             <p>Sakdo koperasi saat ini</p>
           </div>
           <div class="icon">
@@ -53,7 +53,7 @@
         <!-- small box -->
         <div class="small-box bg-warning">
           <div class="inner">
-            <h3>{{$pegawai}}</h3>
+            <h3>{{$pegawai->value}}</h3>
 
             <p>Pegawai koperasi</p>
           </div>
@@ -68,7 +68,7 @@
         <!-- small box -->
         <div class="small-box bg-danger">
           <div class="inner">
-            <h3>{{$anggota}}</h3>
+            <h3>{{$member->value}}</h3>
 
             <p>Anggota koperasi saat ini</p>
           </div>

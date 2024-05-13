@@ -6,7 +6,7 @@ namespace App\Http\Controllers\back;
 use App\{
     Http\Requests\saldo\UpdateSaldoRequest,
     Http\Requests\saldo\CreateSaldoRequest,
-    Http\Controllers\Controller,
+    Http\Controllers\globalC,
     Models\Saldo
 };
 use Illuminate\{
@@ -15,7 +15,7 @@ use Illuminate\{
 };
 use Exception;
 
-class SaldoController extends Controller
+class SaldoController extends globalC
 {
     public function index(){
         $saldo = Saldo::where('status', 1)->get();

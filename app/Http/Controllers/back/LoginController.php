@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\back;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\globalC;
 use Illuminate\{
     Http\Request,
     Support\Facades\Auth
 };
 
-class LoginController extends Controller
+class LoginController extends globalC
 {
     public function index(){
         return view('back.login.index');

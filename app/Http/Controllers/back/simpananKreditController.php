@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\back;
 
 use App\{
-    Http\Controllers\Controller,
+    Http\Controllers\globalC,
     Models\SimpananKredit,
     Models\Anggota
 };
@@ -14,7 +14,7 @@ use Illuminate\{
 };
 use Exception;
 
-class simpananKreditController extends Controller
+class simpananKreditController extends globalC
 {
     public function index(){
         $simpanK = SimpananKredit::with('Anggota')->where('status', 1)->get();

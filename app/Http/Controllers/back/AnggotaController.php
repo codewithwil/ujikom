@@ -4,7 +4,7 @@ namespace App\Http\Controllers\back;
 
 use App\{
     Models\Anggota,
-    Http\Controllers\Controller,
+    Http\Controllers\globalC,
     Http\Requests\anggota\CreateAnggotaRequest
 };
 use App\Http\Requests\anggota\UpdateAnggotaRequest;
@@ -14,13 +14,11 @@ use Illuminate\{
 };
 use Exception;
 
-class AnggotaController extends Controller
+class AnggotaController extends globalC
 {
     public function index(){
-        $anggota = Anggota::where('status', 1)->get();
-        return view('back.anggota.index', [
-            'anggota' => $anggota
-        ]);
+        $anggota = Anggota::where('status', Anggota::ACTIVE)->get();
+        return view('back.anggota.index', compact("anggota"));
     }
 
     public function create(){
@@ -33,17 +31,16 @@ class AnggotaController extends Controller
 
         DB::beginTransaction();
         try {
-            $kode_anggota = autonumber('anggota', 'kode_anggota', 3, 'ANG');
-            $data['kode_anggota'] = $kode_anggota;
+            $kode_anggota          = autonumber('anggota', 'kode_anggota', 3, 'ANG');
+            $data['kode_anggota']  = $kode_anggota;
+
             Anggota::create($data);
 
             DB::commit();
-
             return redirect(route('anggota.index'))->with('success', ' Anggota has been created');
         } catch (Exception $e) {
             info($e->getMessage());
             DB::rollBack();
-
             return response()->json([
                 "code"    => 412,
                 "status"  => "Error",
@@ -54,9 +51,8 @@ class AnggotaController extends Controller
     }
 
     public function edit($kode_anggota){
-        return view('back.anggota.update',[
-            'anggota'   => Anggota::find($kode_anggota)
-        ]);
+        $member = Anggota::find($kode_anggota);
+        return view('back.anggota.update', compact("member"));
     }
 
     public function update(UpdateAnggotaRequest $request, $kode_anggota){
@@ -92,9 +88,10 @@ class AnggotaController extends Controller
         if ($name) {
             $name->status = Anggota::DELETED;
             $name->save();
-            return response()->json(['message' => 'Anggota status updated successfully'], 200);
+
+            return $this->sendResponse($name);
         }
-        return response()->json(['message' => 'Anggota not found'], 404);
+        return $this->sendError('Member Not Found', 404);
     }
     
     public function getInfo(Request $request, $kode_anggota)
@@ -102,14 +99,16 @@ class AnggotaController extends Controller
         $anggota = Anggota::where('kode_anggota', $kode_anggota)->first();
 
         if ($anggota) {
-            return response()->json([
-                'nama' => $anggota->nama,
-                'alamat' => $anggota->alamat,
-                'email' => $anggota->email,
-                'telepon' => $anggota->telepon,
-            ]);
+            $payload = [
+                'nama'     => $anggota->nama,
+                'alamat'   => $anggota->alamat,
+                'email'    => $anggota->email,
+                'telepon'  => $anggota->telepon,
+            ];
+
+            return $this->sendResponse($payload);
         } else {
-            return response()->json(['error' => 'Anggota tidak ditemukan.'], 404);
+            return $this->sendError('Member Not Found', 404);
         }
     }
 }

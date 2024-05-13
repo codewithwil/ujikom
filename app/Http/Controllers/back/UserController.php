@@ -5,7 +5,7 @@ namespace App\Http\Controllers\back;
 use App\{
     Http\Requests\User\UpdateUserRequest,
     Http\Requests\User\CreateUserRequest,
-    Http\Controllers\Controller,
+    Http\Controllers\globalC,
     Models\User
 };
 use Illuminate\{
@@ -16,7 +16,7 @@ use Illuminate\{
 use Exception;
 use Spatie\Permission\Models\Role;
 
-class UserController extends Controller
+class UserController extends globalC
 {
     public function index(){
         $users = User::get();

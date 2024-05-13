@@ -149,7 +149,7 @@
                       <div class="form-group">
                         <label for="nominal">Nominal</label>
                         <input type="number" name="nominal" id="nominal" class="form-control" >
-                        <div id="max-saldo" data-saldo="{{ $saldoKoperasi }}"></div>
+                        <div id="max-saldo" data-saldo="{{ $saldoKoperasi->value }}"></div>
                       </div>
                       <div class="form-group">
                         <label for="bunga">bunga Pinjaman</label>

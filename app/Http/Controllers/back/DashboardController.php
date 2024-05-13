@@ -2,45 +2,44 @@
 
 namespace App\Http\Controllers\back;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\globalC;
 use App\Models\Anggota;
+use App\Models\PinjamanDebet;
 use App\Models\Saldo;
+use App\Models\SimpananDebet;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class DashboardController extends Controller
+class DashboardController extends globalC
 {
-    public function index(){
-        $anggota = Anggota::where('status', 1)->count();
-        $saldo = Saldo::sum('saldo'); 
-        $pegawai = User::count();
-        return view('back.dashboard.index',[
-            'anggota' => $anggota,
-            'saldo'   => $saldo,
-            'pegawai' => $pegawai  
-        ]);
+    public function index() {
+        $member  = Anggota::selectRaw("COUNT(*) AS value")->first();
+        $saldo   = Saldo::selectRaw('SUM(saldo) AS value')->first(); 
+        $pegawai = User::selectRaw('COUNT(*) AS value')->first();
+
+        return view('back.dashboard.index',compact('anggota', 'saldo', 'pegawai'));
     }
 
-    public function dailySimpananTransactions()
-    {
-        $transactions = DB::table('simpanan_debet')
-            ->select(DB::raw('DATE_FORMAT(tanggal, "%Y-%m-%d") as date'), DB::raw('COUNT(*) as transactions_count'))
-            ->whereNotNull('tanggal')
-            ->groupBy('date')
-            ->get();
+    public function dailySimpananTransactions() {
+        $transactions = SimpananDebet::selectRaw('
+            DATE_FORMAT(tanggal, %Y-%m-%d) AS date,
+            COUNT(*) AS transactions_count
+        ')->whereNotNull('tanggal')
+          ->groupBy('date')
+          ->get();
     
-        return response()->json($transactions);
+        return $this->sendResponse($transactions);
     }
     
-    public function dailyPinjamanTransactions()
-    {
-        $transactions = DB::table('pinjaman_debet')
-            ->select(DB::raw('DATE_FORMAT(tanggal, "%Y-%m-%d") as date'), DB::raw('COUNT(*) as transactions_count'))
-            ->whereNotNull('tanggal')
-            ->groupBy('date')
-            ->get();
+    public function dailyPinjamanTransactions() {
+        $transactions = PinjamanDebet::selectRaw('
+            DATE_FORMAT(tanggal, %Y-%m-%d) AS date,
+            COUNT(*) AS transactions_count
+        ')->whereNotNull('tanggal')
+          ->groupBy('date')
+          ->get();
     
-        return response()->json($transactions);
+        return $this->sendResponse($transactions);
     }
 }

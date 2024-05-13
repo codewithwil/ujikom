@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\back;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\globalC;
 use App\Models\Anggota;
 use App\Models\PinjamanKredit;
 use App\Models\Saldo;
@@ -10,45 +10,30 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class PinjamanKreditController extends Controller
+class PinjamanKreditController extends globalC
 {
     public function index(){
         $pinjamK = PinjamanKredit::with('Anggota')->where('status', 1)->get();
-        return view('back.pinjaman.pinjaman-kredit.index',[
-            'pinjamK' => $pinjamK,
-        ]);
+        return view('back.pinjaman.pinjaman-kredit.index',compact('pinjamK'));
     }
 
     public function create(){
-        $jenisBayar = PinjamanKredit::getJenisPembayaran();
-        $divisi     = PinjamanKredit::getDivisi();
-        $transaksi  = PinjamanKredit::getTransaksi();
-        $anggota    = Anggota::get();
-        $statusBuku = PinjamanKredit::getStatusBuku();
-        $keterangan = PinjamanKredit::getKeterangan();
-        $saldoKoperasi = Saldo::sum('saldo');
-        return view('back.pinjaman.pinjaman-kredit.create', [
-            'jenisBayar'  => $jenisBayar,
-            'divisi'      => $divisi,
-            'transaksi'   => $transaksi,
-            'anggota'     => $anggota,  
-            'statusBuku'  => $statusBuku,  
-            'keterangan'  => $keterangan,
-            'saldoKoperasi'   => $saldoKoperasi
-        ]);
+        list($jenisBayar,$divisi,$transaksi,$anggota,$statusBuku,$keterangan) = self::getAttr();
+        $saldoKoperasi = Saldo::selectRaw("SUM(saldo) AS value")->first();
+        return view('back.pinjaman.pinjaman-kredit.create',compact('jenisBayar','divisi','transaksi','anggota','statusBuku','keterangan','saldoKoperasi'));
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
-        
         $data['status'] = 1;
     
         DB::beginTransaction();
         try {
-            $kode_pinjaman_kredit = autonumber('pinjaman_kredit', 'kode_pinjaman_kredit', 3, 'PJK');
+            $kode_pinjaman_kredit         = autonumber('pinjaman_kredit', 'kode_pinjaman_kredit', 3, 'PJK');
             $data['kode_pinjaman_kredit'] = $kode_pinjaman_kredit;
             PinjamanKredit::create($data);
+
             DB::commit();
             return redirect(route('pinjamanKredit.index'))->with('success', ' Simpanan Debet has been created');
         } catch (Exception $e) {
@@ -66,21 +51,9 @@ class PinjamanKreditController extends Controller
     }
     
     public function edit($kode_pinjaman_kredit){
-        $jenisBayar = PinjamanKredit::getJenisPembayaran();
-        $divisi     = PinjamanKredit::getDivisi();
-        $transaksi  = PinjamanKredit::getTransaksi();
-        $anggota    = Anggota::get();
-        $statusBuku = PinjamanKredit::getStatusBuku();
-        $keterangan = PinjamanKredit::getKeterangan();
-        return view('back.pinjaman.pinjaman-kredit.update',[
-            'pinjamK'        => PinjamanKredit::find($kode_pinjaman_kredit),
-            'jenisBayar'     => $jenisBayar,
-            'divisi'         => $divisi,
-            'transaksi'      => $transaksi,
-            'anggota'        => $anggota,  
-            'statusBuku'     => $statusBuku,  
-            'keterangan'     => $keterangan
-        ]);
+        $pinjamK = PinjamanKredit::find($kode_pinjaman_kredit);
+        list($jenisBayar,$divisi,$transaksi,$anggota,$statusBuku,$keterangan) = self::getAttr();
+        return view('back.pinjaman.pinjaman-kredit.update',compact('jenisBayar','divisi','transaksi','anggota','statusBuku','keterangan'));
     }
 
     public function update(Request $request, $kode_pinjaman_kredit){
@@ -115,8 +88,8 @@ class PinjamanKreditController extends Controller
         if ($name) {
             $name->status = PinjamanKredit::DELETED;
             $name->save();
-            return response()->json(['message' => 'Pinjaman kredit status updated successfully'], 200);
+            return $this->sendResponse("Processing Successfully");
         }
-        return response()->json(['message' => 'Pinjaman kredit not found'], 404);
+        return $this->sendError("Data Not Found", 404);
     }
 }
