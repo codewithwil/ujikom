@@ -8,6 +8,7 @@ use App\{
     Http\Requests\anggota\CreateAnggotaRequest
 };
 use App\Http\Requests\anggota\UpdateAnggotaRequest;
+use App\Models\SimpananDebet;
 use Illuminate\{
     Http\Request,
     Support\Facades\DB
@@ -22,19 +23,45 @@ class AnggotaController extends globalC
     }
 
     public function create(){
-        return view('back.anggota.create');
+        list($jenisBayar,$divisi,$transaksi,$statusBuku,$keterangan) = self::getAttr();
+        return view('back.anggota.create', compact('jenisBayar','divisi','transaksi','anggota','statusBuku','keterangan'));
     }
-
+  
     public function store(CreateAnggotaRequest $request){
-        $data = $request->validated();
+        $data = $request->all();
         $data['status'] = 1;
 
         DB::beginTransaction();
         try {
-            $kode_anggota          = autonumber('anggota', 'kode_anggota', 3, 'ANG');
-            $data['kode_anggota']  = $kode_anggota;
+            $kode_anggota                 = autonumber('anggota', 'kode_anggota', 3, 'ANG');
+            $data['kode_anggota']         = $kode_anggota;
+            $kode_simpanan_debet          = autonumber('simpanan_debet', 'kode_simpanan_debet', 3, 'SPD');
+            $data['kode_simpanan_debet']  = $kode_anggota;
 
-            Anggota::create($data);
+            $anggota = new Anggota();
+            $anggota->kode_anggota = $kode_anggota;
+            $anggota->nik          = $data['nik'];
+            $anggota->nama         = $data['nama'];
+            $anggota->alamat       = $data['alamat'];
+            $anggota->email        = $data['email'];
+            $anggota->telepon      = $data['telepon'];
+            $anggota['status']     = 1;
+            $anggota->save();
+    
+            $simpananDebet = new SimpananDebet();
+            $simpananDebet->kode_simpanan_debet = $kode_simpanan_debet;
+            $simpananDebet->anggota_kode        = $kode_anggota;
+            $simpananDebet->tanggal             = $data['tanggal'];
+            $simpananDebet->jenis_pembayaran    = $data['jenis_pembayaran'];
+            $simpananDebet->transaksi           = $data['transaksi'];
+            $simpananDebet->divisi              = $data['divisi'];
+            $simpananDebet->keterangan          = $data['keterangan'];
+            $simpananDebet->pokok               = $data['pokok'];
+            $simpananDebet->wajib               = $data['wajib'];
+            $simpananDebet->sukarela            = $data['sukarela'];
+            $simpananDebet->status_buku         = $data['status_buku'];
+            $simpananDebet['status']            = 1;
+            $simpananDebet->save();
 
             DB::commit();
             return redirect(route('anggota.index'))->with('success', ' Anggota has been created');
@@ -51,8 +78,8 @@ class AnggotaController extends globalC
     }
 
     public function edit($kode_anggota){
-        $member = Anggota::find($kode_anggota);
-        return view('back.anggota.update', compact("member"));
+        $anggota = Anggota::find($kode_anggota);
+        return view('back.anggota.update', compact("anggota"));
     }
 
     public function update(UpdateAnggotaRequest $request, $kode_anggota){

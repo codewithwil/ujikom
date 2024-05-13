@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\{
     PinjamanDebet,
     Anggota,
+    SimpananDebet,
 };
 
 class globalC extends Controller
@@ -18,6 +19,15 @@ class globalC extends Controller
         $keterangan = PinjamanDebet::getKeterangan();
         
         return [$jenisBayar,$divisi,$transaksi,$anggota,$statusBuku,$keterangan];
+    }
+
+    protected function getAttrA(){
+        $jenisBayar = SimpananDebet::getJenisPembayaran();
+        $divisi     = SimpananDebet::getDivisi();
+        $transaksi  = SimpananDebet::getTransaksi();
+        $statusBuku = SimpananDebet::getStatusBuku();
+        $keterangan = SimpananDebet::getKeterangan();
+        return [$jenisBayar,$divisi,$transaksi,$statusBuku,$keterangan];
     }
 
     protected function sendResponse($result, $code = 200, $message = 'Success.') {

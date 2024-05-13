@@ -18,7 +18,7 @@ class DashboardController extends globalC
         $saldo   = Saldo::selectRaw('SUM(saldo) AS value')->first(); 
         $pegawai = User::selectRaw('COUNT(*) AS value')->first();
 
-        return view('back.dashboard.index',compact('anggota', 'saldo', 'pegawai'));
+        return view('back.dashboard.index',compact('member', 'saldo', 'pegawai'));
     }
 
     public function dailySimpananTransactions() {
