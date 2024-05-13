@@ -17,12 +17,17 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="admin/index2.html"><b>koperasi Simpan pinjam</b></a>
+    @php
+    $pengaturan = \App\Models\Pengaturan::first();
+@endphp
+
+<img src="{{ asset('storage/back/pengaturan/' . optional($pengaturan)->foto_perusahaan) }}" alt=" Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+
   </div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Login</p>
+      <span class="brand-text font-weight-light">{{ optional($pengaturan)->nama_perusahaan }}</span>
 
       <form action="{{route('login.go')}}" method="POST">
         @csrf
