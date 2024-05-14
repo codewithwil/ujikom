@@ -24,7 +24,7 @@ class AnggotaController extends globalC
     }
 
     public function create(){
-        list($jenisBayar,$divisi,$transaksi,$statusBuku,$keterangan) = self::getAttr();
+        list($jenisBayar,$divisi,$transaksi,$anggota,$statusBuku,$keterangan) = self::getAttr();
         return view('back.anggota.create', compact('jenisBayar','divisi','transaksi','statusBuku','keterangan'));
     }
   
