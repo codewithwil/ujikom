@@ -88,7 +88,7 @@
                       </div>
                       <div class="form-group">
                         <label for="nik">Nik anggota</label>
-                        <input type="text" name="nik" id="nik" class="form-control">
+                        <input type="number" name="nik" id="nik" class="form-control">
                       </div>
                       <div class="form-group">
                         <label for="nama">Nama anggota</label>
@@ -176,19 +176,15 @@
                       <div class="form-group">
                         <label for="keterangan">Keterangan</label>
                         <select name="keterangan" id="keterangan" class="form-control">
-                            <option value="" disabled selected hidden>Pilih keterangan</option>
-                            @foreach ($keterangan as $item => $getKeterangan)
-                            <option value="{{$item}}">{{$getKeterangan}}</option>
-                            @endforeach
+                          <option value="debet">debet</option>
+                          <option value="kredit">kredit</option>
                         </select>
                      </div>
                     <div class="form-group">
                         <label for="status_buku">Status buku</label>
                         <select name="status_buku" id="status_buku" class="form-control">
-                            <option value="" disabled selected hidden>Pilih status buku</option>
-                            @foreach ($statusBuku as $item => $getStatusBuku)
-                            <option value="{{$item}}">{{$getStatusBuku}}</option>
-                            @endforeach
+                            <option value="aktif">aktif</option>
+                            <option value="nonaktif">nonaktif</option>
                         </select>
                     </div>
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
@@ -263,8 +259,8 @@
     var pokok            = document.getElementById('pokok').value;
     var wajib            = document.getElementById('wajib').value;
     var sukarela         = document.getElementById('sukarela').value;
-    var keterangan       = document.getElementById('keterangan').value;
-    var status_buku      = document.getElementById('status_buku').value;
+    var keterangan        = document.getElementById('keterangan').options[document.getElementById('keterangan').selectedIndex].value;
+    var status_buku        = document.getElementById('status_buku').options[document.getElementById('status_buku').selectedIndex].value;
 
     var data = {
       kode_anggota: kode_anggota,

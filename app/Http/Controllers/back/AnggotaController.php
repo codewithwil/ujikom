@@ -14,6 +14,7 @@ use Illuminate\{
     Support\Facades\DB
 };
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class AnggotaController extends globalC
 {
@@ -24,7 +25,7 @@ class AnggotaController extends globalC
 
     public function create(){
         list($jenisBayar,$divisi,$transaksi,$statusBuku,$keterangan) = self::getAttr();
-        return view('back.anggota.create', compact('jenisBayar','divisi','transaksi','anggota','statusBuku','keterangan'));
+        return view('back.anggota.create', compact('jenisBayar','divisi','transaksi','statusBuku','keterangan'));
     }
   
     public function store(CreateAnggotaRequest $request){
@@ -66,7 +67,10 @@ class AnggotaController extends globalC
             DB::commit();
             return redirect(route('anggota.index'))->with('success', ' Anggota has been created');
         } catch (Exception $e) {
-            info($e->getMessage());
+            $errorMessage = $e->getMessage();
+            info($errorMessage); // Log pesan kesalahan ke dalam log biasa
+            Log::error('Error while storing data: ' . $errorMessage); // Catat pesan kesalahan ke dalam log error
+        
             DB::rollBack();
             return response()->json([
                 "code"    => 412,
