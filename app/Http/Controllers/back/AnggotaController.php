@@ -8,6 +8,8 @@ use App\{
     Http\Requests\anggota\CreateAnggotaRequest
 };
 use App\Http\Requests\anggota\UpdateAnggotaRequest;
+use App\Models\Keterangan;
+use App\Models\Saldo;
 use App\Models\SimpananDebet;
 use Illuminate\{
     Http\Request,
@@ -24,8 +26,7 @@ class AnggotaController extends globalC
     }
 
     public function create(){
-        list($jenisBayar,$divisi,$transaksi,$anggota,$statusBuku,$keterangan) = self::getAttr();
-        return view('back.anggota.create', compact('jenisBayar','divisi','transaksi','statusBuku','keterangan'));
+        return view('back.anggota.create');
     }
   
     public function store(CreateAnggotaRequest $request){
@@ -64,6 +65,10 @@ class AnggotaController extends globalC
             $simpananDebet['status']            = 1;
             $simpananDebet->save();
 
+            $saldoKoperasi = new Saldo();
+            $saldoKoperasi->saldo      = $data['pokok'] + $data['wajib'] + $data['sukarela'];
+            $saldoKoperasi->keterangan = 'simpanan debet berhasil di buat oleh ' . $data['nama'] . ' dengan nominal ' . ($data['pokok'] + $data['wajib'] + $data['sukarela']);
+            $saldoKoperasi->save();
             DB::commit();
             return redirect(route('anggota.index'))->with('success', ' Anggota has been created');
         } catch (Exception $e) {

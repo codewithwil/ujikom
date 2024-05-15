@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Anggota extends Model
@@ -40,6 +41,7 @@ class Anggota extends Model
     public function SimpananKredit(): HasMany{
         return $this->hasMany(SimpananKredit::class, 'anggota_kode', 'kode_anggota');
      }
+ 
 
      public function SimpananDebet(): HasMany{
         return $this->hasMany(SimpananDebet::class, 'anggota_kode', 'kode_anggota');
@@ -64,5 +66,6 @@ class Anggota extends Model
      
          return $totalDebet;
      }
+
      
 }

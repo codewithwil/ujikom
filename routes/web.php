@@ -9,6 +9,7 @@ use App\Http\Controllers\back\{
     UserController,
     AnggotaController,
     angsuranController,
+    KeteranganController,
     SaldoController,
     SimpananDebetController,
     PinjamanKredit
@@ -74,6 +75,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/Anggota/store', [AnggotaController::class, 'store'])->name('anggota.store')->middleware(['auth', 'verified', 'permission:tambah-anggota']);
     Route::post('/Anggota/update{kode_anggota}', [AnggotaController::class, 'update'])->name('anggota.update')->middleware(['auth', 'verified', 'permission:edit-anggota']);
     Route::post('/Anggota/delete', [AnggotaController::class, 'delete'])->name('anggota.delete')->middleware(['auth', 'verified', 'permission:hapus-anggota']);
+
+    //keterangan
+    Route::get('/keterangan', [KeteranganController::class, 'index'])->name('keterangan.index');
+    Route::get('/keterangan/tambah', [KeteranganController::class, 'create'])->name('keterangan.tambah');
+    Route::get('/keterangan/edit{id_keterangan}', [KeteranganController::class, 'edit'])->name('keterangan.edit');
+    Route::post('/keterangan/store', [KeteranganController::class, 'store'])->name('keterangan.store');
+    Route::post('/keterangan/update{id_keterangan}', [KeteranganController::class, 'update'])->name('keterangan.update');
+    Route::post('/keterangan/delete', [KeteranganController::class, 'delete'])->name('keterangan.delete');
 
     //saldo koperasi
     Route::get('/saldo', [SaldoController::class, 'index'])->name('saldo.index')->middleware(['auth', 'verified', 'permission:lihat-saldo']);

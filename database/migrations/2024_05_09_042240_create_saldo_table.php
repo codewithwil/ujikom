@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id('id_saldo');
             $table->integer('saldo');
             $table->text('keterangan');
-            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

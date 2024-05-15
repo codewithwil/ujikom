@@ -88,7 +88,7 @@
                       </div>
                       <div class="form-group">
                         <label for="nik">Nik anggota</label>
-                        <input type="number" name="nik" id="nik" class="form-control">
+                        <input type="number" name="nik" id="nik" class="form-control" max="16">
                       </div>
                       <div class="form-group">
                         <label for="nama">Nama anggota</label>
@@ -130,31 +130,30 @@
                   <div class="form-group">
                     <label for="jenisPembayaran">Jenis pembayaran</label>
                     <select name="jenis_pembayaran" id="jenis_pembayaran" class="form-control">
-                    @foreach($jenisBayar as $item => $jenis)
                       <option value="hidden" disabled selected hidden>Pilih jenis pembayaran</option>
-                      <option value="{{ $item }}">{{$jenis}}</option>
-                      @endforeach
+                      <option value="tunai">Tunai</option>
+                      <option value="nontunai">Non tunai</option>
                     </select>
                   </div>
 
                   <div class="form-group">
                     <label for="divisi">Divisi</label>
                     <select name="jenis_pembayaran" id="divisi" class="form-control">
-                      @foreach ($divisi as $item => $getdivisi)
                       <option value="hidden" disabled selected hidden>Pilih divisi</option>
-                      <option value="{{$item}}">{{$getdivisi}}</option>
-                      @endforeach
-                      
+                      <option value="simpan">Simpan</option>
+                      <option value="pinjam">Pinjam</option>
+                    
                     </select>
                   </div>
+                  <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                       <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                     </div>
                     <div id="transaksi-part" class="content" role="tabpanel" aria-labelledby="transaksi-part-trigger">
                       <div class="form-group">
                         <label for="transaksi">Transaksi</label>
                         <select name="transaksi" id="transaksi" class="form-control">
+                          <option value="hidden" disabled selected hidden>Pilih Transaksi</option>
                           <option value="debet">debet</option>
-                          <option value="kredit">kredit</option>
                         </select>
                       </div>
                       <div class="form-group">
@@ -175,14 +174,12 @@
                     <div id="keterangan-part" class="content" role="tabpanel" aria-labelledby="keterangan-part-trigger">
                       <div class="form-group">
                         <label for="keterangan">Keterangan</label>
-                        <select name="keterangan" id="keterangan" class="form-control">
-                          <option value="debet">debet</option>
-                          <option value="kredit">kredit</option>
-                        </select>
+                        <textarea name="keterangan" id="" cols="30" rows="5" id="keterangan" class="form-control"></textarea>
                      </div>
                     <div class="form-group">
                         <label for="status_buku">Status buku</label>
                         <select name="status_buku" id="status_buku" class="form-control">
+                          <option value="hidden" disabled selected hidden>Pilih Status Pembukuan</option>
                             <option value="aktif">aktif</option>
                             <option value="nonaktif">nonaktif</option>
                         </select>
@@ -194,9 +191,6 @@
                 </div>
               </div>
               <!-- /.card-body -->
-              <div class="card-footer">
-                Visit <a href="https://github.com/Johann-S/bs-stepper/#how-to-use-it">bs-stepper documentation</a> for more examples and information about the plugin.
-              </div>
             </div>
             <!-- /.card -->
           </div>
@@ -243,59 +237,64 @@
 
 </script>
 <script>
-  document.getElementById('submitForm').addEventListener('click', function(event) {
-    event.preventDefault();
+document.getElementById('submitForm').addEventListener('click', function(event) {
+  event.preventDefault();
 
-    var kode_anggota     = document.getElementById('kode_anggota').value;
-    var nik              = document.getElementById('nik').value;
-    var nama             = document.getElementById('nama').value;
-    var alamat           = document.getElementById('alamat').value;
-    var email            = document.getElementById('email').value;
-    var telepon          = document.getElementById('telepon').value;
-    var tanggal          = document.getElementById('tanggal').value;
-    var jenis_pembayaran = document.getElementById('jenis_pembayaran').value;
-    var divisi           = document.getElementById('divisi').value;
-    var transaksi        = document.getElementById('transaksi').options[document.getElementById('transaksi').selectedIndex].value;
-    var pokok            = document.getElementById('pokok').value;
-    var wajib            = document.getElementById('wajib').value;
-    var sukarela         = document.getElementById('sukarela').value;
-    var keterangan        = document.getElementById('keterangan').options[document.getElementById('keterangan').selectedIndex].value;
-    var status_buku        = document.getElementById('status_buku').options[document.getElementById('status_buku').selectedIndex].value;
+  function getElementValue(id) {
+    var element = document.getElementById(id);
+    return element ? element.value : '';
+  }
 
-    var data = {
-      kode_anggota: kode_anggota,
-      nik: nik,
-      nama: nama,
-      alamat: alamat,
-      email: email,
-      telepon: telepon,
-      tanggal: tanggal,
-      jenis_pembayaran: jenis_pembayaran,
-      divisi: divisi,
-      pokok: pokok,
-      transaksi: transaksi,
-      wajib: wajib,
-      sukarela: sukarela,
-      keterangan: keterangan,
-      status_buku: status_buku,
-      _token: '{{ csrf_token() }}' 
-    };
+  var kode_anggota     = getElementValue('kode_anggota');
+  var nik              = getElementValue('nik');
+  var nama             = getElementValue('nama');
+  var alamat           = getElementValue('alamat');
+  var email            = getElementValue('email');
+  var telepon          = getElementValue('telepon');
+  var tanggal          = getElementValue('tanggal');
+  var jenis_pembayaran = getElementValue('jenis_pembayaran');
+  var divisi           = getElementValue('divisi');
+  var transaksi        = getElementValue('transaksi');
+  var pokok            = getElementValue('pokok');
+  var wajib            = getElementValue('wajib');
+  var sukarela         = getElementValue('sukarela');
+  var keterangan       = getElementValue('keterangan') || 'No remarks'; 
+  var status_buku      = getElementValue('status_buku');
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '{{ route('anggota.store') }}');
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          console.log('Data berhasil dikirim ke database.');
-          window.location.href = '{{ route('anggota.index') }}';
-        } else {
-          console.error('Gagal mengirim data ke database.');
-        }
+  var data = {
+    kode_anggota: kode_anggota,
+    nik: nik,
+    nama: nama,
+    alamat: alamat,
+    email: email,
+    telepon: telepon,
+    tanggal: tanggal,
+    jenis_pembayaran: jenis_pembayaran,
+    divisi: divisi,
+    pokok: pokok,
+    transaksi: transaksi,
+    wajib: wajib,
+    sukarela: sukarela,
+    keterangan: keterangan,
+    status_buku: status_buku,
+    _token: '{{ csrf_token() }}' 
+  };
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '{{ route('anggota.store') }}');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        console.log('Data berhasil dikirim ke database.');
+        window.location.href = '{{ route('anggota.index') }}';
+      } else {
+        console.error('Gagal mengirim data ke database.');
       }
-    };
-    xhr.send(JSON.stringify(data));
-  });
+    }
+  };
+  xhr.send(JSON.stringify(data));
+});
 </script>
 
 @endpush
