@@ -74,7 +74,7 @@
                         <div class="card-body">
                         <div class="form-group">
                           <label for="kode_pinjaman_debet">Kode pinjaman debet</label>
-                         <input class="input form-control" name="kode_pinjaman_debet" readonly id="kode_pinjaman_debet" type="text" value="{{$pinjamK->kode_pinjaman_debet}}">
+                         <input class="input form-control" name="kode_pinjaman_debet" readonly id="kode_pinjaman_debet" type="text" value="{{$pinjamK->kode_pinjaman_kredit}}">
       
                           @error('kode_pinjaman_debet')
                               <div class="invalid-feedback">
@@ -153,12 +153,7 @@
                        <div class="card-body">
                         <div class="form-group">
                           <label for="keterangan">Keterangan</label>
-                          <select name="keterangan" id="keterangan" class="form-control">
-                              <option value="" disabled selected hidden>Pilih keterangan</option>
-                              @foreach ($keterangan as $item => $getKeterangan)
-                              <option value="{{$item}}" {{ ($pinjamK->keterangan == $item) ? 'selected' : '' }}>{{$getKeterangan}}</option>
-                              @endforeach
-                          </select>
+                          <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control">{{$pinjamK->keterangan}}</textarea>
                        </div>
                       <div class="form-group">
                           <label for="status_buku">Status buku</label>

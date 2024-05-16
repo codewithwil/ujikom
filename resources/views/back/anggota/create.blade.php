@@ -263,7 +263,7 @@ document.getElementById('submitForm').addEventListener('click', function(event) 
 
   var data = {
     kode_anggota: kode_anggota,
-    nik: nik,
+    nik: nik, 
     nama: nama,
     alamat: alamat,
     email: email,

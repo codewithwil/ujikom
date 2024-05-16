@@ -56,6 +56,7 @@ class PengaturanController extends globalC
         $data = $request->validated();
 
         DB::beginTransaction();
+        
         try {
             if ($request->hasFile('foto_perusahaan')) {
                 $checkingFile            = $request->file('foto_perusahaan');

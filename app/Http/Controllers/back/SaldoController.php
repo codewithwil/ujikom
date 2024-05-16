@@ -18,7 +18,7 @@ use Exception;
 class SaldoController extends globalC
 {
     public function index(){
-        $saldo = Saldo::where('status', 1)->get();
+        $saldo = Saldo::get();
         return view('back.saldo.index', [
             'saldo'     => $saldo
         ]);

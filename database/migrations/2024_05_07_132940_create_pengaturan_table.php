@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('web')->nullable();
             $table->text('alamat')->nullable();
             $table->integer('kodepos')->nullable();
+            $table->tinyInteger('batas_pinjam')->nullable();
             $table->timestamps();
         });
     }

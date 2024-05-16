@@ -118,6 +118,16 @@
                       </div>
                   @enderror
                     </div>
+
+                    <div class="form-group">
+                      <label for="bata_pinjam">Batas Pinjam koperasi</label>
+                      <input type="number" class="form-control" id="bata_pinjam" name="bata_pinjam" placeholder="isi bata_pinjam..." value="{{$pengaturan->batas_pinjam}}">
+                      @error('bata_pinjam')
+                      <div class="invalid-feedback">
+                          {{$message}}
+                      </div>
+                  @enderror
+                 </div>
                      
 
                 <button type="submit" class="btn me-2 btn-primary">Submit</button>
@@ -185,6 +195,15 @@
                   <label for="kodepos">Kodepos</label>
                   <input type="number" class="form-control" id="kodepos" name="kodepos" >
                   @error('kodepos')
+                  <div class="invalid-feedback">
+                      {{$message}}
+                  </div>
+              @enderror
+                </div>
+                <div class="form-group">
+                  <label for="batas_pinjam">Batas pinjaman Koperasi</label>
+                  <input type="number" class="form-control" id="batas_pinjam" name="batas_pinjam" >
+                  @error('batas_pinjam')
                   <div class="invalid-feedback">
                       {{$message}}
                   </div>

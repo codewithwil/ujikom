@@ -4,6 +4,7 @@ namespace App\Http\Controllers\back;
 
 use App\Http\Controllers\globalC;
 use App\Models\Anggota;
+use App\Models\Pengaturan;
 use App\Models\PinjamanKredit;
 use App\Models\Saldo;
 use Exception;
@@ -20,7 +21,9 @@ class PinjamanKreditController extends globalC
     public function create(){
         list($jenisBayar,$divisi,$transaksi,$anggota,$statusBuku,$keterangan) = self::getAttr();
         $saldoKoperasi = Saldo::selectRaw("SUM(saldo) AS value")->first();
-        return view('back.pinjaman.pinjaman-kredit.create',compact('jenisBayar','divisi','transaksi','anggota','statusBuku','keterangan','saldoKoperasi'));
+        $batasPinjam = Pengaturan::value('batas_pinjam');
+        return view('back.pinjaman.pinjaman-kredit.create',compact('jenisBayar','divisi','transaksi','anggota','statusBuku','keterangan',
+        'saldoKoperasi', 'batasPinjam'));
     }
 
     public function store(Request $request)
@@ -28,20 +31,29 @@ class PinjamanKreditController extends globalC
         $data = $request->all();
         $data['status'] = 1;
     
-        DB::beginTransaction();
+        DB::beginTransaction(); 
         try {
-            $kode_pinjaman_kredit         = autonumber('pinjaman_kredit', 'kode_pinjaman_kredit', 3, 'PJK');
+            $kode_pinjaman_kredit = autonumber('pinjaman_kredit', 'kode_pinjaman_kredit', 3, 'PJK');
             $data['kode_pinjaman_kredit'] = $kode_pinjaman_kredit;
             PinjamanKredit::create($data);
+    
+            // Fetch the existing saldo
+            $saldo = new Saldo();
 
+            $saldo->saldo -= $data['nominal'];
+            $saldo->keterangan = $data['keterangan'];
+    
+            // Save the updated saldo
+            $saldo->save();
+    
             DB::commit();
-            return redirect(route('pinjamanKredit.index'))->with('success', ' Simpanan Debet has been created');
+            return redirect(route('pinjamanKredit.index'))->with('success', 'Simpanan Debet has been created');
         } catch (Exception $e) {
             \Illuminate\Support\Facades\Log::error('Error while storing pinjaman Debet: ' . $e->getMessage());
-    
+        
             info($e->getMessage());
             DB::rollBack();
-
+    
             return response()->json([
                 "code"    => 422,
                 "status"  => "Error",
@@ -50,10 +62,11 @@ class PinjamanKreditController extends globalC
         }
     }
     
+    
     public function edit($kode_pinjaman_kredit){
         $pinjamK = PinjamanKredit::find($kode_pinjaman_kredit);
         list($jenisBayar,$divisi,$transaksi,$anggota,$statusBuku,$keterangan) = self::getAttr();
-        return view('back.pinjaman.pinjaman-kredit.update',compact('jenisBayar','divisi','transaksi','anggota','statusBuku','keterangan'));
+        return view('back.pinjaman.pinjaman-kredit.update',compact('pinjamK','jenisBayar','divisi','transaksi','anggota','statusBuku','keterangan'));
     }
 
     public function update(Request $request, $kode_pinjaman_kredit){

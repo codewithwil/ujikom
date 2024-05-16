@@ -67,12 +67,6 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{route('keterangan.index')}}" class="nav-link">
-                <i class="nav-icon fas fa-note"></i>
-                <p>Keterangan</p>
-              </a>
-            </li>
-            <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-sign-in-alt"></i>
                 <p>
@@ -99,12 +93,6 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{{route('pinjamanDebet.index')}}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>debet</p>
-                  </a>
-                </li>
                 <li class="nav-item">
                   <a href="{{route('pinjamanKredit.index')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>

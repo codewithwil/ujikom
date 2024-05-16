@@ -21,7 +21,7 @@
     $pengaturan = \App\Models\Pengaturan::first();
 @endphp
 
-<img src="{{ asset('storage/back/pengaturan/' . optional($pengaturan)->foto_perusahaan) }}" alt=" Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+<img src="{{ asset('storage/back/pengaturan/' . optional($pengaturan)->foto_perusahaan) }}" alt=" Logo" width="100px" class="brand-image img-circle elevation-3" style="opacity: .8">
 
   </div>
   <!-- /.login-logo -->

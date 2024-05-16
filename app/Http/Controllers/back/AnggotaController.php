@@ -29,7 +29,7 @@ class AnggotaController extends globalC
         return view('back.anggota.create');
     }
   
-    public function store(CreateAnggotaRequest $request){
+    public function store(Request $request){
         $data = $request->all();
         $data['status'] = 1;
 
@@ -67,7 +67,7 @@ class AnggotaController extends globalC
 
             $saldoKoperasi = new Saldo();
             $saldoKoperasi->saldo      = $data['pokok'] + $data['wajib'] + $data['sukarela'];
-            $saldoKoperasi->keterangan = 'simpanan debet berhasil di buat oleh ' . $data['nama'] . ' dengan nominal ' . ($data['pokok'] + $data['wajib'] + $data['sukarela']);
+            $saldoKoperasi->keterangan = $data['keterangan'];
             $saldoKoperasi->save();
             DB::commit();
             return redirect(route('anggota.index'))->with('success', ' Anggota has been created');

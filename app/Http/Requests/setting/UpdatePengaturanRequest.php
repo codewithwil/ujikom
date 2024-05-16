@@ -29,6 +29,7 @@ class UpdatePengaturanRequest extends FormRequest
             'web'               => 'nullable|',
             'alamat'            => 'nullable|max:255',
             'kodepos'           => 'nullable|max:11',
+            'batas_pinjam'      => 'nullable|max:4',
         ];
     }
 }
