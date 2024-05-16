@@ -78,7 +78,7 @@
                         $kodePinjamanKredit = autonumber('pinjaman_kredit', 'kode_pinjaman_kredit', 3, 'PJK');
                     ?>
                        <input class="input @error('kode_pinjaman_kredit') is-invalid @enderror form-control" name="kode_pinjaman_kredit" readonly id="kode_pinjaman_kredit" type="text" value="<?= $kodePinjamanKredit ?>">
-    
+
                         @error('kode_pinjaman_kredit')
                             <div class="invalid-feedback">
                                 {{$message}}
@@ -106,7 +106,7 @@
                       <option value="hidden" disabled selected hidden>Pilih divisi</option>
                       <option value="{{$item}}">{{$getdivisi}}</option>
                       @endforeach
-                      
+
                     </select>
                   </div>
                   <div class="form-group">
@@ -143,7 +143,7 @@
                       <div class="form-group">
                         <label for="periode">Periode</label>
                         <select name="periode" id="periode" class="form-control">
-                          <option value="hidden" disabled selected hidden>Pilih Periode</option>                      
+                          <option value="hidden" disabled selected hidden>Pilih Periode</option>
                         </select>
                       </div>
                       <div class="form-group">
@@ -151,7 +151,7 @@
                         <input type="number" name="nominal" id="nominal" class="form-control" >
                         <div id="max-saldo" data-saldo="{{ $saldoKoperasi->value }}"></div>
                         <div id="batas-pinjam" data-batas-pinjam="{{ $batasPinjam }}"></div>
-                        
+
                       </div>
                       <div class="form-group">
                         <label for="bunga">bunga Pinjaman</label>
@@ -191,7 +191,7 @@
             <!-- /.card -->
           </div>
         </div>
-   
+
 
       </div>
       <!-- /.container-fluid -->
@@ -246,7 +246,7 @@ periodes.forEach(function(periode) {
 </script>
 <script>
   document.getElementById('submitForm').addEventListener('click', function(event) {
-    
+
     var tanggal          = document.getElementById('tanggal').value;
     var jenis_pembayaran = document.getElementById('jenis_pembayaran').value;
     var divisi           = document.getElementById('divisi').value;
@@ -268,7 +268,7 @@ periodes.forEach(function(periode) {
       bunga: bunga,
       keterangan: keterangan,
       status_buku: status_buku,
-      _token: '{{ csrf_token() }}' 
+      _token: '{{ csrf_token() }}'
     };
 
     var xhr = new XMLHttpRequest();
@@ -291,13 +291,13 @@ periodes.forEach(function(periode) {
   function showAnggotaInfo() {
       var anggotaSelect = document.getElementById('anggota_kode');
       var selectedAnggota = anggotaSelect.options[anggotaSelect.selectedIndex];
-      var namaAnggota = selectedAnggota.text; 
-      var kode_anggota = selectedAnggota.value; 
+      var namaAnggota = selectedAnggota.text;
+      var kode_anggota = selectedAnggota.value;
 
       document.getElementById('namaAnggota').textContent = namaAnggota;
       var transaksiInput = document.getElementById('nominal');
       var batasKredit; // Deklarasikan variabel batasKredit di luar blok if
-  
+
       // Buat fungsi untuk menetapkan batas maksimum dan menambahkan event listener
       function setBatasMaksDanEventListener(batasKredit) {
           // Setel atribut max input nominal sesuai dengan total saldo
@@ -317,7 +317,7 @@ periodes.forEach(function(periode) {
       }
 
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/anggota/' + kode_anggota); 
+      xhr.open('GET', '/anggota/' + kode_anggota);
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onreadystatechange = function() {
           if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -367,7 +367,7 @@ $(document).ready(function () {
 });
 </script>
 
-  
+
 
 @endpush
 

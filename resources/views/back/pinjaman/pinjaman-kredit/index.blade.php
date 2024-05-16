@@ -44,8 +44,8 @@
                                 <li>{{$error}}</li>
                             @endforeach
                         </ul>
-                    </div> 
-                </div> 
+                    </div>
+                </div>
                 @endif
                <div class="table-responsive">
                 <table id="example1" class="table table-bordered table-striped">
@@ -75,6 +75,7 @@
                     <td>{{$item->jenis_pembayaran}}</td>
                     <td>{{$item->transaksi}}</td>
                     <td>{{$item->divisi}}</td>
+                    <td>{{$item->keterangan}}</td>
                     <td>{{$item->nominal}}</td>
                     <td>{{$item->bunga}}</td>
                     <td>{{$item->keterangan}}</td>
@@ -82,7 +83,7 @@
                     <td>
                       <a href="{{route('pinjamanKredit.edit', $item->kode_pinjaman_kredit)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fas fa-pencil-alt"></i></a>
 
-                        <a href="#" onclick="deletePinjamD(this)" data-id="{{$item->kode_pinjaman_kredit}}" 
+                        <a href="#" onclick="deletePinjamD(this)" data-id="{{$item->kode_pinjaman_kredit}}"
                             class="btn btn-danger shadow btn-xs sharp"><i class="fas fa-trash"></i></a>
                     </td>
                   </tr>
@@ -106,7 +107,7 @@
                   </tfoot>
                 </table>
                </div>
-                
+
               </div>
               <!-- /.card-body -->
             </div>
@@ -147,7 +148,7 @@
     <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
     <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
     <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
-    
+
     {{-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -175,7 +176,7 @@
     function deletePinjamD(e) {
         let kode_pinjaman_kredit = e.getAttribute('data-id');
         console.log("ID Saldo yang Dihapus:", kode_pinjaman_kredit);
-    
+
         Swal.fire({
             title: 'Delete Saldo ' + kode_pinjaman_kredit,
             text: "Are you sure?",
@@ -191,8 +192,8 @@
                     url: '{{ route("pinjamanKredit.delete") }}',
                     data: {
                         _token: '{{ csrf_token() }}',
-                        _method: 'POST', 
-                        kode_pinjaman_kredit: kode_pinjaman_kredit 
+                        _method: 'POST',
+                        kode_pinjaman_kredit: kode_pinjaman_kredit
                     },
                     dataType: "json",
                     success: function (response) {
@@ -213,9 +214,9 @@
     }
     </script>
     <script>
-        
+
     $(document).ready(function(){
-  
+
         @if(session('success'))
             // Tampilkan pesan Toastr
             toastr.success('{{ session('success') }}');
@@ -223,6 +224,6 @@
             {{ session()->forget('success') }}
         @endif
     });
-  </script>  
+  </script>
   @endpush
 @endsection

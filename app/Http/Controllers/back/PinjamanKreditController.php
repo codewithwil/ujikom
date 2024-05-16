@@ -31,29 +31,29 @@ class PinjamanKreditController extends globalC
     {
         $data = $request->all();
         $data['status'] = 1;
-    
-        DB::beginTransaction(); 
+
+        DB::beginTransaction();
         try {
             $kode_pinjaman_kredit = autonumber('pinjaman_kredit', 'kode_pinjaman_kredit', 3, 'PJK');
             $data['kode_pinjaman_kredit'] = $kode_pinjaman_kredit;
-            
+
             // Create pinjaman kredit entry
             $pinjamanKredit = PinjamanKredit::create($data);
-    
+
             // Create saldo kredit entry
             $saldo = new SaldoKredit();
-            $saldo->saldo = -$pinjamanKredit->nominal; // Assuming nominal represents the loan amount
+            $saldo->saldo = $data['nominal']; // Assuming nominal represents the loan amount
             $saldo->keterangan = $data['keterangan'];
             $saldo->save();
-    
+
             DB::commit();
             return redirect(route('pinjamanKredit.index'))->with('success', 'Simpanan Debet has been created');
         } catch (Exception $e) {
             \Illuminate\Support\Facades\Log::error('Error while storing pinjaman Debet: ' . $e->getMessage());
-        
+
             info($e->getMessage());
             DB::rollBack();
-    
+
             return response()->json([
                 "code"    => 422,
                 "status"  => "Error",
@@ -61,8 +61,8 @@ class PinjamanKreditController extends globalC
             ], 422);
         }
     }
-    
-    
+
+
     public function edit($kode_pinjaman_kredit){
         $pinjamK = PinjamanKredit::find($kode_pinjaman_kredit);
         list($jenisBayar,$divisi,$transaksi,$anggota,$statusBuku,$keterangan) = self::getAttr();
@@ -71,7 +71,7 @@ class PinjamanKreditController extends globalC
 
     public function update(Request $request, $kode_pinjaman_kredit){
         $data = $request->all();
-        
+
         DB::beginTransaction();
         try {
             $simpanK = PinjamanKredit::find($kode_pinjaman_kredit);
@@ -80,10 +80,10 @@ class PinjamanKreditController extends globalC
             return redirect(route('pinjamanKredit.index'))->with('success', ' Simpanan Kredit has been created');
         } catch (Exception $e) {
             \Illuminate\Support\Facades\Log::error('Error while storing pinjamanKredit: ' . $e->getMessage());
-    
+
             info($e->getMessage());
             DB::rollBack();
-    
+
             return response()->json([
                 "code"    => 422,
                 "status"  => "Error",
@@ -96,7 +96,7 @@ class PinjamanKreditController extends globalC
         $validated = $request->validate([
             'kode_pinjaman_kredit' => 'required',
         ]);
-    
+
         $name = PinjamanKredit::where('kode_pinjaman_kredit', $validated['kode_pinjaman_kredit'])->first();
         if ($name) {
             $name->status = PinjamanKredit::DELETED;

@@ -42,7 +42,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.go');
 Route::get('/dashboard/kooperasi', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-	
+
 
     Route::get('daily-simpanan-transactions', [DashboardController::class, 'dailySimpananTransactions'])->name('daily.simpanan.transactions');
     Route::get('daily-pinjaman-transactions', [DashboardController::class, 'dailyPinjamanTransactions'])->name('daily.pinjaman.transactions');
@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/pengaturan/store', [PengaturanController::class, 'store'])->name('pengaturan.store');
     Route::post('/pengaturan/update{id}', [PengaturanController::class, 'update'])->name('pengaturan.update');
 
-    //Anggota 
+    //Anggota
     Route::get('/Anggota', [AnggotaController::class, 'index'])->name('anggota.index')->middleware(['auth', 'verified', 'permission:lihat-anggota']);
     Route::get('/Anggota/tambah', [AnggotaController::class, 'create'])->name('anggota.tambah')->middleware(['auth', 'verified', 'permission:tambah-anggota']);
     Route::get('/anggota/{kodeAnggota}', [AnggotaController::class, 'getInfo']);
@@ -88,7 +88,7 @@ Route::middleware('auth')->group(function () {
     //saldo koperasi kredit
     Route::get('/saldo/kredit', [SaldoKreditController::class, 'index'])->name('saldo.kredit.index')->middleware(['auth', 'verified', 'permission:lihat-saldo']);
     Route::get('/saldo/tambah', [SaldoKreditController::class, 'create'])->name('saldo.tambah')->middleware(['auth', 'verified', 'permission:tambah-saldo']);
-    Route::get('/saldo/edit/{id_saldo}', [SaldoKreditController::class, 'edit'])->name('saldo.edit')->middleware(['auth', 'verified', 'permission:edit-saldo']);
+    Route::get('/saldo/edit/{id_saldo_kredit}', [SaldoKreditController::class, 'saldo-kredit'])->name('saldo.kredit.edit')->middleware(['auth', 'verified', 'permission:edit-saldo']);
     Route::post('/saldo/store', [SaldoKreditController::class, 'store'])->name('saldo.store')->middleware(['auth', 'verified', 'permission:tambah-saldo']);
     Route::post('/saldo/update{id_saldo}', [SaldoKreditController::class, 'update'])->name('saldo.update')->middleware(['auth', 'verified', 'permission:edit-saldo']);
     Route::post('/saldo/delete', [SaldoKreditController::class, 'delete'])->name('saldo.delete')->middleware(['auth', 'verified', 'permission:hapus-anggota']);

@@ -43,8 +43,8 @@
                                 <li>{{$error}}</li>
                             @endforeach
                         </ul>
-                    </div> 
-                </div> 
+                    </div>
+                </div>
                 @endif
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
@@ -60,17 +60,14 @@
                     @php
                         $totalSaldo = 0;
                     @endphp
-                  @foreach ($saldo as $item)
+                  @foreach ($saldoKredit as $item)
                   <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{$item->saldo}}</td>
                     <td>{{$item->keterangan}}</td>
                     <td>{{$item->created_at}}</td>
                     <td>
-                      <a href="{{route('saldo.edit', $item->id_saldo)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fas fa-pencil-alt"></i></a>
-
-                        <a href="#" onclick="deleteSaldo(this)" data-id="{{$item->id_saldo}}" 
-                            class="btn btn-danger shadow btn-xs sharp"><i class="fas fa-trash"></i></a>
+                      <a href="{{route('saldo.kredit.edit', $item->id_saldo_kredit)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fas fa-pencil-alt"></i></a>
                     </td>
                   </tr>
                   @php
@@ -131,7 +128,7 @@
     <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
     <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
     <script src="{{asset('admin/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
-    
+
     {{-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -159,7 +156,7 @@
     function deleteSaldo(e) {
         let id_saldo = e.getAttribute('data-id');
         console.log("ID Saldo yang Dihapus:", id_saldo);
-    
+
         Swal.fire({
             title: 'Delete Saldo ' + id_saldo,
             text: "Are you sure?",
@@ -175,8 +172,8 @@
                     url: '{{ route("saldo.delete") }}',
                     data: {
                         _token: '{{ csrf_token() }}',
-                        _method: 'POST', 
-                        id_saldo: id_saldo 
+                        _method: 'POST',
+                        id_saldo: id_saldo
                     },
                     dataType: "json",
                     success: function (response) {
@@ -197,9 +194,9 @@
     }
     </script>
     <script>
-        
+
     $(document).ready(function(){
-  
+
         @if(session('success'))
             // Tampilkan pesan Toastr
             toastr.success('{{ session('success') }}');
@@ -207,6 +204,6 @@
             {{ session()->forget('success') }}
         @endif
     });
-  </script>  
+  </script>
   @endpush
 @endsection
