@@ -16,7 +16,7 @@ class PinjamanKredit extends Model
     protected $keyType = 'string'; 
     public $incrementing = false;
     protected $fillable = ['kode_pinjaman_kredit', 'anggota_kode', 'transaksi','tanggal', 'periode','jenis_pembayaran',
-    'divisi','keterangan', 'nominal', 'bunga', 'keterangan','status_buku', 'status'];
+    'divisi', 'nominal', 'bunga', 'keterangan','status_buku', 'status'];
     
 
      // BOOTING SECTION

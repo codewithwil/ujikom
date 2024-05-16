@@ -52,13 +52,30 @@
                 Dashboard
               </p>
             </a>
-            <li class="nav-header">Saldo</li>
             <li class="nav-item">
-              <a href="{{route('saldo.index')}}" class="nav-link">
-                <i class="nav-icon fas fa-dollar-sign"></i>
-                <p>Saldo Koperasi</p>
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-dollar-sig"></i>
+                <p>
+                  Saldo
+                  <i class="right fas fa-angle-left"></i>
+                </p>
               </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('saldo.index')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>debet</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{route('saldo.kredit.index')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>kredit</p>
+                  </a>
+                </li>
+              </ul>
             </li>
+  
             <li class="nav-header">Kelola Anggota</li>
             <li class="nav-item">
               <a href="{{route('anggota.index')}}" class="nav-link">

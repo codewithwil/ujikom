@@ -174,8 +174,9 @@
                     <div id="keterangan-part" class="content" role="tabpanel" aria-labelledby="keterangan-part-trigger">
                       <div class="form-group">
                         <label for="keterangan">Keterangan</label>
-                        <textarea name="keterangan" id="" cols="30" rows="5" id="keterangan" class="form-control"></textarea>
-                     </div>
+                        <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control"></textarea>
+                    </div>
+                    
                     <div class="form-group">
                         <label for="status_buku">Status buku</label>
                         <select name="status_buku" id="status_buku" class="form-control">
@@ -258,7 +259,7 @@ document.getElementById('submitForm').addEventListener('click', function(event) 
   var pokok            = getElementValue('pokok');
   var wajib            = getElementValue('wajib');
   var sukarela         = getElementValue('sukarela');
-  var keterangan       = getElementValue('keterangan') || 'No remarks'; 
+  var keterangan       = getElementValue('keterangan'); 
   var status_buku      = getElementValue('status_buku');
 
   var data = {
@@ -275,10 +276,10 @@ document.getElementById('submitForm').addEventListener('click', function(event) 
     transaksi: transaksi,
     wajib: wajib,
     sukarela: sukarela,
-    keterangan: keterangan,
+    keterangan: keterangan, 
     status_buku: status_buku,
     _token: '{{ csrf_token() }}' 
-  };
+};
 
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '{{ route('anggota.store') }}');

@@ -7,6 +7,7 @@ use App\Models\Anggota;
 use App\Models\Pengaturan;
 use App\Models\PinjamanKredit;
 use App\Models\Saldo;
+use App\Models\SaldoKredit;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -35,15 +36,14 @@ class PinjamanKreditController extends globalC
         try {
             $kode_pinjaman_kredit = autonumber('pinjaman_kredit', 'kode_pinjaman_kredit', 3, 'PJK');
             $data['kode_pinjaman_kredit'] = $kode_pinjaman_kredit;
-            PinjamanKredit::create($data);
+            
+            // Create pinjaman kredit entry
+            $pinjamanKredit = PinjamanKredit::create($data);
     
-            // Fetch the existing saldo
-            $saldo = new Saldo();
-
-            $saldo->saldo -= $data['nominal'];
+            // Create saldo kredit entry
+            $saldo = new SaldoKredit();
+            $saldo->saldo = -$pinjamanKredit->nominal; // Assuming nominal represents the loan amount
             $saldo->keterangan = $data['keterangan'];
-    
-            // Save the updated saldo
             $saldo->save();
     
             DB::commit();

@@ -1,5 +1,5 @@
 @extends('back.layout.template')
-@section('title', 'angsuran debet')
+@section('title', 'saldo')
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   <link rel="stylesheet" href="{{asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
@@ -11,12 +11,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Data angsuran Pinjaman debet</h1>
+            <h1>Data user</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Data angsuran Pinjaman debet</li>
+              <li class="breadcrumb-item active">Data Saldo kredit</li>
             </ol>
           </div>
         </div>
@@ -31,7 +31,7 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Kelola data angsuran Pinjaman debet</h3>
+                <h3 class="card-title">Kelola data Saldo  kredit</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -46,63 +46,49 @@
                     </div> 
                 </div> 
                 @endif
-               <div class="table-responsive">
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>No</th>
-                    <th>Kode</th>
-                    <th>anggota</th>
-                    <th>tanggal</th>
-                    <th>Jenis</th>
-                    <th>Transaksi</th>
-                    <th>divisi</th>
+                    <th>saldo</th>
                     <th>keterangan</th>
-                    <th>periode</th>
-                    <th>cicilan</th>
-                    <th>status buku</th>
-                    <th>Aksi</th>
+                    <th>saldo masuk pada tanggal</th>
+                    <th>aksi</th>
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach ($angsuranDebet as $item)
+                    @php
+                        $totalSaldo = 0;
+                    @endphp
+                  @foreach ($saldo as $item)
                   <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$item->kode_simpanan_debet}}</td>
-                    <td>{{$item->Anggota->nama}}</td>
-                    <td>{{$item->tanggal}}</td>
-                    <td>{{$item->jenis_pembayaran}}</td>
-                    <td>{{$item->transaksi}}</td>
-                    <td>{{$item->divisi}}</td>
+                    <td>{{$item->saldo}}</td>
                     <td>{{$item->keterangan}}</td>
-                    <td>{{$item->periode}} bulan</td>
-       
-                    <td>{{$item->status_buku}}</td>
+                    <td>{{$item->created_at}}</td>
                     <td>
-                      {{-- <a href="{{route('simpanan_debet.detail', $item->kode_sompanan_debet)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fa fa-eye"></i></a> --}}
+                      <a href="{{route('saldo.edit', $item->id_saldo)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fas fa-pencil-alt"></i></a>
+
+                        <a href="#" onclick="deleteSaldo(this)" data-id="{{$item->id_saldo}}" 
+                            class="btn btn-danger shadow btn-xs sharp"><i class="fas fa-trash"></i></a>
                     </td>
                   </tr>
+                  @php
+                      $totalSaldo += $item->saldo;
+                  @endphp
                   @endforeach
                   </tbody>
                   <tfoot>
                   <tr>
-                    <th>No</th>
-                    <th>Kode</th>
-                    <th>anggota</th>
-                    <th>tanggal</th>
-                    <th>Jenis</th>
-                    <th>Transaksi</th>
-                    <th>divisi</th>
+                  <th>No</th>
+                    <th>saldo</th>
                     <th>keterangan</th>
-                    <th>periode</th>
-                    <th>cicilan</th>
-                    <th>status buku</th>
-                    <th>Aksi</th>
+                    <th>saldo masuk pada tanggal</th>
+                    <th>aksi</th>
                   </tr>
                   </tfoot>
                 </table>
-               </div>
-                
+                <h3 class="mt-3">Total Saldo koperasi: Rp{{ number_format($totalSaldo, 0, ',', '.') }}</h3>
               </div>
               <!-- /.card-body -->
             </div>
@@ -126,6 +112,8 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+ {{-- modal tambah saldo  --}}
 
 
 
@@ -168,12 +156,12 @@
 
 
 <script>
-    function deletePinjamD(e) {
-        let kode_pinjaman_debet = e.getAttribute('data-id');
-        console.log("ID Saldo yang Dihapus:", kode_pinjaman_debet);
+    function deleteSaldo(e) {
+        let id_saldo = e.getAttribute('data-id');
+        console.log("ID Saldo yang Dihapus:", id_saldo);
     
         Swal.fire({
-            title: 'Delete Saldo ' + kode_pinjaman_debet,
+            title: 'Delete Saldo ' + id_saldo,
             text: "Are you sure?",
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -184,11 +172,11 @@
             if (result.isConfirmed) {
                 $.ajax({
                     type: 'POST',
-                    url: '{{ route("pinjamanDebet.delete") }}',
+                    url: '{{ route("saldo.delete") }}',
                     data: {
                         _token: '{{ csrf_token() }}',
                         _method: 'POST', 
-                        kode_pinjaman_debet: kode_pinjaman_debet 
+                        id_saldo: id_saldo 
                     },
                     dataType: "json",
                     success: function (response) {
@@ -197,7 +185,7 @@
                             text: response.message,
                             icon: 'success',
                         }).then((result) => {
-                            window.location.href = '/angsuran/debet';
+                            window.location.href = '/saldo';
                         });
                     },
                     error: function (xhr, ajaxOptions, thrownError) {

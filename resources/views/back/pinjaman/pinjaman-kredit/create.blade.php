@@ -166,7 +166,7 @@
                       <div class="form-group">
                         <label for="keterangan">Keterangan</label>
                         <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control"></textarea>
-                     </div>
+                    </div>
                     <div class="form-group">
                         <label for="status_buku">Status buku</label>
                         <select name="status_buku" id="status_buku" class="form-control">
@@ -246,8 +246,7 @@ periodes.forEach(function(periode) {
 </script>
 <script>
   document.getElementById('submitForm').addEventListener('click', function(event) {
-    event.preventDefault();
-
+    
     var tanggal          = document.getElementById('tanggal').value;
     var jenis_pembayaran = document.getElementById('jenis_pembayaran').value;
     var divisi           = document.getElementById('divisi').value;
@@ -256,7 +255,7 @@ periodes.forEach(function(periode) {
     var periode          = document.getElementById('periode').value;
     var nominal          = document.getElementById('nominal').value;
     var bunga            = document.getElementById('bunga').value;
-    var keterangan       = document.getElementById('keterangan').value;
+    var keterangan = document.getElementById('keterangan').value;
     var status_buku      = document.getElementById('status_buku').value;
 
     var data = {
@@ -339,27 +338,33 @@ periodes.forEach(function(periode) {
 </script>
 
 <script>
-  $(document).ready(function () {
-      var saldo = parseFloat($('#max-saldo').data('saldo'));
-      var batasPinjamPersentase = parseFloat($('#batas-pinjam').data('batas-pinjam'));
-      
-      // Hitung batas pinjam absolut sebagai persentase dari saldo
-      var batasPinjamAbsolut = saldo * (batasPinjamPersentase / 100);
-      
-      $('#nominal').on('input', function () {
-          var nominal = parseFloat($(this).val());
+$(document).ready(function () {
+    var saldo = parseFloat($('#max-saldo').data('saldo'));
+    var batasPinjamPersentase = parseFloat($('#batas-pinjam').data('batas-pinjam'));
 
-          if (nominal > saldo) {
-              $('#max-saldo').addClass('text-danger').text('Nominal tidak boleh melebihi saldo koperasi.');
-              $(this).val(saldo); // Set nilai input menjadi saldo maksimum
-          } else if (nominal > batasPinjamAbsolut) {
-              $('#max-saldo').addClass('text-danger').text('Nominal tidak boleh melebihi batas pinjam.');
-              $(this).val(batasPinjamAbsolut); // Set nilai input menjadi batas pinjam
-          } else {
-              $('#batas-pinjam').removeClass('text-danger').text('Saldo koperasi yg boleh di pinjam sebesar ' + batasPinjamAbsolut);
-          }
-      });
-  });
+    // Check if saldo is a valid number
+    if (!isNaN(saldo)) {
+        // Hitung batas pinjam absolut sebagai persentase dari saldo
+        var batasPinjamAbsolut = saldo * (batasPinjamPersentase / 100);
+
+        $('#nominal').on('input', function () {
+            var nominal = parseFloat($(this).val());
+
+            if (nominal > saldo) {
+                $('#max-saldo').addClass('text-danger').text('Nominal tidak boleh melebihi saldo koperasi.');
+                $(this).val(saldo); // Set nilai input menjadi saldo maksimum
+            } else if (nominal > batasPinjamAbsolut) {
+                $('#max-saldo').addClass('text-danger').text('Nominal tidak boleh melebihi batas pinjam.');
+                $(this).val(batasPinjamAbsolut); // Set nilai input menjadi batas pinjam
+            } else {
+                $('#batas-pinjam').removeClass('text-danger').text('Saldo koperasi yg boleh di pinjam sebesar ' + batasPinjamAbsolut);
+            }
+        });
+    } else {
+        // Handle case when saldo is not a valid number
+        console.error('Saldo koperasi tidak valid.');
+    }
+});
 </script>
 
   

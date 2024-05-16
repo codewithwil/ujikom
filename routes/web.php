@@ -12,7 +12,8 @@ use App\Http\Controllers\back\{
     KeteranganController,
     SaldoController,
     SimpananDebetController,
-    PinjamanKredit
+    PinjamanKredit,
+    SaldoKreditController
 };
 
 use App\Http\Controllers\back\DashboardController;
@@ -76,26 +77,25 @@ Route::middleware('auth')->group(function () {
     Route::post('/Anggota/update{kode_anggota}', [AnggotaController::class, 'update'])->name('anggota.update')->middleware(['auth', 'verified', 'permission:edit-anggota']);
     Route::post('/Anggota/delete', [AnggotaController::class, 'delete'])->name('anggota.delete')->middleware(['auth', 'verified', 'permission:hapus-anggota']);
 
-    //keterangan
-    Route::get('/keterangan', [KeteranganController::class, 'index'])->name('keterangan.index');
-    Route::get('/keterangan/tambah', [KeteranganController::class, 'create'])->name('keterangan.tambah');
-    Route::get('/keterangan/edit{id_keterangan}', [KeteranganController::class, 'edit'])->name('keterangan.edit');
-    Route::post('/keterangan/store', [KeteranganController::class, 'store'])->name('keterangan.store');
-    Route::post('/keterangan/update{id_keterangan}', [KeteranganController::class, 'update'])->name('keterangan.update');
-    Route::post('/keterangan/delete', [KeteranganController::class, 'delete'])->name('keterangan.delete');
-
-    //saldo koperasi
-    Route::get('/saldo', [SaldoController::class, 'index'])->name('saldo.index')->middleware(['auth', 'verified', 'permission:lihat-saldo']);
+    //saldo koperasi debet
+    Route::get('/saldo/debet', [SaldoController::class, 'index'])->name('saldo.index')->middleware(['auth', 'verified', 'permission:lihat-saldo']);
     Route::get('/saldo/tambah', [SaldoController::class, 'create'])->name('saldo.tambah')->middleware(['auth', 'verified', 'permission:tambah-saldo']);
     Route::get('/saldo/edit/{id_saldo}', [SaldoController::class, 'edit'])->name('saldo.edit')->middleware(['auth', 'verified', 'permission:edit-saldo']);
     Route::post('/saldo/store', [SaldoController::class, 'store'])->name('saldo.store')->middleware(['auth', 'verified', 'permission:tambah-saldo']);
     Route::post('/saldo/update{id_saldo}', [SaldoController::class, 'update'])->name('saldo.update')->middleware(['auth', 'verified', 'permission:edit-saldo']);
     Route::post('/saldo/delete', [SaldoController::class, 'delete'])->name('saldo.delete')->middleware(['auth', 'verified', 'permission:hapus-anggota']);
 
+    //saldo koperasi kredit
+    Route::get('/saldo/kredit', [SaldoKreditController::class, 'index'])->name('saldo.kredit.index')->middleware(['auth', 'verified', 'permission:lihat-saldo']);
+    Route::get('/saldo/tambah', [SaldoKreditController::class, 'create'])->name('saldo.tambah')->middleware(['auth', 'verified', 'permission:tambah-saldo']);
+    Route::get('/saldo/edit/{id_saldo}', [SaldoKreditController::class, 'edit'])->name('saldo.edit')->middleware(['auth', 'verified', 'permission:edit-saldo']);
+    Route::post('/saldo/store', [SaldoKreditController::class, 'store'])->name('saldo.store')->middleware(['auth', 'verified', 'permission:tambah-saldo']);
+    Route::post('/saldo/update{id_saldo}', [SaldoKreditController::class, 'update'])->name('saldo.update')->middleware(['auth', 'verified', 'permission:edit-saldo']);
+    Route::post('/saldo/delete', [SaldoKreditController::class, 'delete'])->name('saldo.delete')->middleware(['auth', 'verified', 'permission:hapus-anggota']);
+
     //simpenan kredit
     Route::get('/simpanan/kredit', [simpananKreditController::class, 'index'])->name('simpananKredit.index')->middleware(['auth', 'verified', 'permission:lihat-simpananKredit']);
     Route::get('/cek-simpan-debet/{kode_anggota}', [simpananKreditController::class, 'cekSimpanDebet'])->name('simpananKredit.cek')->middleware(['auth', 'verified', 'permission:lihat-simpananKredit']);
-    Route::get('/cek-saldo-debet/{kode_anggota}', [simpananKreditController::class, 'cekSaldoDebet'])->name('simpananKredit.ceksaldo')->middleware(['auth', 'verified', 'permission:lihat-simpananKredit']);
     Route::get('/simpanan/kredit/tambah', [simpananKreditController::class, 'create'])->name('simpananKredit.tambah')->middleware(['auth', 'verified', 'permission:tambah-simpananKredit']);
     Route::get('/simpanan/kredit/edit{kode_simpanan_kredit}', [simpananKreditController::class, 'edit'])->name('simpananKredit.edit')->middleware(['auth', 'verified', 'permission:edit-simpananKredit']);
     Route::post('/simpanan/kredit/store', [simpananKreditController::class, 'store'])->name('simpananKredit.store')->middleware(['auth', 'verified', 'permission:tambah-simpananKredit']);

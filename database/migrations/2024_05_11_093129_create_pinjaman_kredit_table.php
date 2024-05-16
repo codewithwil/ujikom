@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('transaksi',['debet','kredit'])->default('debet');
             $table->integer('nominal');
             $table->integer('bunga');
-            $table->enum('keterangan',['debet','kredit'])->default('debet');
+            $table->text('keterangan');
             $table->enum('status_buku',['aktif','nonaktif'])->default('aktif');
             $table->tinyInteger('status');
             $table->timestamps();

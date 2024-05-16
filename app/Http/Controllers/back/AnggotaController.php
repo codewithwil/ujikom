@@ -57,10 +57,10 @@ class AnggotaController extends globalC
             $simpananDebet->jenis_pembayaran    = $data['jenis_pembayaran'];
             $simpananDebet->transaksi           = $data['transaksi'];
             $simpananDebet->divisi              = $data['divisi'];
-            $simpananDebet->keterangan          = $data['keterangan'];
             $simpananDebet->pokok               = $data['pokok'];
             $simpananDebet->wajib               = $data['wajib'];
             $simpananDebet->sukarela            = $data['sukarela'];
+            $simpananDebet->keterangan          = $data['keterangan'];
             $simpananDebet->status_buku         = $data['status_buku'];
             $simpananDebet['status']            = 1;
             $simpananDebet->save();

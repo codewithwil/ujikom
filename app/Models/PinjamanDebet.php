@@ -20,7 +20,7 @@ class PinjamanDebet extends Model
     protected $keyType = 'string'; 
     public $incrementing = false;
     protected $fillable = ['kode_pinjaman_debet', 'anggota_kode', 'transaksi','tanggal', 'periode','jenis_pembayaran',
-    'divisi','keterangan', 'nominal', 'keterangan','status_buku', 'status'];
+    'divisi', 'nominal', 'keterangan','status_buku', 'status'];
     
 
      // BOOTING SECTION

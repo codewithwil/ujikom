@@ -5,17 +5,18 @@ namespace App\Http\Controllers\back;
 use App\Http\Controllers\globalC;
 use App\Models\PinjamanDebet;
 use App\Models\PinjamanKredit;
+use App\Models\SimpananDebet;
 use Illuminate\Http\Request;
 
 class angsuranController extends globalC
 {
     public function debet(){
-        $angsuranDebet = PinjamanDebet::with('Anggota')->where('status', 1)->get();
+        $angsuranDebet = SimpananDebet::with('Anggota')->where('status', 1)->get();
         return view('back.angsuran.angsuran-debet.index',compact("angsuranDebet"));
     }
 
-    public function debetDetail($kode_pinjaman_debet){
-        $angsuranDebet = PinjamanDebet::find($kode_pinjaman_debet);
+    public function debetDetail($kode_simpanan_debet){
+        $angsuranDebet = SimpananDebet::find($kode_simpanan_debet);
         return view('back.angsuran.angsuran-debet.show', compact("angsuranDebet"));
     }
 
