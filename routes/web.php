@@ -127,7 +127,7 @@ Route::middleware('auth')->group(function () {
 
     //angsuran debet
     Route::get('/angsuran/debet', [angsuranController::class, 'debet'])->name('angsuran.debet')->middleware(['auth', 'verified', 'permission:lihat-angsuranDebet']);
-    Route::get('/angsuran/debet/detail/{kode_pinjaman_debet}', [angsuranController::class, 'debetDetail'])->name('angsuran.debet.detail')->middleware(['auth', 'verified', 'permission:lihat-angsuranDebet']);
+    Route::get('/angsuran/debet/detail/{kode_simpanan_debet}', [angsuranController::class, 'debetDetail'])->name('angsuran.debet.detail')->middleware(['auth', 'verified', 'permission:lihat-angsuranDebet']);
 
     //angsuran kredit
     Route::get('/angsuran/kredit', [angsuranController::class, 'kredit'])->name('angsuran.kredit')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);

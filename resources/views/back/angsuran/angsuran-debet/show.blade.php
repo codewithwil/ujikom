@@ -11,12 +11,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Data angsuran Pinjaman debet</h1>
+            <h1>Data angsuran Simpanan debet</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Data angsuran Pinjaman debet</li>
+              <li class="breadcrumb-item active">Data angsuran Simpanan debet</li>
             </ol>
           </div>
         </div>
@@ -31,7 +31,7 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Kelola data angsuran Pinjaman debet</h3>
+                <h3 class="card-title">Kelola data angsuran Simpanan debet</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -50,8 +50,8 @@
                 <table  class="table table-striped table-bordered">
                     <thead>
                     <tr>
-                      <th width="250px">kode Pinjaman</th>
-                      <td>: {{$angsuranDebet->kode_pinjaman_kredit}}</td>
+                      <th width="250px">kode Simpanan</th>
+                      <td>: {{$angsuranDebet->kode_simpanan_debet}}</td>
                     </tr>
                     <tr>
                         <th>nik anggota</th>
@@ -71,7 +71,7 @@
                       <td>: {{$angsuranDebet->Anggota->telepon}}</td>
                     </tr>
                     <tr>
-                      <th>Tanggal pinjam</th>
+                      <th>Tanggal Simpanan</th>
                       <td>: {{$angsuranDebet->tanggal}}</td>
                     </tr>
                     <tr>
@@ -79,33 +79,39 @@
                       <td>: {{ $angsuranDebet->jenis_pembayaran}}</td>
                     </tr>
                     <tr>
+                      <tr>
+                        <th>Transaksi</th>
+                        <td>: {{ $angsuranDebet->transaksi}}</td>
+                      </tr>
+                      <tr>
                       <th>Divisi</th>
                       <td>: {{ $angsuranDebet->divisi}}</td>
+                    </tr>
+                    <tr>
+                      <th>Simpanan pokok</th>
+                      <td>: {{ $angsuranDebet->pokok}}</td>
+                    </tr>
+                    <tr>
+                      <th>Simpanan wajib</th>
+                      <td>: {{ $angsuranDebet->wajib}}</td>
+                    </tr>
+                    <tr>
+                      <th>simpanan sukarela</th>
+                      <td>: {{ $item->sukarela ?? 0 }}</td>
                     </tr>
                     <tr>
                       <th>Keterangan</th>
                       <td>: {{ $angsuranDebet->keterangan}}</td>
                     </tr>
-                    <tr>
-                      <th>periode waktu pinjaman</th>
-                      <td>: {{ $angsuranDebet->periode}} bulan</td>
-                    </tr>
-                    <tr>
-                      <th>Nominal yang di pinjam</th>
-                      <td>: Rp{{ number_format($angsuranDebet->nominal , 2,   ',', '.')}}</td>
-                    </tr>
-                    <tr>
-                        
-                        <th>Cicilan perbulan</th>
-                        <td>: Rp{{ number_format(hitungCicilan($angsuranDebet->nominal, $angsuranDebet->bunga, $angsuranDebet->periode), 2, ',', '.') }}</td>
-                      </tr>
-                    <tr>
                         <th>status buku</th>
                         <td>: {{$angsuranDebet->status_buku}}</td>
                     </tr>
+                    <tr>
+                      <th>Cicilan Simpanan Jatuh Pada Tanggal</th> 
+                      <td>{{ \Carbon\Carbon::parse($angsuranDebet->tanggal)->addMonth()->format('Y-m-d') }}</td>
+                    </tr>
                     </thead>
-                    <tbody>
-               
+                    <tbody>                  
                     </tbody>
                   </table>
                </div>

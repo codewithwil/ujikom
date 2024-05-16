@@ -11,12 +11,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Data angsuran Pinjaman debet</h1>
+            <h1>Data angsuran simpanan debet</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Data angsuran Pinjaman debet</li>
+              <li class="breadcrumb-item active">Data angsuran simpanan debet</li>
             </ol>
           </div>
         </div>
@@ -31,7 +31,7 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Kelola data angsuran Pinjaman debet</h3>
+                <h3 class="card-title">Kelola data angsuran simpanan debet</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -58,8 +58,7 @@
                     <th>Transaksi</th>
                     <th>divisi</th>
                     <th>keterangan</th>
-                    <th>periode</th>
-                    <th>cicilan</th>
+                    <th>Cicilan Jatuh Pada Tanggal</th> 
                     <th>status buku</th>
                     <th>Aksi</th>
                   </tr>
@@ -75,11 +74,10 @@
                     <td>{{$item->transaksi}}</td>
                     <td>{{$item->divisi}}</td>
                     <td>{{$item->keterangan}}</td>
-                    <td>{{$item->periode}} bulan</td>
-       
+                    <td>{{ \Carbon\Carbon::parse($item->tanggal)->addMonth()->format('Y-m-d') }}</td> <!-- Menghitung cicilan jatuh tempo -->
                     <td>{{$item->status_buku}}</td>
                     <td>
-                      {{-- <a href="{{route('simpanan_debet.detail', $item->kode_sompanan_debet)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fa fa-eye"></i></a> --}}
+                      <a href="{{route('angsuran.debet.detail', $item->kode_simpanan_debet)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fa fa-eye"></i></a>
                     </td>
                   </tr>
                   @endforeach
@@ -94,8 +92,7 @@
                     <th>Transaksi</th>
                     <th>divisi</th>
                     <th>keterangan</th>
-                    <th>periode</th>
-                    <th>cicilan</th>
+                    <th>Cicilan Jatuh Pada Tanggal</th> 
                     <th>status buku</th>
                     <th>Aksi</th>
                   </tr>
