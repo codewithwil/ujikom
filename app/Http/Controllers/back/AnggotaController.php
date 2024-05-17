@@ -130,10 +130,20 @@ class AnggotaController extends globalC
         return $this->sendError('Member Not Found', 404);
     }
     
+
+    public function sendResponse($data, $message = null, $code = 200) {
+        return response()->json(['success' => true, 'data' => $data, 'message' => $message], $code);
+    }
+    
+// AnggotaController.php
+public function sendError($errorMessages = [], $code = 404) {
+    return response()->json(['success' => false, 'error' => $errorMessages], $code);
+}
+    
     public function getInfo(Request $request, $kode_anggota)
     {
         $anggota = Anggota::where('kode_anggota', $kode_anggota)->first();
-
+        
         if ($anggota) {
             $payload = [
                 'nama'     => $anggota->nama,
@@ -141,7 +151,7 @@ class AnggotaController extends globalC
                 'email'    => $anggota->email,
                 'telepon'  => $anggota->telepon,
             ];
-
+    
             return $this->sendResponse($payload);
         } else {
             return $this->sendError('Member Not Found', 404);

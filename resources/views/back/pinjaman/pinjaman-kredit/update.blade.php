@@ -140,6 +140,8 @@
                         <div class="form-group">
                           <label for="nominal">Nominal</label>
                           <input type="number" name="nominal" id="nominal" class="form-control" value="{{$pinjamK->nominal}}">
+                          <div id="max-saldo" data-saldo="{{ $saldoKoperasi->value }}"></div>
+                        <div id="batas-pinjam" data-batas-pinjam="{{ $batasPinjamAbsolut }}"></div>
                         </div>
                         <div class="form-group">
                           <label for="bunga">bunga Pinjaman</label>
@@ -332,6 +334,23 @@
                 console.error('Error fetching anggota info:', error);
             });
   }
+</script>
+<script>
+$(document).ready(function () {
+    var batasPinjamAbsolut = parseFloat($('#batas-pinjam').data('batas-pinjam'));
+
+    $('#nominal').on('input', function () {
+        var nominal = parseFloat($(this).val());
+
+        if (nominal > batasPinjamAbsolut) {
+            $('#max-saldo').addClass('text-danger').text('Nominal tidak boleh melebihi batas pinjam.');
+            $(this).val(batasPinjamAbsolut); // Set nilai input menjadi batas pinjam
+        } else {
+            $('#batas-pinjam').removeClass('text-danger').text('Saldo koperasi yang boleh dipinjam sebesar ' + batasPinjamAbsolut);
+        }
+    });
+});
+
 </script>
 @endpush
 

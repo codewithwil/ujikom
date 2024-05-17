@@ -21,10 +21,21 @@ class PinjamanKreditController extends globalC
 
     public function create(){
         list($jenisBayar,$divisi,$transaksi,$anggota,$statusBuku,$keterangan) = self::getAttr();
+        $batasPinjamPersentase = Pengaturan::value('batas_pinjam');
         $saldoKoperasi = Saldo::selectRaw("SUM(saldo) AS value")->first();
+        
+        
+        if ($saldoKoperasi) {
+            $saldo = $saldoKoperasi->value;
+            $batasPinjamAbsolut = $saldo * ($batasPinjamPersentase / 100);
+        } else {
+            // Handle jika saldo tidak tersedia
+            $batasPinjamAbsolut = 0;
+        }
+        
         $batasPinjam = Pengaturan::value('batas_pinjam');
         return view('back.pinjaman.pinjaman-kredit.create',compact('jenisBayar','divisi','transaksi','anggota','statusBuku','keterangan',
-        'saldoKoperasi', 'batasPinjam'));
+        'saldoKoperasi', 'batasPinjamAbsolut'));
     }
 
     public function store(Request $request)

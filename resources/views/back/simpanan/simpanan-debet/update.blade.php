@@ -145,14 +145,10 @@
                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                     </div>
                     <div id="keterangan-part" class="content" role="tabpanel" aria-labelledby="keterangan-part-trigger">
-                      <div class="form-group">
+                    <div class="form-group">
                         <label for="keterangan">Keterangan</label>
-                        <select name="keterangan" id="keterangan" class="form-control">
-                            @foreach ($keterangan as $item => $getKeterangan)
-                            <option value="{{$item}}" {{ ($simpanD->keterangan == $item) ? 'selected' : '' }}>{{$getKeterangan}}</option>
-                            @endforeach
-                        </select>
-                     </div>
+                        <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control">{{$simpanD->keterangan}}</textarea>
+                    </div>
                     <div class="form-group">
                         <label for="status_buku">Status buku</label>
                         <select name="status_buku" id="status_buku" class="form-control">

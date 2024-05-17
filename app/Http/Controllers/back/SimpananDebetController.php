@@ -5,7 +5,8 @@ namespace App\Http\Controllers\back;
 use App\{
     Http\Controllers\globalC,
     Models\Anggota,
-    Models\SimpananDebet
+    Models\SimpananDebet,
+    Models\Saldo,
 };
 use Illuminate\{
     Http\Request,
@@ -49,7 +50,11 @@ class SimpananDebetController extends globalC
         try {
             $kode_simpanan_debet = autonumber('simpanan_debet', 'kode_simpanan_debet', 3, 'SPD');
             $data['kode_simpanan_debet'] = $kode_simpanan_debet;
-            SimpananDebet::create($data);
+            $saldoKoperasi = new Saldo();
+            $saldoKoperasi->saldo      = $data['pokok'] + $data['wajib'] + $data['sukarela'];
+            $saldoKoperasi->keterangan = $data['keterangan'];
+            $saldoKoperasi->save();
+
             DB::commit();
             return redirect(route('simpananDebet.index'))->with('success', ' Simpanan Debet has been created');
         } catch (Exception $e) {

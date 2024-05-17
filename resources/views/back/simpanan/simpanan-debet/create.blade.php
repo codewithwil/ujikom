@@ -153,15 +153,10 @@
                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                     </div>
                     <div id="keterangan-part" class="content" role="tabpanel" aria-labelledby="keterangan-part-trigger">
-                      <div class="form-group">
+                    <div class="form-group">
                         <label for="keterangan">Keterangan</label>
-                        <select name="keterangan" id="keterangan" class="form-control">
-                            <option value="" disabled selected hidden>Pilih keterangan</option>
-                            @foreach ($keterangan as $item => $getKeterangan)
-                            <option value="{{$item}}">{{$getKeterangan}}</option>
-                            @endforeach
-                        </select>
-                     </div>
+                        <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control"></textarea>
+                    </div>
                     <div class="form-group">
                         <label for="status_buku">Status buku</label>
                         <select name="status_buku" id="status_buku" class="form-control">
@@ -272,31 +267,29 @@
 </script>
 <script>
   function showAnggotaInfo() {
-      var anggotaSelect = document.getElementById('anggota_kode');
-      var selectedAnggota = anggotaSelect.options[anggotaSelect.selectedIndex];
-      var namaAnggota = selectedAnggota.text; 
-      var kode_anggota = selectedAnggota.value; 
+    var anggotaSelect = document.getElementById('anggota_kode');
+    var selectedAnggota = anggotaSelect.options[anggotaSelect.selectedIndex];
+    var kodeAnggota = selectedAnggota.value;
 
-      document.getElementById('namaAnggota').textContent = namaAnggota;
-
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/anggota/' + kode_anggota); 
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.onreadystatechange = function() {
-          if (xhr.readyState === XMLHttpRequest.DONE) {
-              if (xhr.status === 200) {
-                  var response = JSON.parse(xhr.responseText);
-                  // Atur nilai alamat, email, dan telepon berdasarkan respons dari server
-                  document.getElementById('alamatAnggota').textContent = response.alamat;
-                  document.getElementById('emailAnggota').textContent = response.email;
-                  document.getElementById('teleponAnggota').textContent = response.telepon;
-              } else {
-                  console.error('Gagal mengambil informasi anggota.');
-              }
-          }
-      };
-      xhr.send();
-  }
+    // Request untuk mengambil informasi anggota
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/anggota/' + kodeAnggota); 
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                document.getElementById('namaAnggota').textContent = response.data.nama;
+                document.getElementById('alamatAnggota').textContent = response.data.alamat;
+                document.getElementById('emailAnggota').textContent = response.data.email;
+                document.getElementById('teleponAnggota').textContent = response.data.telepon;
+            } else {
+                console.error('Gagal mengambil informasi anggota.');
+            }
+        }
+    };
+    xhr.send();
+}
 </script>
 @endpush
 

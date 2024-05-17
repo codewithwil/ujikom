@@ -116,16 +116,16 @@
                       @foreach ($anggota as $item)
                           <option value="{{$item->kode_anggota}}">{{$item->nama}}</option>
                       @endforeach
-                  </select>
-                  </div>
-                  <hr>
-                  <p>Nama anggota: <span id="namaAnggota"></span></p>
-                  <hr>
-                  <p>Alamat: <span id="alamatAnggota"></span></p>
-                  <hr>
-                  <p>Email: <span id="emailAnggota"></span></p>
-                  <hr>
-                  <p>Telepon: <span id="teleponAnggota"></span></p>
+                    </select>
+                    </div>
+                    <hr>
+                    <p>Nama anggota: <span id="namaAnggota"></span></p>
+                    <hr>
+                    <p>Alamat: <span id="alamatAnggota"></span></p>
+                    <hr>
+                    <p>Email: <span id="emailAnggota"></span></p>
+                    <hr>
+                    <p>Telepon: <span id="teleponAnggota"></span></p>
                       <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                     </div>
                   </div>
@@ -150,7 +150,7 @@
                         <label for="nominal">Nominal</label>
                         <input type="number" name="nominal" id="nominal" class="form-control" >
                         <div id="max-saldo" data-saldo="{{ $saldoKoperasi->value }}"></div>
-                        <div id="batas-pinjam" data-batas-pinjam="{{ $batasPinjam }}"></div>
+                        <div id="batas-pinjam" data-batas-pinjam="{{ $batasPinjamAbsolut }}"></div>
 
                       </div>
                       <div class="form-group">
@@ -289,82 +289,46 @@ periodes.forEach(function(periode) {
 </script>
 <script>
   function showAnggotaInfo() {
-      var anggotaSelect = document.getElementById('anggota_kode');
-      var selectedAnggota = anggotaSelect.options[anggotaSelect.selectedIndex];
-      var namaAnggota = selectedAnggota.text;
-      var kode_anggota = selectedAnggota.value;
+    var anggotaSelect = document.getElementById('anggota_kode');
+    var selectedAnggota = anggotaSelect.options[anggotaSelect.selectedIndex];
+    var kodeAnggota = selectedAnggota.value;
 
-      document.getElementById('namaAnggota').textContent = namaAnggota;
-      var transaksiInput = document.getElementById('nominal');
-      var batasKredit; // Deklarasikan variabel batasKredit di luar blok if
-
-      // Buat fungsi untuk menetapkan batas maksimum dan menambahkan event listener
-      function setBatasMaksDanEventListener(batasKredit) {
-          // Setel atribut max input nominal sesuai dengan total saldo
-          transaksiInput.setAttribute('max', batasKredit);
-
-          // Tampilkan maksimum saldo di bawah input
-          maxSaldoText.textContent = 'Maksimum saldo: Rp ' + batasKredit;
-
-          // Tambahkan event listener untuk memeriksa nilai input saat berubah
-          transaksiInput.addEventListener('input', function() {
-              var inputNilai = parseFloat(this.value);
-              if (inputNilai > batasKredit) {
-                  alert('Nilai tidak boleh melebihi batas maksimum.');
-                  this.value = batasKredit; // Set nilai input kembali ke batas maksimum
-              }
-          });
-      }
-
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/anggota/' + kode_anggota);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.onreadystatechange = function() {
-          if (xhr.readyState === XMLHttpRequest.DONE) {
-              if (xhr.status === 200) {
-                  var response = JSON.parse(xhr.responseText);
-                  // Atur nilai alamat, email, dan telepon berdasarkan respons dari server
-                  document.getElementById('alamatAnggota').textContent = response.alamat;
-                  document.getElementById('emailAnggota').textContent = response.email;
-                  document.getElementById('teleponAnggota').textContent = response.telepon;
-              } else {
-                  console.error('Gagal mengambil informasi anggota.');
-              }
-          }
-      };
-      xhr.send();
-
-  }
+    // Request untuk mengambil informasi anggota
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/anggota/' + kodeAnggota); 
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                document.getElementById('namaAnggota').textContent = response.data.nama;
+                document.getElementById('alamatAnggota').textContent = response.data.alamat;
+                document.getElementById('emailAnggota').textContent = response.data.email;
+                document.getElementById('teleponAnggota').textContent = response.data.telepon;
+            } else {
+                console.error('Gagal mengambil informasi anggota.');
+            }
+        }
+    };
+    xhr.send();
+}
 </script>
-
 <script>
 $(document).ready(function () {
-    var saldo = parseFloat($('#max-saldo').data('saldo'));
-    var batasPinjamPersentase = parseFloat($('#batas-pinjam').data('batas-pinjam'));
+    var batasPinjamAbsolut = parseFloat($('#batas-pinjam').data('batas-pinjam'));
 
-    // Check if saldo is a valid number
-    if (!isNaN(saldo)) {
-        // Hitung batas pinjam absolut sebagai persentase dari saldo
-        var batasPinjamAbsolut = saldo * (batasPinjamPersentase / 100);
+    $('#nominal').on('input', function () {
+        var nominal = parseFloat($(this).val());
 
-        $('#nominal').on('input', function () {
-            var nominal = parseFloat($(this).val());
-
-            if (nominal > saldo) {
-                $('#max-saldo').addClass('text-danger').text('Nominal tidak boleh melebihi saldo koperasi.');
-                $(this).val(saldo); // Set nilai input menjadi saldo maksimum
-            } else if (nominal > batasPinjamAbsolut) {
-                $('#max-saldo').addClass('text-danger').text('Nominal tidak boleh melebihi batas pinjam.');
-                $(this).val(batasPinjamAbsolut); // Set nilai input menjadi batas pinjam
-            } else {
-                $('#batas-pinjam').removeClass('text-danger').text('Saldo koperasi yg boleh di pinjam sebesar ' + batasPinjamAbsolut);
-            }
-        });
-    } else {
-        // Handle case when saldo is not a valid number
-        console.error('Saldo koperasi tidak valid.');
-    }
+        if (nominal > batasPinjamAbsolut) {
+            $('#max-saldo').addClass('text-danger').text('Nominal tidak boleh melebihi batas pinjam.');
+            $(this).val(batasPinjamAbsolut); // Set nilai input menjadi batas pinjam
+        } else {
+            $('#batas-pinjam').removeClass('text-danger').text('Saldo koperasi yang boleh dipinjam sebesar ' + batasPinjamAbsolut);
+        }
+    });
 });
+
 </script>
 
 
