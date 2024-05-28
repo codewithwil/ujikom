@@ -21,4 +21,16 @@ class LaporanController extends Controller
         $pengaturan = Pengaturan::get();
         return view('back.laporan.laporan-pinjaman.index', compact('pinjaman', 'pengaturan'));
     }
+
+    public function printSimpanan(){
+        $simpanan  = SimpananDebet::with('Anggota')->where('status', 1)->get();
+        $pengaturan = Pengaturan::get();
+        return view('back.laporan.laporan-simpanan.print', compact('simpanan', 'pengaturan'));
+    }
+
+    public function printPinjaman(){
+        $pinjaman = PinjamanKredit::with('Anggota')->where('status', 1)->get();
+        $pengaturan = Pengaturan::get();
+        return view('back.laporan.laporan-pinjaman.print', compact('pinjaman', 'pengaturan'));
+    }
 }

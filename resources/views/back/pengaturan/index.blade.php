@@ -38,8 +38,8 @@
                             <li>{{$error}}</li>
                         @endforeach
                     </ul>
-                </div> 
-            </div> 
+                </div>
+            </div>
             @endif
             <!-- /.card-header -->
             <!-- form start -->
@@ -60,7 +60,7 @@
                     @else
                     <small>Foto lama:</small>
                         <div class="mt-2" >
-                            <img src="{{asset('storage/back/pengaturan/'.$pengaturan->foto_perusahaan) }}" class="img-thumbnail img-preview" alt="Foto perusahaan" width="120px">                              
+                            <img src="{{asset('storage/back/pengaturan/'.$pengaturan->foto_perusahaan) }}" class="img-thumbnail img-preview" alt="Foto perusahaan" width="120px">
                         </div>
                     @endempty
                       </div>
@@ -137,7 +137,7 @@
                       </div>
                   @enderror
                  </div>
-                     
+
 
                 <button type="submit" class="btn me-2 btn-primary">Submit</button>
                 <a href="{{route('pengaturan.index')}}" class="btn btn-danger">Kembali</a>
@@ -177,6 +177,15 @@
                     <label for="web">website</label>
                     <input type="url" class="form-control" id="web" name="web" placeholder="isi web..."  >
                     @error('web')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
+                </div>
+                <div class="form-group">
+                    <label for="email">email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="isi email..."  >
+                    @error('email')
                     <div class="invalid-feedback">
                         {{$message}}
                     </div>
@@ -253,6 +262,6 @@
   });
   </script>
 
-  
+
   @endpush
 @endsection
