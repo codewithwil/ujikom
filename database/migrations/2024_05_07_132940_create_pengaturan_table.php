@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_perusahaan', 40);
             $table->string('foto_perusahaan', 100)->nullable();
+            $table->string('email')->unique();
             $table->string('telepon', 12)->nullable();
             $table->string('nib', 16)->nullable();
             $table->text('web')->nullable();

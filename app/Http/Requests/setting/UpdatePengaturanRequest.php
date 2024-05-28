@@ -25,6 +25,7 @@ class UpdatePengaturanRequest extends FormRequest
             'nama_perusahaan'   => 'required',
             'foto_perusahaan'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'telepon'           => 'nullable|max:12',
+            'email'                 => 'required|email',
             'nib'               => 'nullable|max:16',
             'web'               => 'nullable|',
             'alamat'            => 'nullable|max:255',

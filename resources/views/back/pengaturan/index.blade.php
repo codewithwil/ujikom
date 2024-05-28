@@ -92,6 +92,15 @@
                     @enderror
                     </div>
                     <div class="form-group">
+                      <label for="email">Email</label>
+                      <input type="email" class="form-control" id="email" name="email" placeholder="isi email..." value="{{$pengaturan->email}}" >
+                      @error('email')
+                      <div class="invalid-feedback">
+                          {{$message}}
+                      </div>
+                  @enderror
+                  </div>
+                    <div class="form-group">
                         <label for="telepon">Telepon</label>
                         <input type="number" class="form-control" id="telepon" name="telepon" placeholder="isi telepon..." value="{{$pengaturan->telepon}}">
                         @error('telepon')
