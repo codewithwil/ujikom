@@ -143,7 +143,30 @@
               </ul>
             </li>
   
-  
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-envelope"></i>
+                <p>
+                  Laporan
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('laporan.simpanan')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>simpanan</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{route('laporan.pinjaman')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>pinjaman</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
           <li class="nav-header">Kelola pegawai</li>
           <li class="nav-item">
             <a href="{{route('users.index')}}" class="nav-link">

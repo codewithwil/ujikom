@@ -10,6 +10,7 @@ use App\Http\Controllers\back\{
     AnggotaController,
     angsuranController,
     KeteranganController,
+    LaporanController,
     SaldoController,
     SimpananDebetController,
     PinjamanKredit,
@@ -134,7 +135,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/angsuran/kredit/detail/{kode_pinjaman_kredit}', [angsuranController::class, 'kreditDetail'])->name('angsuran.kredit.detail')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
     Route::post('/angsuran/kredit/delete', [angsuranController::class, 'delete'])->name('angsuran.delete')->middleware(['auth', 'verified', 'permission:hapus-angsuran']);
 
-
+    Route::get('/laporan/simpanan', [LaporanController::class, 'simpanan'])->name('laporan.simpanan')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+    Route::get('/laporan/pinjaman', [LaporanController::class, 'pinjaman'])->name('laporan.pinjaman')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
 });
 
 Route::get('/get-saldo-koperasi', [SaldoController::class, 'getSaldoKoperasi']);
