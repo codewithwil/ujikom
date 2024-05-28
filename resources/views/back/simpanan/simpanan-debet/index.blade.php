@@ -69,7 +69,7 @@
                   <tbody>
                   @foreach ($simpanD as $item)
                   <tr>
-                    <td>{{$loop->iteration}}</td>
+                   
                     <td>{{$item->kode_simpanan_debet}}</td>
                     <td>{{$item->Anggota->nama}}</td>
                     <td>{{$item->tanggal}}</td>

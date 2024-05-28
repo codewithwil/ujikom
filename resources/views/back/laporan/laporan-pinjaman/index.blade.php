@@ -1,5 +1,5 @@
 @extends('back.layout.template')
-@section('title', 'laporan simpanan')
+@section('title', 'laporan pinjaman')
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   <link rel="stylesheet" href="{{asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
@@ -11,12 +11,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Data Pinjaman debet</h1>
+            <h1>Data Pinjaman </h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Data Pinjaman debet</li>
+              <li class="breadcrumb-item active">Data Pinjaman </li>
             </ol>
           </div>
         </div>
@@ -48,9 +48,10 @@
                 </div> 
                 @endif
                <div class="table-responsive">
-                @if($simpanan->isNotEmpty())
-                <h3>Data simpanan anggota</h3>
-                <table id="example1" class="table table-bordered table-striped">
+            
+            @if($pinjaman->isNotEmpty())
+            <h3>Data pinjaman Anggota</h3>
+                <table id="example2" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -59,42 +60,34 @@
                             <th>ID transaksi</th>
                             <th>kas</th>
                             <th>nominal</th>
+                            <th>bunga</th>
                             <th></th>
-
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                        $totalSimpanan = 0;
-                    @endphp
-                        @foreach ($simpanan as $item)
+                            @php
+                            $totalPinjaman = 0;
+                        @endphp
+                        @foreach ($pinjaman as $item)
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$item->tanggal}}</td>
                             <td>{{$item->anggota_kode}}</td>
-                            <td>{{$item->kode_simpanan_debet}}</td>
+                            <td>{{$item->kode_pinjaman_kredit}}</td>
                             <td>{{$item->transaksi}}</td>
-                            <td>
-                                <li>Pokok: {{$item->pokok}}</li>
-                                <li>Wajib: {{$item->wajib}}</li>
-                                    @if(!empty($item->sukarela))
-                                        {{$item->sukarela}}
-                                    @else
-                                        <li>0</li>
-                                    @endif
-                                
-                            </td>
+                            <td>{{$item->nominal}}</td>
+                            <td>{{$item->bunga}}</td>
                             <td></td>
                             @php
-                            $totalSimpanan += $item->pokok + $item->wajib + $item->sukarela;
+                            $totalPinjaman += $item->nominal;
                         @endphp
                             <!-- Tambahkan kolom lainnya sesuai kebutuhan -->
                         </tr>
                         @endforeach
                         <tr> <!-- Baris baru untuk total simpanan -->
-                            <td colspan="5"></td> 
-                            <td>Total Simpanan</td>
-                            <td>{{$totalSimpanan}}</td>
+                            <td colspan="6"></td> 
+                            <td>Total Nominal pinjaman murni</td>
+                            <td>{{$totalPinjaman}}</td>
                         </tr>
                     </tbody>
                     <tfoot>
@@ -105,12 +98,13 @@
                             <th>ID transaksi</th>
                             <th>kas</th>
                             <th>nominal</th>
+                            <th>bunga</th>
                             <th></th>
                         </tr>
                     </tfoot>
                 </table>
             @endif
-   
+            
                </div>
                 
               </div>
