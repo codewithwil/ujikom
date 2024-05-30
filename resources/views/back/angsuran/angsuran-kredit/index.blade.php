@@ -97,7 +97,7 @@
                     <th>tanggal</th>
                     <th>Jenis</th>
                     <th>Transaksi</th>
-                    <th>divisi</th>x
+                    <th>divisi</th>
                     <th>keterangan</th>
                     <th>periode</th>
                     <th>bunga</th>
