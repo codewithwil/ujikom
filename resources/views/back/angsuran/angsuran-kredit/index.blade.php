@@ -35,6 +35,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                <a href="{{route('laporan.angsuranK')}}" class="btn btn-info mb-3">invoice</a>
                 @if ($errors->any())
                 <div class="my-3">
                     <div class="alert alert-danger">
@@ -96,7 +97,7 @@
                     <th>tanggal</th>
                     <th>Jenis</th>
                     <th>Transaksi</th>
-                    <th>divisi</th>
+                    <th>divisi</th>x
                     <th>keterangan</th>
                     <th>periode</th>
                     <th>bunga</th>

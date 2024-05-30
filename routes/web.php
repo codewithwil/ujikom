@@ -154,6 +154,10 @@ Route::middleware('auth')->group(function () {
     //angsuran debet
     Route::get('/laporan/angsuranD', [LaporanController::class, 'angsuranD'])->name('laporan.angsuranD')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
     Route::get('/print/angsuranD', [LaporanController::class, 'printAngsuranD'])->name('print.angsuranD')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+    //angsuran kredit
+    Route::get('/laporan/angsuranK', [LaporanController::class, 'angsuranK'])->name('laporan.angsuranK')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+    Route::get('/print/angsuranK', [LaporanController::class, 'printAngsuranD'])->name('print.angsuranK')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+
     Route::get('/generate-pdf', [LaporanController::class, 'generatePDF'])->name('generatepdf');
 
 });
