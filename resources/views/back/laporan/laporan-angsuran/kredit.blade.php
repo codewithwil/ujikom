@@ -1,5 +1,5 @@
 @extends('back.layout.template')
-@section('title', 'laporan angsuran debet')
+@section('title', 'laporan angsuran kredit')
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   <link rel="stylesheet" href="{{asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
@@ -11,12 +11,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Data angsuran debet </h1>
+            <h1>Data angsuran kredit </h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Data angsuran debet </li>
+              <li class="breadcrumb-item active">Data angsuran kredit </li>
             </ol>
           </div>
         </div>
@@ -29,7 +29,7 @@
   <div class="col-12">
   <div class="callout callout-info">
   <h5><i class="fas fa-info"></i> {{ optional(optional($pengaturan)->first())->nama_perusahaan }}  </h5>
-  Laporan angsuran debet {{optional(optional($pengaturan)->first())->nama_perusahaan}}
+  Laporan angsuran kredit {{optional(optional($pengaturan)->first())->nama_perusahaan}}
   </div>
 
   <div class="invoice p-3 mb-3">
@@ -132,7 +132,7 @@
 
   <div class="row no-print">
   <div class="col-12">
-  <a href="{{ route('print.angsuranD') }}" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+  <a href="{{ route('print.angsuranK') }}" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
   <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;" onclick="generatePDF()">
   <i class="fas fa-download"></i> Generate PDF
   </button>

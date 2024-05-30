@@ -93,7 +93,7 @@ class LaporanController extends Controller
     public function printAngsuranK(){
         $pinjaman   = PinjamanKredit::with('Anggota')->where('status', 1)->get();
         $pengaturan = Pengaturan::get();
-        return view('back.laporan.laporan-angsuran.debet-print', compact('pinjaman', 'pengaturan'));
+        return view('back.laporan.laporan-angsuran.kredit-print', compact('pinjaman', 'pengaturan'));
     }
 
 
