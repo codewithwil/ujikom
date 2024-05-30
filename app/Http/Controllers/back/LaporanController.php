@@ -36,33 +36,39 @@ class LaporanController extends Controller
         return view('back.laporan.laporan-pinjaman.print', compact('pinjaman', 'pengaturan'));
     }
 
+
+
     public function generatePDF()
-{
-    // Data yang ingin Anda masukkan ke PDF
-    $data = [
-        'title' => 'Contoh PDF',
-        'content' => 'Ini adalah contoh teks dalam PDF.'
-    ];
-
-    // Buat instance Dompdf dengan opsi
-    $options = new Options();
-    $options->set('isHtml5ParserEnabled', true);
-    $options->set('isRemoteEnabled', true);
-    $dompdf = new Dompdf($options);
-
-    // Load view blade yang berisi markup HTML untuk PDF
-    $html = view('back.laporan.laporan-simpanan.pdf', $data)->render();
-
-    // Tambahkan konten HTML ke PDF
-    $dompdf->loadHtml($html);
-
-    // Atur ukuran dan orientasi halaman
-    $dompdf->setPaper('A4', 'portrait');
-
-    // Render PDF (hasilnya bisa disimpan atau ditampilkan langsung)
-    $dompdf->render();
-
-    // Simpan PDF ke dalam file atau tampilkan ke user
-    return $dompdf->stream("invoice.pdf");
-}
+    {
+        // Ambil data pengaturan dari database
+        $pengaturan = Pengaturan::first();
+        $simpanan   = SimpananDebet::where('status', 1)->get();
+        // Data yang ingin Anda masukkan ke PDF
+        $data = [
+            'simpanan'   => $simpanan,
+            'pengaturan' => $pengaturan // Teruskan data pengaturan ke view PDF
+        ];
+    
+        // Buat instance Dompdf dengan opsi
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+        $dompdf = new Dompdf($options);
+    
+        // Load view blade yang berisi markup HTML untuk PDF
+        $html = view('back.laporan.laporan-simpanan.index', $data)->render();
+    
+        // Tambahkan konten HTML ke PDF
+        $dompdf->loadHtml($html);
+    
+        // Atur ukuran dan orientasi halaman
+        $dompdf->setPaper('A4', 'portrait');
+    
+        // Render PDF (hasilnya bisa disimpan atau ditampilkan langsung)
+        $dompdf->render();
+    
+        // Simpan PDF ke dalam file atau tampilkan ke user
+        return $dompdf->stream("invoice.pdf");
+    }
+    
 }
