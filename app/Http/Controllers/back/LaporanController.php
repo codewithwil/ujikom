@@ -46,15 +46,15 @@ class LaporanController extends Controller
     }
 
     public function angsuranD(){
-        $angsuranD = SimpananDebet::with('Anggota')->where('status', 1)->get();
+        $simpanan = SimpananDebet::with('Anggota')->where('status', 1)->get();
         $pengaturan = Pengaturan::get();
-        return view('back.laporan.laporan-pinjaman.index', compact('angsuranD', 'pengaturan'));
+        return view('back.laporan.laporan-angsuran.debet', compact('simpanan', 'pengaturan'));
     }
 
     public function angsuranK(){
-        $angsuranK = SimpananDebet::with('Anggota')->where('status', 1)->get();
+        $pinjam = SimpananDebet::with('Anggota')->where('status', 1)->get();
         $pengaturan = Pengaturan::get();
-        return view('back.laporan.laporan-pinjaman.index', compact('angsuranK', 'pengaturan'));
+        return view('back.laporan.laporan-pinjaman.index', compact('pinjam', 'pengaturan'));
     }
 
     public function printUser(){

@@ -35,6 +35,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                <a href="{{route('laporan.angsuranD')}}" class="btn btn-info mb-3">invoice</a>
                 @if ($errors->any())
                 <div class="my-3">
                     <div class="alert alert-danger">

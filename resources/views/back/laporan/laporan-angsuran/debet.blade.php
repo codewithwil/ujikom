@@ -92,6 +92,7 @@
 
 @foreach ($simpanan as $item)
 <tr>
+    <td>{{$loop->iteration}}</td>
     <td>{{$item->kode_simpanan_debet}}</td>
     <td>{{$item->Anggota->nama}}</td>
     <td>{{$item->tanggal}}</td>
@@ -127,7 +128,7 @@
 
   <div class="row no-print">
   <div class="col-12">
-  <a href="{{ route('print.anggota') }}" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+  <a href="{{ route('print.angsuranD') }}" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
   <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;" onclick="generatePDF()">
   <i class="fas fa-download"></i> Generate PDF
   </button>
