@@ -75,8 +75,9 @@
                       <div class="form-group">
                         <label for="kode_simpanan_kredit">Kode pinjaman kredit</label>
                         <?php
-                        $kodePinjamanKredit = autonumber('pinjaman_kredit', 'kode_pinjaman_kredit', 3, 'PJK');
+                        $kodePinjamanKredit = autonumber('pinjaman_kredit', 'kode_pinjaman_kredit', 'PJK', 3);
                     ?>
+                    
                        <input class="input @error('kode_pinjaman_kredit') is-invalid @enderror form-control" name="kode_pinjaman_kredit" readonly id="kode_pinjaman_kredit" type="text" value="<?= $kodePinjamanKredit ?>">
 
                         @error('kode_pinjaman_kredit')
@@ -247,22 +248,25 @@ periodes.forEach(function(periode) {
 <script>
   document.getElementById('submitForm').addEventListener('click', function(event) {
 
-    var tanggal          = document.getElementById('tanggal').value;
-    var jenis_pembayaran = document.getElementById('jenis_pembayaran').value;
-    var divisi           = document.getElementById('divisi').value;
-    var anggota_kode     = document.getElementById('anggota_kode').value;
-    var transaksi        = document.getElementById('transaksi').value;
-    var periode          = document.getElementById('periode').value;
-    var nominal          = document.getElementById('nominal').value;
-    var bunga            = document.getElementById('bunga').value;
-    var keterangan = document.getElementById('keterangan').value;
-    var status_buku      = document.getElementById('status_buku').value;
+    var kode_pinjaman_kredit  = document.getElementById('kode_pinjaman_kredit').value;
+    var tanggal               = document.getElementById('tanggal').value;
+    var jenis_pembayaran      = document.getElementById('jenis_pembayaran').value;
+    var divisi                = document.getElementById('divisi').value;
+    var anggota_kode          = document.getElementById('anggota_kode').value;
+    var transaksi             = document.getElementById('transaksi').value;
+    var periode               = document.getElementById('periode').value;
+    var nominal               = document.getElementById('nominal').value;
+    var bunga                 = document.getElementById('bunga').value;
+    var keterangan            = document.getElementById('keterangan').value;
+    var status_buku           = document.getElementById('status_buku').value;
 
     var data = {
+      kode_pinjaman_kredit: kode_pinjaman_kredit,
       tanggal: tanggal,
       jenis_pembayaran: jenis_pembayaran,
       divisi: divisi,
       anggota_kode: anggota_kode,
+      transaksi: transaksi,
       periode: periode,
       nominal: nominal,
       bunga: bunga,

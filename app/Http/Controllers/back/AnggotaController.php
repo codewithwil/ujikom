@@ -35,13 +35,8 @@ class AnggotaController extends globalC
 
         DB::beginTransaction();
         try {
-            $kode_anggota                 = autonumber('anggota', 'kode_anggota', 3, 'ANG');
-            $data['kode_anggota']         = $kode_anggota;
-            $kode_simpanan_debet          = autonumber('simpanan_debet', 'kode_simpanan_debet', 3, 'SPD');
-            $data['kode_simpanan_debet']  = $kode_anggota;
-
             $anggota = new Anggota();
-            $anggota->kode_anggota = $kode_anggota;
+            $anggota->kode_anggota = $data['kode_anggota'];
             $anggota->nik          = $data['nik'];
             $anggota->nama         = $data['nama'];
             $anggota->alamat       = $data['alamat'];
@@ -51,8 +46,8 @@ class AnggotaController extends globalC
             $anggota->save();
     
             $simpananDebet = new SimpananDebet();
-            $simpananDebet->kode_simpanan_debet = $kode_simpanan_debet;
-            $simpananDebet->anggota_kode        = $kode_anggota;
+            $simpananDebet->kode_simpanan_debet = $data['kode_simpanan_debet'];
+            $simpananDebet->anggota_kode        = $data['kode_anggota'];
             $simpananDebet->tanggal             = $data['tanggal'];
             $simpananDebet->jenis_pembayaran    = $data['jenis_pembayaran'];
             $simpananDebet->transaksi           = $data['transaksi'];

@@ -74,7 +74,7 @@
                       <div class="form-group">
                         <label for="kode_simpanan_kredit">Kode simpan debet</label>
                         <?php
-                        $kodeSimpanDebet = autonumber('simpanan_debet', 'kode_simpanan_debet', 3, 'SPD');
+                        $kodeSimpanDebet = autonumber('simpanan_debet', 'kode_simpanan_debet','SPD', 3);
                     ?>
                        <input class="input @error('kode_simpanan_debet') is-invalid @enderror form-control" name="kode_simpanan_debet" readonly id="kode_simpanan_debet" type="text" value="<?= $kodeSimpanDebet ?>">
     
@@ -225,22 +225,25 @@
   document.getElementById('submitForm').addEventListener('click', function(event) {
     event.preventDefault();
 
-    var tanggal          = document.getElementById('tanggal').value;
-    var jenis_pembayaran = document.getElementById('jenis_pembayaran').value;
-    var divisi           = document.getElementById('divisi').value;
-    var anggota_kode     = document.getElementById('anggota_kode').value;
-    var transaksi        = document.getElementById('transaksi').value;
-    var pokok            = document.getElementById('pokok').value;
-    var wajib            = document.getElementById('wajib').value;
-    var sukarela         = document.getElementById('sukarela').value;
-    var keterangan       = document.getElementById('keterangan').value;
-    var status_buku      = document.getElementById('status_buku').value;
+    var kode_simpanan_debet  = document.getElementById('kode_simpanan_debet').value;
+    var tanggal              = document.getElementById('tanggal').value;
+    var jenis_pembayaran     = document.getElementById('jenis_pembayaran').value;
+    var divisi               = document.getElementById('divisi').value;
+    var anggota_kode         = document.getElementById('anggota_kode').value;
+    var transaksi            = document.getElementById('transaksi').value;
+    var pokok                = document.getElementById('pokok').value;
+    var wajib                = document.getElementById('wajib').value;
+    var sukarela             = document.getElementById('sukarela').value;
+    var keterangan           = document.getElementById('keterangan').value;
+    var status_buku          = document.getElementById('status_buku').value;
 
     var data = {
+      kode_simpanan_debet: kode_simpanan_debet,
       tanggal: tanggal,
       jenis_pembayaran: jenis_pembayaran,
       divisi: divisi,
       anggota_kode: anggota_kode,
+      transaksi: transaksi,
       pokok: pokok,
       wajib: wajib,
       sukarela: sukarela,

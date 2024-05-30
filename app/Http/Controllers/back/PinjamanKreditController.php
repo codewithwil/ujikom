@@ -42,21 +42,20 @@ class PinjamanKreditController extends globalC
     {
         $data = $request->all();
         $data['status'] = 1;
-
+        $anggota = Anggota::where('kode_anggota', $data['anggota_kode'])->first();
         DB::beginTransaction();
         try {
-            $kode_pinjaman_kredit = autonumber('pinjaman_kredit', 'kode_pinjaman_kredit', 3, 'PJK');
-            $data['kode_pinjaman_kredit'] = $kode_pinjaman_kredit;
-
-            // Create pinjaman kredit entry
-            $pinjamanKredit = PinjamanKredit::create($data);
 
             // Create saldo kredit entry
-            $saldo = new SaldoKredit();
+            $saldo = new Saldo();
             $saldo->saldo = $data['nominal']; // Assuming nominal represents the loan amount
-            $saldo->keterangan = $data['keterangan'];
+            if ($anggota) {
+                $saldo->keterangan = 'Anggota ' . $anggota->nama . ' telah melakukan ' . $data['transaksi'] . ' sebesar ' .$data['nominal'];
+            } else {
+                $saldo->keterangan = 'Anggota tidak ditemukan'; 
+            }
             $saldo->save();
-
+            PinjamanKredit::create($data);
             DB::commit();
             return redirect(route('pinjamanKredit.index'))->with('success', 'Simpanan Debet has been created');
         } catch (Exception $e) {

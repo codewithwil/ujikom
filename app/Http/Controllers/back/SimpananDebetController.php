@@ -43,17 +43,23 @@ class SimpananDebetController extends globalC
     public function store(Request $request)
     {
         $data = $request->all();
-        
+        $anggota = Anggota::where('kode_anggota', $data['anggota_kode'])->first();
         $data['status'] = 1;
     
         DB::beginTransaction();
         try {
-            $kode_simpanan_debet = autonumber('simpanan_debet', 'kode_simpanan_debet', 3, 'SPD');
-            $data['kode_simpanan_debet'] = $kode_simpanan_debet;
+
             $saldoKoperasi = new Saldo();
             $saldoKoperasi->saldo      = $data['pokok'] + $data['wajib'] + $data['sukarela'];
-            $saldoKoperasi->keterangan = $data['keterangan'];
+            if ($anggota) {
+                $saldoKoperasi->keterangan = 'Anggota ' . $anggota->nama . ' telah melakukan ' . $data['transaksi'] . ' sebesar ' . ($data['pokok'] + $data['wajib'] + $data['sukarela']);
+            } else {
+                $saldoKoperasi->keterangan = 'Anggota tidak ditemukan';
+            }
+            
+            
             $saldoKoperasi->save();
+            SimpananDebet::create($data);
 
             DB::commit();
             return redirect(route('simpananDebet.index'))->with('success', ' Simpanan Debet has been created');
