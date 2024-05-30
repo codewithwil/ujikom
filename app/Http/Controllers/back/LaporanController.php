@@ -3,15 +3,36 @@
 namespace App\Http\Controllers\back;
 
 use App\Http\Controllers\Controller;
+use App\Models\Anggota;
 use App\Models\Pengaturan;
 use App\Models\PinjamanKredit;
+use App\Models\Saldo;
 use App\Models\SimpananDebet;
+use App\Models\User;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Illuminate\Http\Request;
 
 class LaporanController extends Controller
 {
+    public function user(){
+        $users  = User::get();
+        $pengaturan = Pengaturan::get();
+        return view('back.laporan.laporan-user.index', compact('users', 'pengaturan'));
+    }
+    
+    public function anggota(){
+        $anggota  = Anggota::where('status', 1)->get();
+        $pengaturan = Pengaturan::get();
+        return view('back.laporan.laporan-anggota.index', compact('anggota', 'pengaturan'));
+    }
+
+    public function saldo(){
+        $saldo      = Saldo::get();
+        $pengaturan = Pengaturan::get();
+        return view('back.laporan.laporan-saldo.index', compact('saldo', 'pengaturan'));
+    }
+
     public function simpanan(){
         $simpanan  = SimpananDebet::with('Anggota')->where('status', 1)->get();
         $pengaturan = Pengaturan::get();
@@ -24,6 +45,35 @@ class LaporanController extends Controller
         return view('back.laporan.laporan-pinjaman.index', compact('pinjaman', 'pengaturan'));
     }
 
+    public function angsuranD(){
+        $angsuranD = SimpananDebet::with('Anggota')->where('status', 1)->get();
+        $pengaturan = Pengaturan::get();
+        return view('back.laporan.laporan-pinjaman.index', compact('angsuranD', 'pengaturan'));
+    }
+
+    public function angsuranK(){
+        $angsuranK = SimpananDebet::with('Anggota')->where('status', 1)->get();
+        $pengaturan = Pengaturan::get();
+        return view('back.laporan.laporan-pinjaman.index', compact('angsuranK', 'pengaturan'));
+    }
+
+    public function printUser(){
+        $users      = User::get();
+        $pengaturan = Pengaturan::get();
+        return view('back.laporan.laporan-user.print', compact('users', 'pengaturan'));
+    }
+
+    public function printAnggota(){
+        $anggota    = Anggota::where('status', 1)->get();
+        $pengaturan = Pengaturan::get();
+        return view('back.laporan.laporan-anggota.print', compact('anggota', 'pengaturan'));
+    }
+
+    public function printSaldo(){
+        $saldo      = Saldo::get();
+        $pengaturan = Pengaturan::get();
+        return view('back.laporan.laporan-saldo.print', compact('saldo', 'pengaturan'));
+    }
     public function printSimpanan(){
         $simpanan  = SimpananDebet::with('Anggota')->where('status', 1)->get();
         $pengaturan = Pengaturan::get();
@@ -35,7 +85,16 @@ class LaporanController extends Controller
         $pengaturan = Pengaturan::get();
         return view('back.laporan.laporan-pinjaman.print', compact('pinjaman', 'pengaturan'));
     }
-
+    public function printAngsuranD(){
+        $simpanan = SimpananDebet::with('Anggota')->where('status', 1)->get();
+        $pengaturan = Pengaturan::get();
+        return view('back.laporan.laporan-angsuran.debet-print', compact('simpanan', 'pengaturan'));
+    }
+    public function printAngsuranK(){
+        $pinjaman   = PinjamanKredit::with('Anggota')->where('status', 1)->get();
+        $pengaturan = Pengaturan::get();
+        return view('back.laporan.laporan-angsuran.debet-print', compact('pinjaman', 'pengaturan'));
+    }
 
 
     public function generatePDF()

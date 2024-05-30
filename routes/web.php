@@ -136,11 +136,22 @@ Route::middleware('auth')->group(function () {
     Route::post('/angsuran/kredit/delete', [angsuranController::class, 'delete'])->name('angsuran.delete')->middleware(['auth', 'verified', 'permission:hapus-angsuran']);
 
     //laporan
+    //user
+    Route::get('/laporan/user', [LaporanController::class, 'user'])->name('laporan.user')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+    Route::get('/print/user', [LaporanController::class, 'printUser'])->name('print.user')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+    //anggota
+    Route::get('/laporan/anggota', [LaporanController::class, 'anggota'])->name('laporan.anggota')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+    Route::get('/print/anggota', [LaporanController::class, 'printAnggota'])->name('print.anggota')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+
+    //saldo
+    Route::get('/laporan/saldo', [LaporanController::class, 'saldo'])->name('laporan.saldo')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+    Route::get('/print/saldo', [LaporanController::class, 'printSaldo'])->name('print.saldo')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+
     Route::get('/laporan/simpanan', [LaporanController::class, 'simpanan'])->name('laporan.simpanan')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
     Route::get('/print/simpanan', [LaporanController::class, 'printSimpanan'])->name('print.simpanan')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
     Route::get('/laporan/pinjaman', [LaporanController::class, 'pinjaman'])->name('laporan.pinjaman')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
     Route::get('/print/pinjaman', [LaporanController::class, 'printPinjaman'])->name('print.pinjaman')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
-
+    
     Route::get('/generate-pdf', [LaporanController::class, 'generatePDF'])->name('generatepdf');
 
 });

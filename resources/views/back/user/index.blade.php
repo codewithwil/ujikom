@@ -35,7 +35,10 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <a href="{{route('users.tambah')}}" class="btn btn-warning mb-3">Tambah pegawai</a>
+                <div class="mb-3">
+                  <a href="{{route('users.tambah')}}" class="btn btn-warning">Tambah pegawai</a>
+                  <a href="{{route('laporan.user')}}" class="btn btn-info">Invoice</a>
+                </div>
                 @if ($errors->any())
                 <div class="my-3">
                     <div class="alert alert-danger">

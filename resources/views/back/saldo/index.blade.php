@@ -35,7 +35,9 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <a href="{{route('saldo.tambah')}}" class="btn btn-warning mb-2" >Tambah Saldo</a>
+                <div class="mb-3">
+                  <a href="{{route('laporan.saldo')}}" class="btn btn-warning mb-2" >Invoice</a>
+                </div>
                 @if ($errors->any())
                 <div class="my-3">
                     <div class="alert alert-danger">
@@ -54,7 +56,6 @@
                     <th>saldo</th>
                     <th>keterangan</th>
                     <th>saldo masuk pada tanggal</th>
-                    <th>aksi</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -67,12 +68,6 @@
                     <td>{{$item->saldo}}</td>
                     <td>{{$item->keterangan}}</td>
                     <td>{{$item->created_at}}</td>
-                    <td>
-                      <a href="{{route('saldo.edit', $item->id_saldo)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fas fa-pencil-alt"></i></a>
-
-                        <a href="#" onclick="deleteSaldo(this)" data-id="{{$item->id_saldo}}" 
-                            class="btn btn-danger shadow btn-xs sharp"><i class="fas fa-trash"></i></a>
-                    </td>
                   </tr>
                   @php
       
@@ -90,7 +85,6 @@
                     <th>saldo</th>
                     <th>keterangan</th>
                     <th>saldo masuk pada tanggal</th>
-                    <th>aksi</th>
                   </tr>
                   </tfoot>
                 </table>

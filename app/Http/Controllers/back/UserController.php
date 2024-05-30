@@ -8,6 +8,7 @@ use App\{
     Http\Controllers\globalC,
     Models\User
 };
+use App\Models\Pengaturan;
 use Illuminate\{
     Support\Facades\Storage,
     Support\Facades\DB,
@@ -24,6 +25,7 @@ class UserController extends globalC
             'users' => $users
         ]);
     }
+
     public function create(){
         $role = Role::get();
         return view('back.user.create', [
@@ -171,6 +173,20 @@ class UserController extends globalC
                     "message" =>  $e->getLine() . ' ' . $e->getMessage()
                 ]);  
             }
+        }
+
+        public function invoice(){
+            $users = User::get();
+            $pengaturan = Pengaturan::get()->first();
+            $role = Role::get();
+            return view('back.user.laporan', compact('users', 'pengaturan', 'role'));
+        }
+
+        public function print(){
+            $users = User::get();
+            $pengaturan = Pengaturan::get()->first();
+            $role = Role::get();
+            return view('back.user.print', compact('users', 'pengaturan', 'role'));
         }
 }
 
