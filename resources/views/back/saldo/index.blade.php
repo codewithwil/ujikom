@@ -75,8 +75,13 @@
                     </td>
                   </tr>
                   @php
+      
+                  if(strpos(strtolower($item->keterangan), 'kredit') !== false) {
+                      $totalSaldo -= $item->saldo;
+                  } else {
                       $totalSaldo += $item->saldo;
-                  @endphp
+                  }
+                @endphp
                   @endforeach
                   </tbody>
                   <tfoot>

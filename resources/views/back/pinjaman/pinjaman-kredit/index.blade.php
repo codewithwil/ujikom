@@ -61,6 +61,7 @@
                     <th>keterangan</th>
                     <th>Nominal</th>
                     <th>Bunga</th>
+                    <th>keterangan</th>
                     <th>status buku</th>
                     <th>Aksi</th>
                   </tr>
@@ -101,6 +102,7 @@
                     <th>keterangan</th>
                     <th>Nominal</th>
                     <th>Bunga</th>
+                    <th>Keterangan</th>
                     <th>status buku</th>
                     <th>Aksi</th>
                   </tr>
