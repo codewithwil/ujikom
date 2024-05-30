@@ -140,6 +140,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/print/simpanan', [LaporanController::class, 'printSimpanan'])->name('print.simpanan')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
     Route::get('/laporan/pinjaman', [LaporanController::class, 'pinjaman'])->name('laporan.pinjaman')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
     Route::get('/print/pinjaman', [LaporanController::class, 'printPinjaman'])->name('print.pinjaman')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+
+    Route::get('/generate-pdf', [LaporanController::class, 'generatePDF'])->name('generatepdf');
+
 });
 
 Route::get('/get-saldo-koperasi', [SaldoController::class, 'getSaldoKoperasi']);

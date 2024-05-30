@@ -94,7 +94,7 @@
     <td>{{$loop->iteration}}</td>
     <td>{{$item->tanggal}}</td>
     <td>{{$item->anggota_kode}}</td>
-    <td>{{$item->kode_pinjaman_kredit}}</td>
+    <td>{{$item->kode_simpanan_debet}}</td>
     <td>{{$item->Anggota->nama}}</td>
     <td>{{$item->transaksi}}</td>
     <td>
@@ -147,7 +147,7 @@
   <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit
   Payment
   </button>
-  <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+  <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;" onclick="generatePDF()">
   <i class="fas fa-download"></i> Generate PDF
   </button>
   </div>
@@ -194,47 +194,6 @@
 
 
 
-<script>
-    function deletePinjamD(e) {
-        let kode_pinjaman_debet = e.getAttribute('data-id');
-        console.log("ID Saldo yang Dihapus:", kode_pinjaman_debet);
-
-        Swal.fire({
-            title: 'Delete Saldo ' + kode_pinjaman_debet,
-            text: "Are you sure?",
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Delete',
-            cancelButtonText: 'Cancel',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route("pinjamanDebet.delete") }}',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        _method: 'POST',
-                        kode_pinjaman_debet: kode_pinjaman_debet
-                    },
-                    dataType: "json",
-                    success: function (response) {
-                        Swal.fire({
-                            title: "Success",
-                            text: response.message,
-                            icon: 'success',
-                        }).then((result) => {
-                            window.location.href = '/pinjaman/debet';
-                        });
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
-                    }
-                });
-            }
-        });
-    }
-    </script>
     <script>
 
     $(document).ready(function(){
@@ -256,6 +215,37 @@
     for (var i = 0; i < currentDateElements.length; i++) {
         currentDateElements[i].textContent = formattedDate;
     }
+</script>
+
+<script>
+  function generatePDF() {
+      // Kirim permintaan AJAX ke endpoint yang akan menghasilkan PDF
+      fetch('/generate-pdf')
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Failed to generate PDF');
+              }
+              return response.blob();
+          })
+          .then(blob => {
+              // Buat objek URL untuk blob PDF
+              const url = window.URL.createObjectURL(blob);
+              // Buat elemen <a> untuk mengunduh file PDF
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'invoice.pdf';
+              // Tambahkan elemen <a> ke DOM dan klik untuk mengunduh
+              document.body.appendChild(a);
+              a.click();
+              // Hapus objek URL setelah file diunduh
+              window.URL.revokeObjectURL(url);
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              // Tampilkan pesan kesalahan kepada pengguna jika terjadi kesalahan
+              alert('Failed to generate PDF');
+          });
+  }
 </script>
 
   @endpush

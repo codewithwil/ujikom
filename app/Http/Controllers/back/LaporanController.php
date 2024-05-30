@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Pengaturan;
 use App\Models\PinjamanKredit;
 use App\Models\SimpananDebet;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Http\Request;
 
 class LaporanController extends Controller
@@ -33,4 +35,34 @@ class LaporanController extends Controller
         $pengaturan = Pengaturan::get();
         return view('back.laporan.laporan-pinjaman.print', compact('pinjaman', 'pengaturan'));
     }
+
+    public function generatePDF()
+{
+    // Data yang ingin Anda masukkan ke PDF
+    $data = [
+        'title' => 'Contoh PDF',
+        'content' => 'Ini adalah contoh teks dalam PDF.'
+    ];
+
+    // Buat instance Dompdf dengan opsi
+    $options = new Options();
+    $options->set('isHtml5ParserEnabled', true);
+    $options->set('isRemoteEnabled', true);
+    $dompdf = new Dompdf($options);
+
+    // Load view blade yang berisi markup HTML untuk PDF
+    $html = view('back.laporan.laporan-simpanan.pdf', $data)->render();
+
+    // Tambahkan konten HTML ke PDF
+    $dompdf->loadHtml($html);
+
+    // Atur ukuran dan orientasi halaman
+    $dompdf->setPaper('A4', 'portrait');
+
+    // Render PDF (hasilnya bisa disimpan atau ditampilkan langsung)
+    $dompdf->render();
+
+    // Simpan PDF ke dalam file atau tampilkan ke user
+    return $dompdf->stream("invoice.pdf");
+}
 }
