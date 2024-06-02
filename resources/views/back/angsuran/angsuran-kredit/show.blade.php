@@ -75,6 +75,13 @@
                       <td>: {{$angsuranKredit->tanggal}}</td>
                     </tr>
                     <tr>
+                      @php
+                      use Carbon\Carbon;
+                      @endphp
+                      <th>Pinjaman berakhir pada</th>
+                      <td>: @tambahBulan($angsuranKredit->tanggal, $angsuranKredit->periode)</td>
+                  </tr>
+                    <tr>
                       <th>Jenis pembayaran</th>
                       <td>: {{ $angsuranKredit->jenis_pembayaran}}</td>
                     </tr>
@@ -90,6 +97,7 @@
                       <th>periode waktu pinjaman</th>
                       <td>: {{ $angsuranKredit->periode}} bulan</td>
                     </tr>
+             
                     <tr>
                       <th>Nominal yang di pinjam</th>
                       <td>: Rp{{ number_format($angsuranKredit->nominal , 2,   ',', '.')}}</td>

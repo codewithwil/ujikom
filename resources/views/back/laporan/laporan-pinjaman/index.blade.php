@@ -77,30 +77,38 @@
   <thead>
   <tr>
     <th>No</th>
-    <th>tanggal</th>
+    <th>tanggal Pinjam</th>
+    <th>Pinjaman berakhir pada</th>
     <th>ID anggota</th>
     <th>ID transaksi</th>
     <th>Nama Anggota</th>
     <th>kas</th>
+    <th>periode</th>
     <th>bunga</th>
     <th>nominal</th>
+    <th>total</th>
   </tr>
   </thead>
   <tbody>
     @php
+    use Carbon\Carbon;
     $totalPinjaman = 0;
 @endphp
+
 @foreach ($pinjaman as $item)
 <tr>
     <td>{{$loop->iteration}}</td>
     <td>{{$item->tanggal}}</td>
+
+      <td>: @tambahBulan($item->tanggal, $item->periode)</td>
     <td>{{$item->anggota_kode}}</td>
     <td>{{$item->kode_pinjaman_kredit}}</td>
     <td>{{$item->Anggota->nama}}</td>
     <td>{{$item->transaksi}}</td>
-    <td>{{$item->bunga}}</td>
+    <td>{{$item->periode}} bulan</td>
+    <td>{{$item->bunga}}%</td>
     <td>{{$item->nominal}}</td>
-    <td></td>
+    <td>Rp.{{ number_format(hitungCicilan($item->nominal, $item->bunga, $item->periode), 2, ',', '.') }}</td>
     @php
     $totalPinjaman += $item->nominal;
 @endphp
@@ -145,7 +153,7 @@
   <a href="{{ route('print.pinjaman') }}" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
   <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
   <i class="fas fa-download"></i> Generate PDF
-  </button>
+  </button>   
   </div>
   </div>
   </div>

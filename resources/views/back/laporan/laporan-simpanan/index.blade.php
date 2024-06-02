@@ -83,6 +83,7 @@
     <th>Nama anggota</th>
     <th>kas</th>
     <th>nominal</th>
+    <th>Total</th>
   </tr>
   </thead>
   <tbody>
@@ -102,6 +103,7 @@
         <li>{{ $item->wajib }}</li>
         <li>{{ !empty($item->sukarela) ? $item->sukarela : 0 }}</li>
     </td>
+    <td>{{$item->pokok + $item->wajib + $item->sukarela}}</td>
     @php
     $totalSimpanan += $item->pokok + $item->wajib + $item->sukarela;
 @endphp
@@ -131,7 +133,7 @@
   <div class="table-responsive">
   <table class="table">
   <tr>
-  <th>Total Nominal:</th>
+  <th>Total simpanan:</th>
   <td>{{$totalSimpanan}}</td>
   </tr>
   </table>

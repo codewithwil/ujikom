@@ -54,6 +54,7 @@
           <table class="table table-striped">
             <thead>
             <tr>
+              <tr>
                 <th>No</th>
                 <th>tanggal</th>
                 <th>ID anggota</th>
@@ -61,9 +62,10 @@
                 <th>Nama anggota</th>
                 <th>kas</th>
                 <th>nominal</th>
-            </tr>
-            </thead>
-            <tbody>
+                <th>Total</th>
+              </tr>
+              </thead>
+              <tbody>
                 @php
                 $totalSimpanan = 0;
             @endphp
@@ -72,7 +74,7 @@
                 <td>{{$loop->iteration}}</td>
                 <td>{{$item->tanggal}}</td>
                 <td>{{$item->anggota_kode}}</td>
-                <td>{{$item->kode_pinjaman_kredit}}</td>
+                <td>{{$item->kode_simpanan_debet}}</td>
                 <td>{{$item->Anggota->nama}}</td>
                 <td>{{$item->transaksi}}</td>
                 <td>
@@ -80,6 +82,7 @@
                     <li>{{ $item->wajib }}</li>
                     <li>{{ !empty($item->sukarela) ? $item->sukarela : 0 }}</li>
                 </td>
+                <td>{{$item->pokok + $item->wajib + $item->sukarela}}</td>
                 @php
                 $totalSimpanan += $item->pokok + $item->wajib + $item->sukarela;
             @endphp

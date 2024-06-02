@@ -54,36 +54,45 @@
           <table class="table table-striped">
             <thead>
             <tr>
-                <th>No</th>
-                <th>tanggal</th>
-                <th>ID anggota</th>
-                <th>ID transaksi</th>
-                <th>Nama Anggota</th>
-                <th>kas</th>
-                <th>bunga</th>
-                <th>nominal</th>
+              <th>No</th>
+              <th>tanggal Pinjam</th>
+              <th>Pinjaman berakhir pada</th>
+              <th>ID anggota</th>
+              <th>ID transaksi</th>
+              <th>Nama Anggota</th>
+              <th>kas</th>
+              <th>periode</th>
+              <th>bunga</th>
+              <th>nominal</th>
+              <th>total</th>
             </tr>
             </thead>
             <tbody>
-                @php
-                $totalPinjaman = 0;
-            @endphp
-            @foreach ($pinjaman as $item)
-            <tr>
-                <td>{{$loop->iteration}}</td>
-                <td>{{$item->tanggal}}</td>
-                <td>{{$item->anggota_kode}}</td>
-                <td>{{$item->kode_pinjaman_kredit}}</td>
-                <td>{{$item->Anggota->nama}}</td>
-                <td>{{$item->transaksi}}</td>
-                <td>{{$item->bunga}}</td>
-                <td>{{$item->nominal}}</td>
-                <td></td>
-                @php
-                $totalPinjaman += $item->nominal;
-            @endphp
-            </tr>
-            @endforeach
+              @php
+              use Carbon\Carbon;
+              $totalPinjaman = 0;
+          @endphp
+          
+          @foreach ($pinjaman as $item)
+          <tr>
+              <td>{{$loop->iteration}}</td>
+              <td>{{$item->tanggal}}</td>
+          
+                <td>: @tambahBulan($item->tanggal, $item->periode)</td>
+              <td>{{$item->anggota_kode}}</td>
+              <td>{{$item->kode_pinjaman_kredit}}</td>
+              <td>{{$item->Anggota->nama}}</td>
+              <td>{{$item->transaksi}}</td>
+              <td>{{$item->periode}} bulan</td>
+              <td>{{$item->bunga}}%</td>
+              <td>{{$item->nominal}}</td>
+              <td>Rp.{{ number_format(hitungCicilan($item->nominal, $item->bunga, $item->periode), 2, ',', '.') }}</td>
+              @php
+              $totalPinjaman += $item->nominal;
+          @endphp
+              <!-- Tambahkan kolom lainnya sesuai kebutuhan -->
+          </tr>
+          @endforeach
             </tbody>
           </table>
         </div>
