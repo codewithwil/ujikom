@@ -68,6 +68,12 @@
               </a>
             </li>
             <li class="nav-item">
+              <a href="{{route('jenisSimpanan.index')}}" class="nav-link">
+                <i class="nav-icon fas fa-sign-in-alt"></i>
+                <p>Jenis Simpanan</p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="{{route('simpananDebet.index')}}" class="nav-link">
                 <i class="nav-icon fas fa-sign-in-alt"></i>
                 <p>Simpanan</p>

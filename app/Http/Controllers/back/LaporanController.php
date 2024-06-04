@@ -4,6 +4,7 @@ namespace App\Http\Controllers\back;
 
 use App\Http\Controllers\Controller;
 use App\Models\Anggota;
+use App\Models\JenisSimpanan;
 use App\Models\Pengaturan;
 use App\Models\PinjamanKredit;
 use App\Models\Saldo;
@@ -31,6 +32,12 @@ class LaporanController extends Controller
         $saldo      = Saldo::get();
         $pengaturan = Pengaturan::get();
         return view('back.laporan.laporan-saldo.index', compact('saldo', 'pengaturan'));
+    }
+
+    public function jenisSimpanan(){
+        $jenis      = JenisSimpanan::get();
+        $pengaturan = Pengaturan::get();
+        return view('back.laporan.laporan-jenis-simpanan.index', compact('jenis', 'pengaturan'));       
     }
 
     public function simpanan(){
@@ -74,6 +81,13 @@ class LaporanController extends Controller
         $pengaturan = Pengaturan::get();
         return view('back.laporan.laporan-saldo.print', compact('saldo', 'pengaturan'));
     }
+
+    public function printjenisSimpanan(){
+        $jenis      = JenisSimpanan::get();
+        $pengaturan = Pengaturan::get();
+        return view('back.laporan.laporan-jenis-simpanan.print', compact('jenis', 'pengaturan'));
+    }
+
     public function printSimpanan(){
         $simpanan  = SimpananDebet::with('Anggota')->where('status', 1)->get();
         $pengaturan = Pengaturan::get();
