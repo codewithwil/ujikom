@@ -18,9 +18,8 @@ return new class extends Migration
             $table->date('tanggal');
             $table->enum('jenis_pembayaran',['tunai','nontunai'])->default('tunai');
             $table->enum('transaksi',['debet','kredit'])->default('debet');
-            $table->enum('divisi',['simpan','pinjam'])->default('simpan');
+            $table->string('transaksi', 20)->default('kas');
             $table->longText('props');
-            $table->text('keterangan');
             $table->enum('status_buku',['aktif','nonaktif'])->default('aktif');
             $table->tinyInteger('status');
             $table->timestamps();

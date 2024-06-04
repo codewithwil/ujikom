@@ -128,15 +128,7 @@
                       <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                     </div>
                     <div id="transaksi-part" class="content" role="tabpanel" aria-labelledby="transaksi-part-trigger">
-                      <div class="form-group">
-                        <label for="transaksi">Transaksi</label>
-                        <select name="transaksi" id="transaksi" class="form-control">
-                          @foreach ($transaksi as $item => $get_transaksi)
-                          <option value="hidden" disabled selected hidden>Pilih Transaksi</option>
-                          <option value="{{$item}}">{{$get_transaksi}}</option>
-                          @endforeach
-                        </select>
-                      </div>
+              
                       @foreach ($jenisSimpanan as $key => $item)
                       <div class="form-group">
                           <label for="props_{{ $key }}">Nominal {{ $item->nama }}</label>
@@ -226,7 +218,6 @@
     var jenis_pembayaran     = document.getElementById('jenis_pembayaran').value;
     var divisi               = document.getElementById('divisi').value;
     var anggota_kode         = document.getElementById('anggota_kode').value;
-    var transaksi            = document.getElementById('transaksi').value;
     var keterangan           = document.getElementById('keterangan').value;
     var status_buku          = document.getElementById('status_buku').value;
     var props = [];
@@ -248,7 +239,6 @@
       jenis_pembayaran: jenis_pembayaran,
       divisi: divisi,
       anggota_kode: anggota_kode,
-      transaksi: transaksi,
       props: props,
       keterangan: keterangan,
       status_buku: status_buku,

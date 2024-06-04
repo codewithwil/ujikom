@@ -48,6 +48,7 @@ class SimpananDebetController extends globalC
         $data = $request->all();
         $anggota = Anggota::where('kode_anggota', $data['anggota_kode'])->first();
         $data['status'] = 1;
+        $data['transaksi'] = 'kas';
         
         $props = $data['props'];
         if(is_array($props) && !empty($props)) {
@@ -74,7 +75,6 @@ class SimpananDebetController extends globalC
             } else {
                 $saldoKoperasi->keterangan = 'Anggota tidak ditemukan';
             }
-    
             $saldoKoperasi->save();
             SimpananDebet::create($data);
 

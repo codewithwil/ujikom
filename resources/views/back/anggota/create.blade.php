@@ -149,13 +149,6 @@
                         <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                       </div>
                       <div id="transaksi-part" class="content" role="tabpanel" aria-labelledby="transaksi-part-trigger">
-                        <div class="form-group">
-                          <label for="transaksi">Transaksi</label>
-                          <select name="transaksi" id="transaksi" class="form-control">
-                            <option value="hidden" disabled selected hidden>Pilih Transaksi</option>
-                            <option value="debet">debet</option>
-                          </select>
-                        </div>
                         @foreach ($jenis as $key => $item)
                         <div class="form-group">
                             <label for="props_{{ $key }}">Nominal {{ $item->nama }}</label>
@@ -248,7 +241,6 @@ document.getElementById('submitForm').addEventListener('click', function(event) 
   var tanggal = document.getElementById('tanggal').value;
   var jenis_pembayaran = document.getElementById('jenis_pembayaran').value;
   var divisi = document.getElementById('divisi').value;
-  var transaksi = document.getElementById('transaksi').value;
   var keterangan = document.getElementById('keterangan').value;
   var status_buku = document.getElementById('status_buku').value;
 
@@ -277,7 +269,6 @@ document.getElementById('submitForm').addEventListener('click', function(event) 
     jenis_pembayaran: jenis_pembayaran,
     divisi: divisi,
     props: props,
-    transaksi: transaksi,
     keterangan: keterangan, 
     status_buku: status_buku,
     _token: '{{ csrf_token() }}'
