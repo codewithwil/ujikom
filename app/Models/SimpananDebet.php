@@ -16,7 +16,7 @@ class SimpananDebet extends Model
     protected $keyType = 'string'; 
     public $incrementing = false;
     protected $fillable = ['kode_simpanan_debet', 'anggota_kode', 'transaksi','tanggal','jenis_pembayaran', 'divisi', 
-                           'pokok', 'wajib', 'sukarela', 'keterangan','status_buku', 'status'];
+                           'props', 'keterangan','status_buku', 'status'];
     
 
      // BOOTING SECTION

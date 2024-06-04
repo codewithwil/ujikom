@@ -8,6 +8,7 @@ use App\{
     Models\SimpananDebet,
     Models\Saldo,
 };
+use App\Models\JenisSimpanan;
 use Illuminate\{
     Http\Request,
     Support\Facades\DB
@@ -26,17 +27,19 @@ class SimpananDebetController extends globalC
     public function create(){
         $jenisBayar = SimpananDebet::getJenisPembayaran();
         $divisi     = SimpananDebet::getDivisi();
-        $transaksi     = SimpananDebet::getTransaksi();
+        $transaksi  = SimpananDebet::getTransaksi();
         $anggota    = Anggota::get();
+        $jenis      = JenisSimpanan::get();
         $statusBuku = SimpananDebet::getStatusBuku();
         $keterangan = SimpananDebet::getKeterangan();
         return view('back.simpanan.simpanan-debet.create', [
             'jenisBayar'  => $jenisBayar,
             'divisi'      => $divisi,
-            'transaksi'      => $transaksi,
+            'transaksi'   => $transaksi,
             'anggota'     => $anggota,  
-            'statusBuku'     => $statusBuku,  
-            'keterangan'     => $keterangan
+            'jenisSimpanan' => $jenis,  
+            'statusBuku'  => $statusBuku,  
+            'keterangan'  => $keterangan
         ]);
     }
 
@@ -45,19 +48,33 @@ class SimpananDebetController extends globalC
         $data = $request->all();
         $anggota = Anggota::where('kode_anggota', $data['anggota_kode'])->first();
         $data['status'] = 1;
-    
+        
+        $props = $data['props'];
+        if(is_array($props) && !empty($props)) {
+            if (array_filter($props, 'is_numeric') === $props) {
+                $totalProps = array_sum($props);
+            } else {
+                $totalProps = 0;
+            }
+        } else {
+            $totalProps = 0;
+        }
+        $props = $data['props'];
+        $propsJson = json_encode($props); // Mengonversi props menjadi JSON
+        
+        // Masukkan propsJson ke dalam data sebelum disimpan
+        $data['props'] = $propsJson;
         DB::beginTransaction();
         try {
 
             $saldoKoperasi = new Saldo();
-            $saldoKoperasi->saldo      = $data['pokok'] + $data['wajib'] + $data['sukarela'];
+            $saldoKoperasi->saldo      = $totalProps;
             if ($anggota) {
-                $saldoKoperasi->keterangan = 'Anggota ' . $anggota->nama . ' telah melakukan ' . $data['transaksi'] . ' sebesar ' . ($data['pokok'] + $data['wajib'] + $data['sukarela']);
+                $saldoKoperasi->keterangan = 'Anggota ' . $anggota->nama . ' telah melakukan ' . $data['transaksi'] . ' sebesar ' . $totalProps;
             } else {
                 $saldoKoperasi->keterangan = 'Anggota tidak ditemukan';
             }
-            
-            
+    
             $saldoKoperasi->save();
             SimpananDebet::create($data);
 
@@ -81,9 +98,20 @@ class SimpananDebetController extends globalC
         $jenisBayar = SimpananDebet::getJenisPembayaran();
         $divisi     = SimpananDebet::getDivisi();
         $transaksi  = SimpananDebet::getTransaksi();
-        $anggota    = Anggota::get();
+        $anggota    = Anggota::get();    
         $statusBuku = SimpananDebet::getStatusBuku();
         $keterangan = SimpananDebet::getKeterangan();
+
+        $simpanD = SimpananDebet::find($kode_simpanan_debet);
+    
+        // Dekode props JSON menjadi array
+        $propsArray = json_decode($simpanD->props);
+        
+        // Konversi array asosiatif menjadi array objek
+        $propsArray = array_map(function($item) {
+            return (object) $item;
+        }, $propsArray);
+        
         return view('back.simpanan.simpanan-debet.update',[
             'simpanD'        => SimpananDebet::find($kode_simpanan_debet),
             'jenisBayar'     => $jenisBayar,
@@ -91,7 +119,8 @@ class SimpananDebetController extends globalC
             'transaksi'      => $transaksi,
             'anggota'        => $anggota,  
             'statusBuku'     => $statusBuku,  
-            'keterangan'     => $keterangan
+            'keterangan'     => $keterangan,
+            'propsArray'     => $propsArray,
         ]);
     }
 

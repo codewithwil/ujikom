@@ -59,37 +59,59 @@
                     <th>Transaksi</th>
                     <th>divisi</th>
                     <th>keterangan</th>
-                    <th>pokok</th>
-                    <th>wajib</th>
-                    <th>sukarela</th>
+                    @php
+                      $props = json_decode($simpanD->first()->props, true);
+                        if (is_array($props)) {
+                            foreach ($props as $prop) {
+                                if (is_array($prop)) {
+                                    echo "<td>{$prop['nama']}</td>";
+                                } else {
+                                    echo "<td>Invalid JSON data</td>";
+                                }
+                            }
+                        } else {
+                            echo "<td>Invalid JSON data</td>";
+                        }
+                @endphp
+    
                     <th>status buku</th>
                     <th>Aksi</th>
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach ($simpanD as $item)
-                  <tr>
-                   
-                    <td>{{$loop->iteration}}</td>
-                    <td>{{$item->kode_simpanan_debet}}</td>
-                    <td>{{$item->Anggota->nama}}</td>
-                    <td>{{$item->tanggal}}</td>
-                    <td>{{$item->jenis_pembayaran}}</td>
-                    <td>{{$item->transaksi}}</td>
-                    <td>{{$item->divisi}}</td>
-                    <td>{{$item->keterangan}}</td>
-                    <td>{{$item->pokok}}</td>
-                    <td>{{$item->wajib}}</td>
-                    <td>{{$item->sukarela}}</td>
-                    <td>{{$item->status_buku}}</td>
-                    <td>
-                      <a href="{{route('simpananDebet.edit', $item->kode_simpanan_debet)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fas fa-pencil-alt"></i></a>
-
-                        <a href="#" onclick="deletesimpanD(this)" data-id="{{$item->kode_simpanan_debet}}" 
-                            class="btn btn-danger shadow btn-xs sharp"><i class="fas fa-trash"></i></a>
-                    </td>
-                  </tr>
-                  @endforeach
+                    
+                    @foreach ($simpanD as $item)
+                    <tr>
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$item->kode_simpanan_debet}}</td>
+                        <td>{{$item->Anggota->nama}}</td>
+                        <td>{{$item->tanggal}}</td>
+                        <td>{{$item->jenis_pembayaran}}</td>
+                        <td>{{$item->transaksi}}</td>
+                        <td>{{$item->divisi}}</td>
+                        <td>{{$item->keterangan}}</td>
+                          @php
+                        $props = json_decode($item->props, true);
+                        if (is_array($props)) {
+                            foreach ($props as $prop) {
+                                if (is_array($prop)) {
+                                    echo "<td>{$prop['nominal']}</td>";
+                                } else {
+                                    echo "<td>Invalid JSON data</td>";
+                                }
+                            }
+                        } else {
+                            echo "<td>Invalid JSON data</td>";
+                        }
+                    @endphp
+                        <td>{{$item->status_buku}}</td>
+                        <td>
+                            <a href="{{route('simpananDebet.edit', $item->kode_simpanan_debet)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="#" onclick="deletesimpanD(this)" data-id="{{$item->kode_simpanan_debet}}" class="btn btn-danger shadow btn-xs sharp"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                @endforeach
+                
                   </tbody>
                   <tfoot>
                   <tr>

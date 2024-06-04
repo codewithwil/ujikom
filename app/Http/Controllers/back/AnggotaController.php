@@ -8,6 +8,7 @@ use App\{
     Http\Requests\anggota\CreateAnggotaRequest
 };
 use App\Http\Requests\anggota\UpdateAnggotaRequest;
+use App\Models\JenisSimpanan;
 use App\Models\Keterangan;
 use App\Models\Saldo;
 use App\Models\SimpananDebet;
@@ -26,60 +27,74 @@ class AnggotaController extends globalC
     }
 
     public function create(){
-        return view('back.anggota.create');
+        $jenis = JenisSimpanan::get();
+        return view('back.anggota.create',[
+            'jenis' => $jenis
+        ]);
     }
   
-    public function store(Request $request){
-        $data = $request->all();
-        $data['status'] = 1;
-
-        DB::beginTransaction();
-        try {
-            $anggota = new Anggota();
-            $anggota->kode_anggota = $data['kode_anggota'];
-            $anggota->nik          = $data['nik'];
-            $anggota->nama         = $data['nama'];
-            $anggota->alamat       = $data['alamat'];
-            $anggota->email        = $data['email'];
-            $anggota->telepon      = $data['telepon'];
-            $anggota['status']     = 1;
-            $anggota->save();
-    
-            $simpananDebet = new SimpananDebet();
-            $simpananDebet->kode_simpanan_debet = $data['kode_simpanan_debet'];
-            $simpananDebet->anggota_kode        = $data['kode_anggota'];
-            $simpananDebet->tanggal             = $data['tanggal'];
-            $simpananDebet->jenis_pembayaran    = $data['jenis_pembayaran'];
-            $simpananDebet->transaksi           = $data['transaksi'];
-            $simpananDebet->divisi              = $data['divisi'];
-            $simpananDebet->pokok               = $data['pokok'];
-            $simpananDebet->wajib               = $data['wajib'];
-            $simpananDebet->sukarela            = $data['sukarela'];
-            $simpananDebet->keterangan          = $data['keterangan'];
-            $simpananDebet->status_buku         = $data['status_buku'];
-            $simpananDebet['status']            = 1;
-            $simpananDebet->save();
-
-            $saldoKoperasi = new Saldo();
-            $saldoKoperasi->saldo      = $data['pokok'] + $data['wajib'] + $data['sukarela'];
-            $saldoKoperasi->keterangan = $data['keterangan'];
-            $saldoKoperasi->save();
-            DB::commit();
-            return redirect(route('anggota.index'))->with('success', ' Anggota has been created');
-        } catch (Exception $e) {
-            $errorMessage = $e->getMessage();
-            info($errorMessage); // Log pesan kesalahan ke dalam log biasa
-            Log::error('Error while storing data: ' . $errorMessage); // Catat pesan kesalahan ke dalam log error
+        public function store(Request $request){
+            $data = $request->all();
+            $data['status'] = 1;
+            $props = $data['props'];
+            if(is_array($props) && !empty($props)) {
+                // Periksa apakah semua nilai dalam array adalah numerik
+                if (array_filter($props, 'is_numeric') === $props) {
+                    $totalProps = array_sum($props);
+                } else {
+                    // Atur $totalProps ke 0 atau nilai default yang sesuai
+                    $totalProps = 0;
+                }
+            } else {
+                // Atur $totalProps ke 0 atau nilai default yang sesuai
+                $totalProps = 0;
+            }
         
-            DB::rollBack();
-            return response()->json([
-                "code"    => 412,
-                "status"  => "Error",
-                "message" =>  $e->getLine() . ' ' . $e->getMessage()
-            ]);
+            DB::beginTransaction();
+            try {
+                $anggota = new Anggota();
+                $anggota->kode_anggota = $data['kode_anggota'];
+                $anggota->nik          = $data['nik'];
+                $anggota->nama         = $data['nama'];
+                $anggota->alamat       = $data['alamat'];
+                $anggota->email        = $data['email'];
+                $anggota->telepon      = $data['telepon'];
+                $anggota['status']     = 1;
+                $anggota->save();
+        
+                $simpananDebet = new SimpananDebet();
+                $simpananDebet->kode_simpanan_debet = $data['kode_simpanan_debet'];
+                $simpananDebet->anggota_kode        = $data['kode_anggota'];
+                $simpananDebet->tanggal             = $data['tanggal'];
+                $simpananDebet->jenis_pembayaran    = $data['jenis_pembayaran'];
+                $simpananDebet->transaksi           = $data['transaksi'];
+                $simpananDebet->divisi              = $data['divisi'];
+                $simpananDebet->props               = json_encode($props);
+                $simpananDebet->keterangan          = $data['keterangan'];
+                $simpananDebet->status_buku         = $data['status_buku'];
+                $simpananDebet['status']            = 1;
+                $simpananDebet->save();
+
+                $saldoKoperasi = new Saldo();
+                $saldoKoperasi->saldo      = $totalProps;
+                $saldoKoperasi->keterangan = $data['keterangan'];
+                $saldoKoperasi->save();
+                DB::commit();
+                return redirect(route('anggota.index'))->with('success', ' Anggota has been created');
+            } catch (Exception $e) {
+                $errorMessage = $e->getMessage();
+                info($errorMessage); // Log pesan kesalahan ke dalam log biasa
+                Log::error('Error while storing data: ' . $errorMessage); // Catat pesan kesalahan ke dalam log error
             
+                DB::rollBack();
+                return response()->json([
+                    "code"    => 412,
+                    "status"  => "Error",
+                    "message" =>  $e->getLine() . ' ' . $e->getMessage()
+                ]);
+                
+            }
         }
-    }
 
     public function edit($kode_anggota){
         $anggota = Anggota::find($kode_anggota);

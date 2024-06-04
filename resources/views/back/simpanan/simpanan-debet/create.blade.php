@@ -137,18 +137,14 @@
                           @endforeach
                         </select>
                       </div>
+                      @foreach ($jenisSimpanan as $key => $item)
                       <div class="form-group">
-                        <label for="pokok">simpanan pokok</label>
-                        <input type="number" name="pokok" id="pokok" class="form-control">
+                          <label for="props_{{ $key }}">Nominal {{ $item->nama }}</label>
+                          <input type="hidden" name="props[{{ $key }}][nama]" value="{{ $item->nama }}">
+                          <input type="number" name="props[{{ $key }}][nominal]" id="props_{{ $key }}" class="form-control" value="{{ $item->nominal }}">
                       </div>
-                      <div class="form-group">
-                        <label for="wajib">simpanan wajib</label>
-                        <input type="number" name="wajib" id="wajib" class="form-control">
-                      </div>
-                      <div class="form-group">
-                        <label for="sukarela">simpanan sukarela</label>
-                        <input type="number" name="sukarela" id="sukarela" class="form-control">
-                      </div>
+                      @endforeach
+                  
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                     </div>
@@ -231,11 +227,20 @@
     var divisi               = document.getElementById('divisi').value;
     var anggota_kode         = document.getElementById('anggota_kode').value;
     var transaksi            = document.getElementById('transaksi').value;
-    var pokok                = document.getElementById('pokok').value;
-    var wajib                = document.getElementById('wajib').value;
-    var sukarela             = document.getElementById('sukarela').value;
     var keterangan           = document.getElementById('keterangan').value;
     var status_buku          = document.getElementById('status_buku').value;
+    var props = [];
+  document.querySelectorAll('input[name^="props"]').forEach(function(input) {
+    var name = input.name.match(/\[([0-9]+)\]\[([a-z]+)\]/);
+    var index = name[1];
+    var key = name[2];
+
+    if (!props[index]) {
+      props[index] = {};
+    }
+
+    props[index][key] = input.value;
+  });
 
     var data = {
       kode_simpanan_debet: kode_simpanan_debet,
@@ -244,29 +249,29 @@
       divisi: divisi,
       anggota_kode: anggota_kode,
       transaksi: transaksi,
-      pokok: pokok,
-      wajib: wajib,
-      sukarela: sukarela,
+      props: props,
       keterangan: keterangan,
       status_buku: status_buku,
       _token: '{{ csrf_token() }}' 
     };
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '{{ route('simpananDebet.store') }}');
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          console.log('Data berhasil dikirim ke database.');
-          window.location.href = '{{ route('simpananDebet.index') }}';
-        } else {
-          console.error('Gagal mengirim data ke database.');
-        }
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '{{ route('simpananDebet.store') }}');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        console.log('Data berhasil dikirim ke database.');
+        window.location.href = '{{ route('simpananDebet.index') }}';
+      } else {
+        console.error('Gagal mengirim data ke database.');
+        console.error('Respon:', xhr.responseText);
       }
-    };
-    xhr.send(JSON.stringify(data));
-  });
+    }
+  };
+  xhr.send(JSON.stringify(data));
+});
+
 </script>
 <script>
   function showAnggotaInfo() {

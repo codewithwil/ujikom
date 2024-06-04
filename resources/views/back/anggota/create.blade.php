@@ -156,18 +156,15 @@
                             <option value="debet">debet</option>
                           </select>
                         </div>
+                        @foreach ($jenis as $key => $item)
                         <div class="form-group">
-                          <label for="pokok">simpanan pokok</label>
-                          <input type="number" name="pokok" id="pokok" class="form-control">
+                            <label for="props_{{ $key }}">Nominal {{ $item->nama }}</label>
+                            <input type="hidden" name="props[{{ $key }}][nama]" value="{{ $item->nama }}">
+                            <input type="number" name="props[{{ $key }}][nominal]" id="props_{{ $key }}" class="form-control" value="{{ $item->nominal }}">
                         </div>
-                        <div class="form-group">
-                          <label for="wajib">simpanan wajib</label>
-                          <input type="number" name="wajib" id="wajib" class="form-control">
-                        </div>
-                        <div class="form-group">
-                          <label for="sukarela">simpanan sukarela</label>
-                          <input type="number" name="sukarela" id="sukarela" class="form-control">
-                        </div>
+                        @endforeach
+                    
+                    
                       <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                       <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                       </div>
@@ -243,20 +240,30 @@ document.getElementById('submitForm').addEventListener('click', function(event) 
 
   var kode_anggota = document.getElementById('kode_anggota').value;
   var kode_simpanan_debet = document.getElementById('kode_simpanan_debet').value;
-  var nik              = document.getElementById('nik').value;
-  var nama             = document.getElementById('nama').value;
-  var alamat           = document.getElementById('alamat').value;
-  var email            = document.getElementById('email').value;
-  var telepon          = document.getElementById('telepon').value;
-  var tanggal          = document.getElementById('tanggal').value;
+  var nik = document.getElementById('nik').value;
+  var nama = document.getElementById('nama').value;
+  var alamat = document.getElementById('alamat').value;
+  var email = document.getElementById('email').value;
+  var telepon = document.getElementById('telepon').value;
+  var tanggal = document.getElementById('tanggal').value;
   var jenis_pembayaran = document.getElementById('jenis_pembayaran').value;
-  var divisi           = document.getElementById('divisi').value;
-  var transaksi        = document.getElementById('transaksi').value;
-  var pokok            = document.getElementById('pokok').value;
-  var wajib            = document.getElementById('wajib').value;
-  var sukarela         = document.getElementById('sukarela').value;
-  var keterangan       = document.getElementById('keterangan').value; 
-  var status_buku      = document.getElementById('status_buku').value;
+  var divisi = document.getElementById('divisi').value;
+  var transaksi = document.getElementById('transaksi').value;
+  var keterangan = document.getElementById('keterangan').value;
+  var status_buku = document.getElementById('status_buku').value;
+
+  var props = [];
+  document.querySelectorAll('input[name^="props"]').forEach(function(input) {
+    var name = input.name.match(/\[([0-9]+)\]\[([a-z]+)\]/);
+    var index = name[1];
+    var key = name[2];
+
+    if (!props[index]) {
+      props[index] = {};
+    }
+
+    props[index][key] = input.value;
+  });
 
   var data = {
     kode_anggota: kode_anggota,
@@ -269,31 +276,30 @@ document.getElementById('submitForm').addEventListener('click', function(event) 
     tanggal: tanggal,
     jenis_pembayaran: jenis_pembayaran,
     divisi: divisi,
-    pokok: pokok,
+    props: props,
     transaksi: transaksi,
-    wajib: wajib,
-    sukarela: sukarela,
     keterangan: keterangan, 
     status_buku: status_buku,
-    _token: '{{ csrf_token() }}' 
-};
+    _token: '{{ csrf_token() }}'
+  };
 
-
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '{{ route('anggota.store') }}');
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          console.log('Data berhasil dikirim ke database.');
-          window.location.href = '{{ route('anggota.index') }}';
-        } else {
-          console.error('Gagal mengirim data ke database.');
-        }
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '{{ route('anggota.store') }}');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        console.log('Data berhasil dikirim ke database.');
+        window.location.href = '{{ route('anggota.index') }}';
+      } else {
+        console.error('Gagal mengirim data ke database.');
+        console.error('Respon:', xhr.responseText);
       }
-    };
-    xhr.send(JSON.stringify(data));
-  });
+    }
+  };
+  xhr.send(JSON.stringify(data));
+});
+
   </script>
 
   @endpush

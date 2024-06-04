@@ -129,18 +129,13 @@
                           @endforeach
                         </select>
                       </div>
+                      @foreach ($propsArray as $key => $item)
                       <div class="form-group">
-                        <label for="pokok">Simpanan Pokok</label>
-                        <input type="number" name="pokok" id="pokok" class="form-control" value="{{$simpanD->pokok}}">
+                          <label for="props_{{ $key }}">Nominal {{ $item->nama }}</label>
+                          <input type="hidden" name="props[{{ $key }}][nama]" value="{{ $item->nama }}">
+                          <input type="number" name="props[{{ $key }}][nominal]" id="props_{{ $key }}" class="form-control" value="{{ $item->nominal }}">
                       </div>
-                      <div class="form-group">
-                        <label for="wajib">Simpanan Wajib</label>
-                        <input type="number" name="wajib" id="wajib" class="form-control" value="{{$simpanD->wajib}}">
-                      </div>
-                      <div class="form-group">
-                        <label for="sukarela">Simpanan sukarela</label>
-                        <input type="number" name="sukarela" id="sukarela" class="form-control" value="{{$simpanD->sukarela}}">
-                      </div>
+                      @endforeach
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                     </div>
@@ -221,20 +216,26 @@
     var divisi           = document.getElementById('divisi').value;
     var anggota_kode     = document.getElementById('anggota_kode').value;
     var transaksi        = document.getElementById('transaksi').value;
-    var pokok            = document.getElementById('pokok').value;
-    var wajib            = document.getElementById('wajib').value;
-    var sukarela         = document.getElementById('sukarela').value;
     var keterangan       = document.getElementById('keterangan').value;
     var status_buku      = document.getElementById('status_buku').value;
+    var props = [];
+  document.querySelectorAll('input[name^="props"]').forEach(function(input) {
+    var name = input.name.match(/\[([0-9]+)\]\[([a-z]+)\]/);
+    var index = name[1];
+    var key = name[2];
 
+    if (!props[index]) {
+      props[index] = {};
+    }
+
+    props[index][key] = input.value;
+  });
     var data = {
       tanggal: tanggal,
       jenis_pembayaran: jenis_pembayaran,
       divisi: divisi,
       anggota_kode: anggota_kode,
-      pokok: pokok,
-      wajib: wajib,
-      sukarela: sukarela,
+      props: props,
       keterangan: keterangan,
       status_buku: status_buku,
       _token: '{{ csrf_token() }}' 

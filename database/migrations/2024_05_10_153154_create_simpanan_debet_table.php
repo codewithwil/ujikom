@@ -19,9 +19,7 @@ return new class extends Migration
             $table->enum('jenis_pembayaran',['tunai','nontunai'])->default('tunai');
             $table->enum('transaksi',['debet','kredit'])->default('debet');
             $table->enum('divisi',['simpan','pinjam'])->default('simpan');
-            $table->integer('pokok');
-            $table->integer('wajib');
-            $table->integer('sukarela')->nullable();
+            $table->longText('props');
             $table->text('keterangan');
             $table->enum('status_buku',['aktif','nonaktif'])->default('aktif');
             $table->tinyInteger('status');
