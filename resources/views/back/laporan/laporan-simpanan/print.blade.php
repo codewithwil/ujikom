@@ -61,14 +61,24 @@
                 <th>ID transaksi</th>
                 <th>Nama anggota</th>
                 <th>kas</th>
-                <th>nominal</th>
+                @php
+                $props = json_decode($simpanan->first()->props, true);
+                    if (is_array($props)) {
+                      foreach ($props as $prop) {
+                        if (is_array($prop)) {
+                        echo "<td>{$prop['nama']}</td>";
+                        } else {
+                        echo "<td>Invalid JSON data</td>";
+                        }
+                      }
+                    } else {
+                    echo "<td>Invalid JSON data</td>";
+                  }
+              @endphp
                 <th>Total</th>
               </tr>
               </thead>
               <tbody>
-                @php
-                $totalSimpanan = 0;
-            @endphp
             @foreach ($simpanan as $item)
             <tr>
                 <td>{{$loop->iteration}}</td>
@@ -77,15 +87,38 @@
                 <td>{{$item->kode_simpanan_debet}}</td>
                 <td>{{$item->Anggota->nama}}</td>
                 <td>{{$item->transaksi}}</td>
-                <td>
-                    <li>{{ $item->pokok }}</li>
-                    <li>{{ $item->wajib }}</li>
-                    <li>{{ !empty($item->sukarela) ? $item->sukarela : 0 }}</li>
-                </td>
-                <td>{{$item->pokok + $item->wajib + $item->sukarela}}</td>
                 @php
-                $totalSimpanan += $item->pokok + $item->wajib + $item->sukarela;
+                $props = json_decode($item->props, true);
+                if (is_array($props)) {
+                    foreach ($props as $prop) {
+                        if (isset($prop['nama']) && isset($prop['nominal'])) {
+                            $kode = $item->kode_simpanan_debet;
+                            if (!isset($totalsByKode[$kode])) {
+                                $totalsByKode[$kode] = 0;
+                            }
+                            $totalsByKode[$kode] += $prop['nominal'];
+                        } else {
+                            echo "<td>Invalid JSON data</td>";
+                        }
+                    }
+                    // Menampilkan nominal properti
+                    foreach ($props as $prop) {
+                        if (isset($prop['nominal'])) {
+                            echo "<td>{$prop['nominal']}</td>";
+                        } else {
+                            echo "<td>Invalid JSON data</td>";
+                        }
+                    }
+                } else {
+                    echo "<td colspan='3'>Invalid JSON data</td>";
+                }
             @endphp
+               <td>
+                @php
+                    $kode = $item->kode_simpanan_debet;
+                    echo isset($totalsByKode[$kode]) ? $totalsByKode[$kode] : 'Tidak ada data';
+                @endphp
+                </td>
                 <!-- Tambahkan kolom lainnya sesuai kebutuhan -->
             </tr>
             @endforeach
@@ -115,7 +148,7 @@
             <table class="table">
             <tr>
             <th>Total Nominal:</th>
-            <td>{{$totalSimpanan}}</td>
+            <td>{{$totalProps}}</td>
             </tr>
             </table>
           </div>

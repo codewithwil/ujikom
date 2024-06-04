@@ -43,7 +43,26 @@ class LaporanController extends Controller
     public function simpanan(){
         $simpanan  = SimpananDebet::with('Anggota')->where('status', 1)->get();
         $pengaturan = Pengaturan::get();
-        return view('back.laporan.laporan-simpanan.index', compact('simpanan', 'pengaturan'));
+        $totalProps = 0;
+
+        // Loop through each object in the collection
+        foreach ($simpanan as $item) {
+            // Access the 'props' property of each object
+            $props = json_decode($item->props, true);
+        
+            // Check if $props is an array and not empty
+            if(is_array($props) && !empty($props)) {
+                // Loop through each object in $props
+                foreach ($props as $prop) {
+                    // Check if the 'nominal' property is numeric
+                    if (is_numeric($prop['nominal'])) {
+                        // Add the 'nominal' value to $totalProps
+                        $totalProps += $prop['nominal'];
+                    }
+                }
+            }
+        }
+        return view('back.laporan.laporan-simpanan.index', compact('simpanan', 'pengaturan', 'totalProps'));
     }
 
     public function pinjaman(){
@@ -91,7 +110,24 @@ class LaporanController extends Controller
     public function printSimpanan(){
         $simpanan  = SimpananDebet::with('Anggota')->where('status', 1)->get();
         $pengaturan = Pengaturan::get();
-        return view('back.laporan.laporan-simpanan.print', compact('simpanan', 'pengaturan'));
+        $totalProps = 0;
+        foreach ($simpanan as $item) {
+            // Access the 'props' property of each object
+            $props = json_decode($item->props, true);
+        
+            // Check if $props is an array and not empty
+            if(is_array($props) && !empty($props)) {
+                // Loop through each object in $props
+                foreach ($props as $prop) {
+                    // Check if the 'nominal' property is numeric
+                    if (is_numeric($prop['nominal'])) {
+                        // Add the 'nominal' value to $totalProps
+                        $totalProps += $prop['nominal'];
+                    }
+                }
+            }
+        }
+        return view('back.laporan.laporan-simpanan.print', compact('simpanan', 'pengaturan', 'totalProps'));
     }
 
     public function printPinjaman(){
