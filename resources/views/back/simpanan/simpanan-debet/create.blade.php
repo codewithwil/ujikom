@@ -133,7 +133,9 @@
                       <div class="form-group">
                           <label for="props_{{ $key }}">Nominal {{ $item->nama }}</label>
                           <input type="hidden" name="props[{{ $key }}][nama]" value="{{ $item->nama }}">
+                          @if ($item->nama!== 'pokok')
                           <input type="number" name="props[{{ $key }}][nominal]" id="props_{{ $key }}" class="form-control" value="{{ $item->nominal }}">
+                          @endif
                       </div>
                       @endforeach
                   
