@@ -51,15 +51,21 @@ class LaporanController extends Controller
             $props = json_decode($item->props, true);
         
             // Check if $props is an array and not empty
-            if(is_array($props) && !empty($props)) {
+            if (is_array($props) && !empty($props)) {
                 // Loop through each object in $props
                 foreach ($props as $prop) {
-                    // Check if the 'nominal' property is numeric
-                    if (is_numeric($prop['nominal'])) {
+                    // Check if the 'nominal' property exists and is numeric
+                    if (isset($prop['nominal']) && is_numeric($prop['nominal'])) {
                         // Add the 'nominal' value to $totalProps
                         $totalProps += $prop['nominal'];
+                    } else {
+                        // If 'nominal' property doesn't exist or is not numeric, add 0
+                        $totalProps += 0;
                     }
                 }
+            } else {
+                // If JSON data is invalid, add 0 to $totalProps
+                $totalProps += 0;
             }
         }
         return view('back.laporan.laporan-simpanan.index', compact('simpanan', 'pengaturan', 'totalProps'));
