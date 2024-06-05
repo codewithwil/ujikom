@@ -249,6 +249,7 @@
 
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '{{ route('simpananDebet.store') }}');
+
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onreadystatechange = function() {
     if (xhr.readyState === XMLHttpRequest.DONE) {

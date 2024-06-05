@@ -90,12 +90,16 @@
                         <td>{{$item->transaksi}}</td>
                         <td>{{$item->divisi}}</td>
                         <td>{{$item->keterangan}}</td>
-                          @php
+                        @php
                         $props = json_decode($item->props, true);
                         if (is_array($props)) {
                             foreach ($props as $prop) {
                                 if (is_array($prop)) {
-                                    echo "<td>{$prop['nominal']}</td>";
+                                    if (array_key_exists('nominal', $prop)) {
+                                        echo "<td>{$prop['nominal']}</td>";
+                                    } else {
+                                        echo "<td>0</td>"; // Jika tidak ada nominal
+                                    }
                                 } else {
                                     echo "<td>Invalid JSON data</td>";
                                 }
@@ -104,6 +108,7 @@
                             echo "<td>Invalid JSON data</td>";
                         }
                     @endphp
+                    
                         <td>{{$item->status_buku}}</td>
                         <td>
                             <a href="{{route('simpananDebet.edit', $item->kode_simpanan_debet)}}" class="btn btn-primary shadow btn-xs sharp me-1 btn-edit"><i class="fas fa-pencil-alt"></i></a>

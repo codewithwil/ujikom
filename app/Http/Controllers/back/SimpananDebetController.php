@@ -51,14 +51,15 @@ class SimpananDebetController extends globalC
         $data['transaksi'] = 'kas';
         
         $props = $data['props'];
-        if(is_array($props) && !empty($props)) {
-            if (array_filter($props, 'is_numeric') === $props) {
-                $totalProps = array_sum($props);
-            } else {
-                $totalProps = 0;
+        $totalProps = 0; // Inisialisasi totalProps di luar loop
+        foreach ($props as $key => $prop) {
+            // Jika nama properti bukan 'pokok', tambahkan nilainya ke totalProps
+            if ($prop['nama'] !== 'pokok') {
+                // Pastikan nilai properti adalah numerik sebelum menambahkannya
+                if (is_numeric($prop['nominal'])) {
+                    $totalProps += $prop['nominal'];
+                }
             }
-        } else {
-            $totalProps = 0;
         }
         $props = $data['props'];
         $propsJson = json_encode($props); // Mengonversi props menjadi JSON
