@@ -7,14 +7,14 @@ use Illuminate\{
     Database\Eloquent\Model,
 };
 
-class JenisSimpanan extends Model
+class BagiHasil extends Model
 {
     use HasFactory;
-    protected $table = 'jenis_simpanan';
-    protected $primaryKey = 'kode_jenis_simpanan';
+
+    protected $table = 'bagi_hasil';
+    protected $primaryKey = 'kode_bagi_hasil'; 
     protected $keyType = 'string'; 
     public $incrementing = false;
-
-    protected $fillable = ['kode_jenis_simpanan','nama', 'nominal',];
+    protected $fillable = ['kode_bagi_hasil', 'jumlah', 'keterangan'];
 
 }

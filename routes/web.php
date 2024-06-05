@@ -9,16 +9,17 @@ use App\Http\Controllers\back\{
     UserController,
     AnggotaController,
     angsuranController,
+    BagihasilController,
     KeteranganController,
     LaporanController,
     SaldoController,
     SimpananDebetController,
     PinjamanKredit,
-    SaldoKreditController
+    SaldoKreditController,
+    DashboardController,
+    jenisSimpananController,
 };
 
-use App\Http\Controllers\back\DashboardController;
-use App\Http\Controllers\back\jenisSimpananController;
 use App\Models\Saldo;
 use Illuminate\Support\Facades\Route;
 
@@ -108,10 +109,19 @@ Route::middleware('auth')->group(function () {
     //jenis sipmpanan
     Route::get('/jenisSimpanan', [jenisSimpananController::class, 'index'])->name('jenisSimpanan.index')->middleware(['auth', 'verified', 'permission:lihat-simpananDebet']);
     Route::get('jenisSimpanan/tambah', [jenisSimpananController::class, 'create'])->name('jenisSimpanan.tambah')->middleware(['auth', 'verified', 'permission:tambah-simpananDebet']);
-    Route::get('/jenisSimpanan/edit{kode_simpanan_debet}', [jenisSimpananController::class, 'edit'])->name('jenisSimpanan.edit')->middleware(['auth', 'verified', 'permission:edit-simpananDebet']);
+    Route::get('/jenisSimpanan/edit{kode_jenis_simpanan}', [jenisSimpananController::class, 'edit'])->name('jenisSimpanan.edit')->middleware(['auth', 'verified', 'permission:edit-simpananDebet']);
     Route::post('/jenisSimpanan/store', [jenisSimpananController::class, 'store'])->name('jenisSimpanan.store')->middleware(['auth', 'verified', 'permission:tambah-simpananDebet']);
-    Route::post('/jenisSimpanan/update{kode_simpanan_debet}', [jenisSimpananController::class, 'update'])->name('jenisSimpanan.update')->middleware(['auth', 'verified', 'permission:edit-simpananDebet']);
+    Route::post('/jenisSimpanan/update{kode_jenis_simpanan}', [jenisSimpananController::class, 'update'])->name('jenisSimpanan.update')->middleware(['auth', 'verified', 'permission:edit-simpananDebet']);
     Route::post('/jenisSimpanan/delete', [jenisSimpananController::class, 'delete'])->name('jenisSimpanan.delete')->middleware(['auth', 'verified', 'permission:hapus-simpananDebet']);
+
+    //bagi hasil
+    Route::get('/bagiHasil', [BagihasilController::class, 'index'])->name('bagiHasil.index')->middleware(['auth', 'verified', 'permission:lihat-simpananDebet']);
+    Route::get('bagiHasil/tambah', [BagihasilController::class, 'create'])->name('bagiHasil.tambah')->middleware(['auth', 'verified', 'permission:tambah-simpananDebet']);
+    Route::get('/bagiHasil/edit{kode_bagi_hasil}', [BagihasilController::class, 'edit'])->name('bagiHasil.edit')->middleware(['auth', 'verified', 'permission:edit-simpananDebet']);
+    Route::post('/bagiHasil/store', [BagihasilController::class, 'store'])->name('bagiHasil.store')->middleware(['auth', 'verified', 'permission:tambah-simpananDebet']);
+    Route::post('/bagiHasil/update{kode_bagi_hasil}', [BagihasilController::class, 'update'])->name('bagiHasil.update')->middleware(['auth', 'verified', 'permission:edit-simpananDebet']);
+    Route::post('/bagiHasil/delete', [BagihasilController::class, 'delete'])->name('bagiHasil.delete')->middleware(['auth', 'verified', 'permission:hapus-simpananDebet']);
+
 
     //simpanan debet
     Route::get('/simpanan/debet', [SimpananDebetController::class, 'index'])->name('simpananDebet.index')->middleware(['auth', 'verified', 'permission:lihat-simpananDebet']);
@@ -158,8 +168,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/print/saldo', [LaporanController::class, 'printSaldo'])->name('print.saldo')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
 
      //Jenis simpanan
-     Route::get('/laporan/jenisSimpanan', [LaporanController::class, 'jenisSimpanan'])->name('laporan.jenisSimpanan')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
-     Route::get('/print/jenisSimpanan', [LaporanController::class, 'printjenisSimpanan'])->name('print.jenisSimpanan')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+    Route::get('/laporan/jenisSimpanan', [LaporanController::class, 'jenisSimpanan'])->name('laporan.jenisSimpanan')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+    Route::get('/print/jenisSimpanan', [LaporanController::class, 'printjenisSimpanan'])->name('print.jenisSimpanan')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+
+    //Bagi hasil
+    Route::get('/laporan/bagiHasil', [LaporanController::class, 'bagiHasil'])->name('laporan.bagiHasil')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+    Route::get('/print/bagiHasil', [LaporanController::class, 'printBagihasil'])->name('print.bagiHasil')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
+
 
     Route::get('/laporan/simpanan', [LaporanController::class, 'simpanan'])->name('laporan.simpanan')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);
     Route::get('/print/simpanan', [LaporanController::class, 'printSimpanan'])->name('print.simpanan')->middleware(['auth', 'verified', 'permission:lihat-angsuranKredit']);

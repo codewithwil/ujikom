@@ -51,20 +51,16 @@ class SimpananDebetController extends globalC
         $data['transaksi'] = 'kas';
         
         $props = $data['props'];
-        $totalProps = 0; // Inisialisasi totalProps di luar loop
+        $totalProps = 0; 
         foreach ($props as $key => $prop) {
-            // Jika nama properti bukan 'pokok', tambahkan nilainya ke totalProps
             if ($prop['nama'] !== 'pokok') {
-                // Pastikan nilai properti adalah numerik sebelum menambahkannya
                 if (is_numeric($prop['nominal'])) {
                     $totalProps += $prop['nominal'];
                 }
             }
         }
         $props = $data['props'];
-        $propsJson = json_encode($props); // Mengonversi props menjadi JSON
-        
-        // Masukkan propsJson ke dalam data sebelum disimpan
+        $propsJson = json_encode($props);
         $data['props'] = $propsJson;
         DB::beginTransaction();
         try {

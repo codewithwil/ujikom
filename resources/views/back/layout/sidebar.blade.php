@@ -74,6 +74,12 @@
               </a>
             </li>
             <li class="nav-item">
+              <a href="{{route('bagiHasil.index')}}" class="nav-link">
+                <i class="nav-icon fas fa-dollar-sign"></i>
+                <p>Bagi hasil</p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="{{route('simpananDebet.index')}}" class="nav-link">
                 <i class="nav-icon fas fa-sign-in-alt"></i>
                 <p>Simpanan</p>
