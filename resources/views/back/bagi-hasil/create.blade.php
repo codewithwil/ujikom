@@ -70,7 +70,7 @@
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="jumlah">Jumlah </label>
+                  <label for="jumlah">profit </label>
                   <input type="number" name="jumlah" id="jumlah" class="form-control" min="0" max="100">
                 </div>
                   <div class="form-group">

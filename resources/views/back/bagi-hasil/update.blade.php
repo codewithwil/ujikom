@@ -68,7 +68,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="jumlah">jumlah</label>
+                <label for="jumlah">profit</label>
                 <input type="number" name="jumlah" id="jumlah" class="form-control" min="0" max="100" value="{{$bagiHasil->jumlah}}">
               </div>
                   <div class="form-group">

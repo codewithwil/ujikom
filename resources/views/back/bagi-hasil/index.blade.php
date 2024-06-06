@@ -56,7 +56,7 @@
                     <th>No</th>
                     <th>kode bagi hasil</th>
                     <th>Periode cicilan</th>
-                    <th>jumlah</th>
+                    <th>profit</th>
                     <th>keterangan</th>
                     <th>aksi</th>
                   </tr>
@@ -82,7 +82,7 @@
                     <th>No</th>
                     <th>kode bagi hasil</th>
                     <th>periode cicilan</th>
-                    <th>jumlah</th>
+                    <th>profit</th>
                     <th>keterangan</th>
                   </tr>
                   </tfoot>
