@@ -113,6 +113,8 @@
                 <tr>
                     <th>Tanggal</th>
                     <th>ID Anggota</th>
+                    <th>Transaksi</th>
+                    <th>jenis pembayaran</th>
                     <th>Kas {{ number_format($total_kas_per_baris) }}</th>
                 </tr>
             </thead>
@@ -120,6 +122,8 @@
                 <tr>
                     <td>{{ $item->tanggal }}</td>
                     <td>{{ $item->anggota_kode }}</td>
+                    <td>{{ $item->transaksi }}</td>
+                    <td>{{ $item->jenis_pembayaran }}</td>
                     <td>
                         @php
                         echo 'Pokok: ' . number_format($pokok) . '<br>';

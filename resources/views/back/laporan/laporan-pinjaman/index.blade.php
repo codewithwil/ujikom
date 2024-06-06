@@ -73,50 +73,47 @@
 
   <div class="row">
   <div class="col-12 table-responsive">
-  <table class="table table-striped">
-  <thead>
-  <tr>
-    <th>No</th>
-    <th>tanggal Pinjam</th>
-    <th>Pinjaman berakhir pada</th>
-    <th>ID anggota</th>
-    <th>ID transaksi</th>
-    <th>Nama Anggota</th>
-    <th>kas</th>
-    <th>periode</th>
-    <th>bunga</th>
-    <th>nominal</th>
-    <th>total</th>
-  </tr>
-  </thead>
-  <tbody>
-    @php
-    use Carbon\Carbon;
-    $totalPinjaman = 0;
-@endphp
 
-@foreach ($pinjaman as $item)
-<tr>
-    <td>{{$loop->iteration}}</td>
-    <td>{{$item->tanggal}}</td>
-
-      <td>: @tambahBulan($item->tanggal, $item->periode)</td>
-    <td>{{$item->anggota_kode}}</td>
-    <td>{{$item->kode_pinjaman_kredit}}</td>
-    <td>{{$item->Anggota->nama}}</td>
-    <td>{{$item->transaksi}}</td>
-    <td>{{$item->periode}} bulan</td>
-    <td>{{$item->bunga}}%</td>
-    <td>{{$item->nominal}}</td>
-    <td>Rp.{{ number_format(hitungCicilan($item->nominal, $item->bunga, $item->periode), 2, ',', '.') }}</td>
-    @php
-    $totalPinjaman += $item->nominal;
-@endphp
-    <!-- Tambahkan kolom lainnya sesuai kebutuhan -->
-</tr>
-@endforeach
-  </tbody>
+    <table class="table table-striped">
+      <thead>
+          <tr>
+              <th>Tanggal</th>
+              <th>ID Anggota</th>
+              <th>Transaksi</th>
+              <th>jenis pembayaran</th>
+              <th>Pinjaman anggota </th>
+              <th>total </th>
+          </tr>
+      </thead>
+      <tbody>
+          @php
+          $totalPinjaman = 0;
+          @endphp
+  
+          @foreach ($pinjaman as $item)
+          @php
+          // Menghitung total pinjaman dari semua item
+          $bunga = ($item->bunga / 100) * $item->nominal;
+          $totalPinjaman += $item->nominal + $bunga;
+          @endphp
+          <tr>
+              <td>{{ $item->tanggal }}</td>
+              <td>{{ $item->anggota_kode }}</td>
+              <td>{{ $item->transaksi }}</td>
+              <td>{{ $item->jenis_pembayaran }}</td>
+              <td>
+                  nominal dipinjam: {{$item->nominal}} <br>
+                  bunga: {{$item->bunga}}% <br>
+                  periode cicilan: {{$item->periode}} <br>
+                  cicilan perbulan: Rp. <b>{{ number_format(hitungCicilan($item->nominal, $item->bunga, $item->periode), 2, ',', '.') }}</b>
+              </td>
+              <td>Total Pinjaman: Rp. {{ number_format($totalPinjaman, 2, ',', '.') }}</td>
+          </tr>
+          @endforeach
+      </tbody>
   </table>
+  
+    
   </div>
 
   </div>
@@ -136,11 +133,31 @@
   <div class="col-6">
   <p class="lead" >Tanggal pembayaran   <span class="currentDate" id="currentDate2"></span></p>
   <div class="table-responsive">
-  <table class="table">
-  <tr>
-  <th>Total nominal tanpa bunga:</th>
-  <td>{{$totalPinjaman}}</td>
-  </tr>
+    <table class="table">
+      @php
+      // Menghitung total pinjaman dari semua item
+      $bunga = ($item->bunga / 100) * $item->nominal;
+      $totalPinjaman += $item->nominal + $bunga;
+      @endphp
+      <tr>
+          <th>Total nominal yg dipinjam tanpa bunga:</th>
+          <td>
+              @php
+              // Menghitung total nominal tanpa bunga dari semua item
+              $totalNominalTanpaBunga = 0;
+              foreach ($pinjaman as $item) {
+                  $totalNominalTanpaBunga += $item->nominal;
+              }
+              @endphp
+              Rp. {{ number_format($totalNominalTanpaBunga, 2, ',', '.') }}
+          </td>
+         
+      </tr>
+      <tr>
+        <th>total nominal yg dipinjam dengan bunga</th>
+        <td>Total Pinjaman: Rp. {{ number_format($totalPinjaman, 2, ',', '.') }}</td>
+      </tr>
+      <!-- Tambahkan baris lainnya sesuai kebutuhan -->
   </table>
   </div>
   </div>
