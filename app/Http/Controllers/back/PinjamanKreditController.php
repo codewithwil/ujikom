@@ -24,8 +24,9 @@ class PinjamanKreditController extends globalC
         list($jenisBayar,$divisi,$transaksi,$anggota,$statusBuku,$keterangan) = self::getAttr();
         $bagiHasil = BagiHasil::get();
         $batasPinjamPersentase = Pengaturan::value('batas_pinjam');
-        $saldoKoperasi = Saldo::selectRaw("SUM(saldo) AS value")->first();
-        
+        $saldoKoperasi = Saldo::selectRaw("SUM(saldo) AS value")
+            ->whereRaw("keterangan LIKE '%kas%'")
+            ->first();
         
         if ($saldoKoperasi) {
             $saldo = $saldoKoperasi->value;
@@ -35,7 +36,9 @@ class PinjamanKreditController extends globalC
             $batasPinjamAbsolut = 0;
         }
         
-        $batasPinjam = Pengaturan::value('batas_pinjam');
+        // Menggunakan nilai persentase yang sama yang sudah dihitung sebelumnya
+        $batasPinjam = $batasPinjamPersentase;
+        
         return view('back.pinjaman.pinjaman-kredit.create',compact('jenisBayar','divisi','transaksi','anggota','statusBuku','keterangan',
         'saldoKoperasi', 'batasPinjamAbsolut', 'bagiHasil'));
     }

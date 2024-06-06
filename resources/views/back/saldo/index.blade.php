@@ -71,7 +71,7 @@
                   </tr>
                   @php
       
-                  if(strpos(strtolower($item->keterangan), 'kredit') !== false) {
+                  if(strpos(strtolower($item->keterangan), 'pinjaman anggota') !== false) {
                       $totalSaldo -= $item->saldo;
                   } else {
                       $totalSaldo += $item->saldo;
