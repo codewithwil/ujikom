@@ -125,16 +125,13 @@
                       <div id="transaksi-part" class="content" role="tabpanel" aria-labelledby="transaksi-part-trigger">
                         <div class="card-body">
                         <div class="form-group">
-                          <label for="transaksi">Transaksi</label>
-                          <select name="transaksi" id="transaksi" class="form-control">
-                            @foreach ($transaksi as $item => $get_transaksi)
-                            <option value="{{$item}}" {{ ($pinjamK->transaksi == $item) ? 'selected' : '' }}>{{$get_transaksi}}</option>
-                            @endforeach
-                          </select>
-                        </div>
-                        <div class="form-group">
                           <label for="periode">Periode</label>
-                          <select name="periode" id="periode" class="form-control" value="{{$pinjamK->nominal}}">
+                          <select name="periode" id="periode" class="form-control">
+                            @foreach ($bagiHasil as $item)
+                            <option value="{{ $item->periode }}" {{ $item->periode == $pinjamK->periode ? 'selected' : '' }}>
+                                {{ $item->periode }}
+                            </option>
+                        @endforeach
                           </select>
                         </div>
                         <div class="form-group">
@@ -223,23 +220,22 @@
 
 </script>
 <script>
-    var periodes = [6, 12, 24, 36, 48, 60];
+  document.getElementById('periode').addEventListener('change', function() {
+      var periode = this.value;
+      var bagiHasil = {!! json_encode($bagiHasil) !!};
+      var bungaData = bagiHasil.find(function(item) {
+          return item.periode === periode;
+      });
 
-    var selectPeriode = document.getElementById('periode');
-
-    var selectedValue = {!! json_encode($pinjamK->periode) !!};
-
-    periodes.forEach(function (periode) {
-        var option = document.createElement('option');
-        option.value = periode;
-        option.textContent = periode + ' bulan';
-
-        if (periode == selectedValue) { // Menggunakan operator ==
-            option.selected = true;
-        }
-
-        selectPeriode.appendChild(option);
-    });
+      if (bungaData) {
+          // Jika data bunga ditemukan, menampilkan nilai jumlah
+          var bungaElement = document.getElementById('bunga');
+          bungaElement.value = bungaData.jumlah;
+      } else {
+          // Jika tidak ada data bunga yang ditemukan, menampilkan pesan atau menetapkan nilai default
+          console.error('Data bunga tidak ditemukan untuk periode yang dipilih');
+      }
+  });
 </script>
 
 
@@ -252,7 +248,6 @@
     var jenis_pembayaran = document.getElementById('jenis_pembayaran').value;
     var divisi           = document.getElementById('divisi').value;
     var anggota_kode     = document.getElementById('anggota_kode').value;
-    var transaksi        = document.getElementById('transaksi').value;
     var periode          = document.getElementById('periode').value;
     var nominal          = document.getElementById('nominal').value;
     var bunga            = document.getElementById('bunga').value;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\back;
 
 use App\Http\Controllers\globalC;
 use App\Models\Anggota;
+use App\Models\BagiHasil;
 use App\Models\Pengaturan;
 use App\Models\PinjamanKredit;
 use App\Models\Saldo;
@@ -21,6 +22,7 @@ class PinjamanKreditController extends globalC
 
     public function create(){
         list($jenisBayar,$divisi,$transaksi,$anggota,$statusBuku,$keterangan) = self::getAttr();
+        $bagiHasil = BagiHasil::get();
         $batasPinjamPersentase = Pengaturan::value('batas_pinjam');
         $saldoKoperasi = Saldo::selectRaw("SUM(saldo) AS value")->first();
         
@@ -35,13 +37,14 @@ class PinjamanKreditController extends globalC
         
         $batasPinjam = Pengaturan::value('batas_pinjam');
         return view('back.pinjaman.pinjaman-kredit.create',compact('jenisBayar','divisi','transaksi','anggota','statusBuku','keterangan',
-        'saldoKoperasi', 'batasPinjamAbsolut'));
+        'saldoKoperasi', 'batasPinjamAbsolut', 'bagiHasil'));
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
         $data['status'] = 1;
+        $data['transaksi'] = 'pinjaman anggota';
         $anggota = Anggota::where('kode_anggota', $data['anggota_kode'])->first();
         DB::beginTransaction();
         try {
@@ -78,7 +81,7 @@ class PinjamanKreditController extends globalC
         list($jenisBayar,$divisi,$transaksi,$anggota,$statusBuku,$keterangan) = self::getAttr();
         $batasPinjamPersentase = Pengaturan::value('batas_pinjam');
         $saldoKoperasi = Saldo::selectRaw("SUM(saldo) AS value")->first();
-        
+        $bagiHasil = BagiHasil::get();
         
         if ($saldoKoperasi) {
             $saldo = $saldoKoperasi->value;
@@ -88,7 +91,7 @@ class PinjamanKreditController extends globalC
             $batasPinjamAbsolut = 0;
         }
         return view('back.pinjaman.pinjaman-kredit.update',compact('pinjamK','jenisBayar','divisi','transaksi',
-        'anggota','statusBuku','keterangan',  'saldoKoperasi', 'batasPinjamAbsolut'));
+        'anggota','statusBuku','keterangan',  'saldoKoperasi', 'batasPinjamAbsolut', 'bagiHasil'));
     }
 
     public function update(Request $request, $kode_pinjaman_kredit){

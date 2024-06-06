@@ -15,6 +15,6 @@ class BagiHasil extends Model
     protected $primaryKey = 'kode_bagi_hasil'; 
     protected $keyType = 'string'; 
     public $incrementing = false;
-    protected $fillable = ['kode_bagi_hasil', 'jumlah', 'keterangan'];
+    protected $fillable = ['kode_bagi_hasil', 'periode', 'jumlah', 'keterangan'];
 
 }

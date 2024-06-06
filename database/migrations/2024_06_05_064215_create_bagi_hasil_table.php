@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('bagi_hasil', function (Blueprint $table) {
             $table->string('kode_bagi_hasil')->primary();
+            $table->enum('periode',['6 bulan','12 bulan', '24 bulan', '36 bulan', '48 bulan', '60 bulan'])->default('6 bulan');
             $table->integer('jumlah');
             $table->text('keterangan');
             $table->timestamps();

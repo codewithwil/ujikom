@@ -59,8 +59,10 @@
                     <th>Transaksi</th>
                     <th>divisi</th>
                     <th>keterangan</th>
+                    <th>Periode</th>
                     <th>Nominal</th>
                     <th>Bunga</th>
+                    <th>cicilan perbulan</th>
                     <th>keterangan</th>
                     <th>status buku</th>
                     <th>Aksi</th>
@@ -77,8 +79,11 @@
                     <td>{{$item->transaksi}}</td>
                     <td>{{$item->divisi}}</td>
                     <td>{{$item->keterangan}}</td>
+                    <td>{{$item->periode}}</td>
                     <td>{{$item->nominal}}</td>
                     <td>{{$item->bunga}}</td>
+                    <td>Rp.{{ number_format(hitungCicilan($item->nominal, $item->bunga, $item->periode), 2, ',', '.') }}</td>
+
                     <td>{{$item->keterangan}}</td>
                     <td>{{$item->status_buku}}</td>
                     <td>
@@ -100,9 +105,11 @@
                     <th>Transaksi</th>
                     <th>divisi</th>
                     <th>keterangan</th>
+                    <th>Periode</th>
                     <th>Nominal</th>
                     <th>Bunga</th>
-                    <th>Keterangan</th>
+                    <th>cicilan perbulan</th>
+                    <th>keterangan</th>
                     <th>status buku</th>
                     <th>Aksi</th>
                   </tr>

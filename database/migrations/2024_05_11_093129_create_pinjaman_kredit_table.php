@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('periode', 50);
             $table->enum('jenis_pembayaran',['tunai','nontunai'])->default('tunai');
             $table->enum('divisi',['simpan','pinjam'])->default('simpan');
-            $table->enum('transaksi',['debet','kredit'])->default('debet');
+            $table->string('transaksi', 70)->default('pinjaman anggota');
             $table->integer('nominal');
             $table->integer('bunga');
             $table->text('keterangan');

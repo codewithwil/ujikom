@@ -56,7 +56,19 @@
                 @enderror
               </div>
               <div class="form-group">
-                <label for="jumlah">Nominal</label>
+                <label for="periode">Periode cicilan</label>
+                <select name="periode" id="periode" class="form-control">
+                  <option value="{{$bagiHasil->periode}}" selected>{{$bagiHasil->periode}}</option>
+                  <option value="6 bulan">6 bulan</option>
+                  <option value="12 bulan">12 bulan</option>
+                  <option value="24 bulan">24 bulan</option>
+                  <option value="36 bulan">36 bulan</option>
+                  <option value="48 bulan">48 bulan</option>
+                  <option value="60 bulan">60 bulan</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="jumlah">jumlah</label>
                 <input type="number" name="jumlah" id="jumlah" class="form-control" min="0" max="100" value="{{$bagiHasil->jumlah}}">
               </div>
                   <div class="form-group">

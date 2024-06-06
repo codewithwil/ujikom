@@ -51,7 +51,7 @@ class SimpananDebetController extends globalC
         $data['transaksi'] = 'kas';
         
         $props = $data['props'];
-        $totalProps = 0; 
+        $totalProps = 0;    
         foreach ($props as $key => $prop) {
             if ($prop['nama'] !== 'pokok') {
                 if (is_numeric($prop['nominal'])) {

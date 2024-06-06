@@ -24,7 +24,8 @@ class BagihasilController extends Controller
     public function store(Request $request){
         $data = $request->validate([
             'kode_bagi_hasil'   => 'required|max:10',
-            'jumlah'           => 'required|max:11',
+            'periode'           => 'required',
+            'jumlah'            => 'required|max:11',
             'keterangan'        => 'nullable|max:255',
         ]);
         DB::beginTransaction();
@@ -54,6 +55,7 @@ class BagihasilController extends Controller
     public function update(Request $request, $kode_bagi_hasil){
         $data = $request->validate([
             'kode_bagi_hasil'   => 'nullable|max:10',
+            'periode'           => 'nullable',
             'jumlah'            => 'nullable|max:11',
             'keterangan'        => 'nullable|max:255',
         ]);
@@ -61,7 +63,7 @@ class BagihasilController extends Controller
         try {
             DB::commit();
             BagiHasil::find($kode_bagi_hasil)->update($data);
-            return redirect(route('bagiHasil.index'))->with('success', ' User has been updated');
+            return redirect(route('bagiHasil.index'))->with('success', ' bagi hasil has been updated');
         } catch (Exception $e) {
             info($e->getMessage());
             DB::rollBack();

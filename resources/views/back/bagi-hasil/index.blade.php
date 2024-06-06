@@ -55,6 +55,7 @@
                   <tr>
                     <th>No</th>
                     <th>kode bagi hasil</th>
+                    <th>Periode cicilan</th>
                     <th>jumlah</th>
                     <th>keterangan</th>
                     <th>aksi</th>
@@ -65,6 +66,7 @@
                   <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{$item->kode_bagi_hasil}}</td>
+                    <td>{{$item->periode}}</td>
                     <td>{{$item->jumlah}}</td>
                     <td>{{$item->keterangan}}</td>
                     <td>
@@ -79,6 +81,7 @@
                   <tr>
                     <th>No</th>
                     <th>kode bagi hasil</th>
+                    <th>periode cicilan</th>
                     <th>jumlah</th>
                     <th>keterangan</th>
                   </tr>

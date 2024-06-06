@@ -128,9 +128,20 @@
                     <th>Transaksi</th>
                     <th>divisi</th>
                     <th>keterangan</th>
-                    <th>pokok</th>
-                    <th>sukarela</th>
-                    <th>wajib</th>
+                    @php
+                      $props = json_decode($simpanD->first()->props, true);
+                        if (is_array($props)) {
+                            foreach ($props as $prop) {
+                                if (is_array($prop)) {
+                                    echo "<td>{$prop['nama']}</td>";
+                                } else {
+                                    echo "<td>Invalid JSON data</td>";
+                                }
+                            }
+                        } else {
+                            echo "<td>Invalid JSON data</td>";
+                        }
+                @endphp
                     <th>status buku</th>
                     <th>Aksi</th>
                   </tr>

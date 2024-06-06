@@ -216,7 +216,7 @@
     var key = name[2];
 
     if (!props[index]) {
-      props[index] = {};
+      props[index] = {};  
     }
 
     props[index][key] = input.value;

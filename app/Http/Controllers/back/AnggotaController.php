@@ -67,7 +67,7 @@ class AnggotaController extends globalC
                 $simpananDebet->anggota_kode        = $data['kode_anggota'];
                 $simpananDebet->tanggal             = $data['tanggal'];
                 $simpananDebet->jenis_pembayaran    = $data['jenis_pembayaran'];
-                $simpananDebet->transaksi           = $data['transaksi'];
+                $simpananDebet->transaksi           = 'kas';
                 $simpananDebet->divisi              = $data['divisi'];
                 $simpananDebet->props               = json_encode($props);
                 $simpananDebet->keterangan          = $data['keterangan'];

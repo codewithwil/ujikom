@@ -133,18 +133,12 @@
                     <div id="transaksi-part" class="content" role="tabpanel" aria-labelledby="transaksi-part-trigger">
                       <div class="card-body">
                       <div class="form-group">
-                        <label for="transaksi">Transaksi</label>
-                        <select name="transaksi" id="transaksi" class="form-control">
-                          @foreach ($transaksi as $item => $get_transaksi)
-                          <option value="hidden" disabled selected hidden>Pilih Transaksi</option>
-                          <option value="{{$item}}">{{$get_transaksi}}</option>
-                          @endforeach
-                        </select>
-                      </div>
-                      <div class="form-group">
                         <label for="periode">Periode</label>
                         <select name="periode" id="periode" class="form-control">
-                          <option value="hidden" disabled selected hidden>Pilih Periode</option>
+                          <option value="hidden" selected>--- Pilih periode cicilan ---</option>
+                            @foreach ($bagiHasil as $item)
+                                <option value="{{$item->periode}}">{{$item->periode}}</option>     
+                            @endforeach
                         </select>
                       </div>
                       <div class="form-group">
@@ -156,7 +150,7 @@
                       </div>
                       <div class="form-group">
                         <label for="bunga">bunga Pinjaman</label>
-                        <input type="number" name="bunga" id="bunga" class="form-control" min="0" max="50">
+                        <input type="number" name="bunga" id="bunga" class="form-control" readonly >
                       </div>
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>
@@ -221,6 +215,26 @@
 <!-- dropzonejs -->
 <script src="{{asset('admin/plugins/dropzone/min/dropzone.min.js')}}"></script>
 
+<script>
+  document.getElementById('periode').addEventListener('change', function() {
+      var periode = this.value;
+      var bagiHasil = {!! json_encode($bagiHasil) !!};
+      var bungaData = bagiHasil.find(function(item) {
+          return item.periode === periode;
+      });
+
+      if (bungaData) {
+          // Jika data bunga ditemukan, menampilkan nilai jumlah
+          var bungaElement = document.getElementById('bunga');
+          bungaElement.value = bungaData.jumlah;
+      } else {
+          // Jika tidak ada data bunga yang ditemukan, menampilkan pesan atau menetapkan nilai default
+          console.error('Data bunga tidak ditemukan untuk periode yang dipilih');
+      }
+  });
+</script>
+
+
 
 <!-- Page specific script -->
 <script>
@@ -231,21 +245,6 @@
   })
 </script>
 <script>
-  var periodes = [6, 12, 24, 36, 48, 60];
-
-// Mengambil elemen select
-var selectPeriode = document.getElementById('periode');
-
-// Menambahkan opsi periode ke dalam elemen select
-periodes.forEach(function(periode) {
-    var option = document.createElement('option');
-    option.value = periode;
-    option.textContent = periode + ' bulan';
-    selectPeriode.appendChild(option);
-});
-
-</script>
-<script>
   document.getElementById('submitForm').addEventListener('click', function(event) {
 
     var kode_pinjaman_kredit  = document.getElementById('kode_pinjaman_kredit').value;
@@ -253,7 +252,6 @@ periodes.forEach(function(periode) {
     var jenis_pembayaran      = document.getElementById('jenis_pembayaran').value;
     var divisi                = document.getElementById('divisi').value;
     var anggota_kode          = document.getElementById('anggota_kode').value;
-    var transaksi             = document.getElementById('transaksi').value;
     var periode               = document.getElementById('periode').value;
     var nominal               = document.getElementById('nominal').value;
     var bunga                 = document.getElementById('bunga').value;
@@ -266,7 +264,6 @@ periodes.forEach(function(periode) {
       jenis_pembayaran: jenis_pembayaran,
       divisi: divisi,
       anggota_kode: anggota_kode,
-      transaksi: transaksi,
       periode: periode,
       nominal: nominal,
       bunga: bunga,
