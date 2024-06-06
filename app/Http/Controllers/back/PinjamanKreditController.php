@@ -48,6 +48,7 @@ class PinjamanKreditController extends globalC
         $data = $request->all();
         $data['status'] = 1;
         $data['transaksi'] = 'pinjaman anggota';
+        $data['divisi'] = 'pinjam';
         $anggota = Anggota::where('kode_anggota', $data['anggota_kode'])->first();
         DB::beginTransaction();
         try {

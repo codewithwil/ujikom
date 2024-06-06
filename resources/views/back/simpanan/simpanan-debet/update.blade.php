@@ -94,15 +94,6 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="divisi">Divisi</label>
-                    <select name="jenis_pembayaran" id="divisi" class="form-control">
-                      @foreach ($divisi as $item => $getdivisi)
-                      <option value="{{$item}}" {{ ($simpanD->divisi == $item) ? 'selected' : '' }}>{{$getdivisi}}</option>
-                      @endforeach
-                      
-                    </select>
-                  </div>
-                  <div class="form-group">
                     <label for="anggota">Anggota</label>
                         <select name="anggota_kode" id="anggota_kode" class="form-control" onchange="showAnggotaInfo()">
                             @foreach ($anggota as $item)
@@ -205,7 +196,6 @@
 
     var tanggal          = document.getElementById('tanggal').value;
     var jenis_pembayaran = document.getElementById('jenis_pembayaran').value;
-    var divisi           = document.getElementById('divisi').value;
     var anggota_kode     = document.getElementById('anggota_kode').value;
     var keterangan       = document.getElementById('keterangan').value;
     var status_buku      = document.getElementById('status_buku').value;
@@ -224,7 +214,6 @@
     var data = {
       tanggal: tanggal,
       jenis_pembayaran: jenis_pembayaran,
-      divisi: divisi,
       anggota_kode: anggota_kode,
       props: props,
       keterangan: keterangan,

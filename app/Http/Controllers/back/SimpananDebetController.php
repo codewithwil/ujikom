@@ -49,6 +49,7 @@ class SimpananDebetController extends globalC
         $anggota = Anggota::where('kode_anggota', $data['anggota_kode'])->first();
         $data['status'] = 1;
         $data['transaksi'] = 'kas';
+        $data['divisi'] = 'simpan';
         
         $props = $data['props'];
         $totalProps = 0;    

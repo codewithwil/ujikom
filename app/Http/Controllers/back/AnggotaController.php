@@ -37,19 +37,16 @@ class AnggotaController extends globalC
             $data = $request->all();
             $data['status'] = 1;
             $props = $data['props'];
-            if(is_array($props) && !empty($props)) {
-                // Periksa apakah semua nilai dalam array adalah numerik
-                if (array_filter($props, 'is_numeric') === $props) {
-                    $totalProps = array_sum($props);
-                } else {
-                    // Atur $totalProps ke 0 atau nilai default yang sesuai
-                    $totalProps = 0;
+            $totalProps = 0;    
+            foreach ($props as $key => $prop) {
+                if ($prop['nama'] !== 'pokok') {
+                    if (is_numeric($prop['nominal'])) {
+                        $totalProps += $prop['nominal'];
+                    }
                 }
-            } else {
-                // Atur $totalProps ke 0 atau nilai default yang sesuai
-                $totalProps = 0;
             }
-        
+            $props = $data['props'];
+            $propsJson = json_encode($props);
             DB::beginTransaction();
             try {
                 $anggota = new Anggota();
@@ -68,8 +65,8 @@ class AnggotaController extends globalC
                 $simpananDebet->tanggal             = $data['tanggal'];
                 $simpananDebet->jenis_pembayaran    = $data['jenis_pembayaran'];
                 $simpananDebet->transaksi           = 'kas';
-                $simpananDebet->divisi              = $data['divisi'];
-                $simpananDebet->props               = json_encode($props);
+                $simpananDebet->divisi              = 'simpan';
+                $simpananDebet->props               = $propsJson;
                 $simpananDebet->keterangan          = $data['keterangan'];
                 $simpananDebet->status_buku         = $data['status_buku'];
                 $simpananDebet['status']            = 1;
@@ -77,7 +74,11 @@ class AnggotaController extends globalC
 
                 $saldoKoperasi = new Saldo();
                 $saldoKoperasi->saldo      = $totalProps;
-                $saldoKoperasi->keterangan = $data['keterangan'];
+                if ($anggota) {
+                    $saldoKoperasi->keterangan = 'Anggota ' . $anggota->nama . ' telah melakukan ' . $data['transaksi'] = 'kas'. ' sebesar ' . $totalProps;
+                } else {
+                    $saldoKoperasi->keterangan = 'Anggota tidak ditemukan';
+                }
                 $saldoKoperasi->save();
                 DB::commit();
                 return redirect(route('anggota.index'))->with('success', ' Anggota has been created');

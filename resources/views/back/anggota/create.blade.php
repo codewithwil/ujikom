@@ -136,15 +136,6 @@
                       </select>
                     </div>
 
-                    <div class="form-group">
-                      <label for="divisi">Divisi</label>
-                      <select name="jenis_pembayaran" id="divisi" class="form-control">
-                        <option value="hidden" disabled selected hidden>Pilih divisi</option>
-                        <option value="simpan">Simpan</option>
-                        <option value="pinjam">Pinjam</option>
-                      
-                      </select>
-                    </div>
                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                         <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                       </div>
@@ -240,7 +231,6 @@ document.getElementById('submitForm').addEventListener('click', function(event) 
   var telepon = document.getElementById('telepon').value;
   var tanggal = document.getElementById('tanggal').value;
   var jenis_pembayaran = document.getElementById('jenis_pembayaran').value;
-  var divisi = document.getElementById('divisi').value;
   var keterangan = document.getElementById('keterangan').value;
   var status_buku = document.getElementById('status_buku').value;
 
@@ -267,7 +257,6 @@ document.getElementById('submitForm').addEventListener('click', function(event) 
     telepon: telepon,
     tanggal: tanggal,
     jenis_pembayaran: jenis_pembayaran,
-    divisi: divisi,
     props: props,
     keterangan: keterangan, 
     status_buku: status_buku,
